@@ -1,0 +1,51 @@
+{
+  "sample_rate": 44100,
+  "lead_notes": [
+    "C4",
+    "E4",
+    "G4",
+    "C5",
+    "A4",
+    "G4",
+    "E4",
+    "D4",
+    "C4"
+  ],
+  "lead_durations_seconds": [
+    0.35,
+    0.35,
+    0.35,
+    0.6,
+    0.35,
+    0.35,
+    0.35,
+    0.35,
+    0.6
+  ],
+  "lead_frequencies_hz": [
+    261.6255653005986,
+    329.6275569128699,
+    391.99543598174927,
+    523.2511306011972,
+    440.0,
+    391.99543598174927,
+    329.6275569128699,
+    293.6647679174076,
+    261.6255653005986
+  ],
+  "audio_files": {
+    "lead_sine": "/mntdatalora/src/Music-Intelligence/outputs/sine_wave_binary_classification/sine_wave/melody_sine.wav",
+    "lead_saw": "/mntdatalora/src/Music-Intelligence/outputs/sine_wave_binary_classification/sine_wave/melody_sawtooth.wav",
+    "faded": "/mntdatalora/src/Music-Intelligence/outputs/sine_wave_binary_classification/sine_wave/melody_faded.wav",
+    "delayed": "/mntdatalora/src/Music-Intelligence/outputs/sine_wave_binary_classification/sine_wave/melody_delayed.wav",
+    "stacked": "/mntdatalora/src/Music-Intelligence/outputs/sine_wave_binary_classification/sine_wave/melody_stacked.wav"
+  },
+  "clip_lengths_seconds": {
+    "lead_sine": 3.6498412698412697,
+    "lead_saw": 3.6498412698412697,
+    "faded": 3.6498412698412697,
+    "delayed": 4.14984126984127,
+    "stacked": 3.6498412698412697
+  },
+  "delay_tail_seconds": 0.5
+}

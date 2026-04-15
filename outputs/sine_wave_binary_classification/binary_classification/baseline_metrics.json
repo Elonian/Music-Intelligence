@@ -1,0 +1,43 @@
+{
+  "feature_name": "baseline",
+  "train_size": 192,
+  "test_size": 48,
+  "accuracy": 1.0,
+  "confusion_matrix": [
+    [
+      24,
+      0
+    ],
+    [
+      0,
+      24
+    ]
+  ],
+  "classification_report": {
+    "drums": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 24.0
+    },
+    "piano": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 24.0
+    },
+    "accuracy": 1.0,
+    "macro avg": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 48.0
+    },
+    "weighted avg": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 48.0
+    }
+  }
+}

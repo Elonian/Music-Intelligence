@@ -1,0 +1,17 @@
+{
+  "audio_clip_count": 5,
+  "lead_note_count": 9,
+  "sample_rate": 44100,
+  "delay_tail_seconds": 0.5,
+  "baseline_accuracy": 1.0,
+  "enhanced_accuracy": 1.0,
+  "accuracy_gain": 0.0,
+  "row_count": 240,
+  "split_sweep_seed_count": 8,
+  "baseline_seed_sweep_mean": 0.9635416666666666,
+  "enhanced_seed_sweep_mean": 1.0,
+  "baseline_seed_sweep_min": 0.9166666666666666,
+  "enhanced_seed_sweep_min": 1.0,
+  "baseline_seed_sweep_max": 1.0,
+  "enhanced_seed_sweep_max": 1.0
+}

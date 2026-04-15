@@ -1,0 +1,8 @@
+{
+  "max_files_per_class": 120,
+  "row_count": 240,
+  "baseline_accuracy": 1.0,
+  "enhanced_accuracy": 1.0,
+  "accuracy_gain": 0.0,
+  "feature_rows_csv": "/mntdatalora/src/Music-Intelligence/outputs/sine_wave_binary_classification/binary_classification/feature_rows.csv"
+}

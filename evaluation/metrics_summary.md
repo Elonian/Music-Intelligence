@@ -1,0 +1,17 @@
+| Metric | Value |
+| --- | ---: |
+| audio_clip_count | 5 |
+| lead_note_count | 9 |
+| sample_rate | 44100 |
+| delay_tail_seconds | 0.5000 |
+| baseline_accuracy | 1.0000 |
+| enhanced_accuracy | 1.0000 |
+| accuracy_gain | 0.0000 |
+| row_count | 240 |
+| split_sweep_seed_count | 8 |
+| baseline_seed_sweep_mean | 0.9635 |
+| enhanced_seed_sweep_mean | 1.0000 |
+| baseline_seed_sweep_min | 0.9167 |
+| enhanced_seed_sweep_min | 1.0000 |
+| baseline_seed_sweep_max | 1.0000 |
+| enhanced_seed_sweep_max | 1.0000 |
