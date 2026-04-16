@@ -314,7 +314,7 @@ f_q = f_{\min}2^{q/B},
 so its bins align more naturally with musical pitch intervals. For augmentation, pitch shifting creates additional waveforms
 
 ```math
-x_{\Delta}[n] = \operatorname{PitchShift}(x[n], \Delta),
+x_{\Delta}[n] = \mathrm{PitchShift}(x[n], \Delta),
 ```
 
 with `\Delta = +1` and `\Delta = -1` semitone while preserving the class label.
