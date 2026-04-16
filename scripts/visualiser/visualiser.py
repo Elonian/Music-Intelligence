@@ -390,3 +390,79 @@ def save_accuracy_bar(values: dict[str, float], output_path: Path, title: str) -
     ensure_dir(output_path.parent)
     fig.savefig(output_path, dpi=160)
     plt.close(fig)
+
+
+def save_feature_heatmap(
+    feature_map: np.ndarray,
+    output_path: Path,
+    title: str,
+    xlabel: str = "Frame",
+    ylabel: str = "Bin",
+    cmap: str = "magma",
+) -> None:
+    feature_map = np.asarray(feature_map, dtype=float)
+    fig, ax = plt.subplots(figsize=(8.5, 4.5))
+    im = ax.imshow(feature_map, aspect="auto", origin="lower", cmap=cmap)
+    ax.set_title(title)
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel)
+    fig.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
+    fig.tight_layout()
+    ensure_dir(output_path.parent)
+    fig.savefig(output_path, dpi=160)
+    plt.close(fig)
+
+
+def save_training_curve(history: list[dict], output_path: Path, title: str) -> None:
+    epochs = [int(row["epoch"]) for row in history]
+    train_loss = [float(row.get("train_loss", row.get("loss", 0.0))) for row in history]
+    train_accuracy = [float(row.get("train_accuracy", np.nan)) for row in history]
+    val_accuracy = [float(row.get("val_accuracy", row.get("valid_accuracy", 0.0))) for row in history]
+
+    fig, axes = plt.subplots(1, 2, figsize=(10.5, 4.2))
+    axes[0].plot(epochs, train_loss, color="tab:red", linewidth=2.0)
+    axes[0].set_title("Training Loss")
+    axes[0].set_xlabel("Epoch")
+    axes[0].set_ylabel("Loss")
+    axes[0].grid(True, alpha=0.25)
+
+    if not np.all(np.isnan(train_accuracy)):
+        axes[1].plot(epochs, train_accuracy, color="tab:blue", linewidth=2.0, label="train")
+    axes[1].plot(epochs, val_accuracy, color="tab:green", linewidth=2.0, label="val")
+    axes[1].set_title("Accuracy")
+    axes[1].set_xlabel("Epoch")
+    axes[1].set_ylabel("Accuracy")
+    axes[1].set_ylim(0.0, 1.05)
+    axes[1].grid(True, alpha=0.25)
+    axes[1].legend(loc="best")
+
+    fig.suptitle(title)
+    fig.tight_layout()
+    ensure_dir(output_path.parent)
+    fig.savefig(output_path, dpi=160)
+    plt.close(fig)
+
+
+def save_feature_cycle_gif(
+    feature_frames: list[tuple[str, np.ndarray]],
+    output_path: Path,
+    cmap: str = "magma",
+) -> None:
+    frames = []
+    for title, feature_map in feature_frames:
+        feature_map = np.asarray(feature_map, dtype=float)
+        fig, ax = plt.subplots(figsize=(8.5, 4.6), facecolor="#faf7f1")
+        im = ax.imshow(feature_map, aspect="auto", origin="lower", cmap=cmap)
+        ax.set_title(title)
+        ax.set_xlabel("Frame")
+        ax.set_ylabel("Bin")
+        fig.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
+        fig.tight_layout()
+        buffer = io.BytesIO()
+        fig.savefig(buffer, format="png", dpi=120, facecolor=fig.get_facecolor())
+        plt.close(fig)
+        buffer.seek(0)
+        frames.append(imageio.imread(buffer))
+
+    ensure_dir(output_path.parent)
+    imageio.mimsave(output_path, frames, duration=0.9, loop=0)

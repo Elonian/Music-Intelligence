@@ -2,7 +2,7 @@
 
 ## Abstract
 
-This project presents two complementary music intelligence pipelines centered on symbolic musical data. The first pipeline performs note driven audio synthesis by converting symbolic note sequences into sampled sine and sawtooth waveforms, then applying fade, delay, and layered mixing operations to analyze how waveform structure, amplitude evolution, and harmonic content change over time. The second pipeline performs symbolic MIDI classification by extracting compact pitch, timing, velocity, and channel-based features and using them to separate piano files from drum patterns with a standardized logistic regression model. Together, these components frame music as both a signal-generation problem and a symbolic pattern-recognition problem, while providing a reproducible project structure for visualization, comparison, and evaluation.
+This project presents three connected music intelligence pipelines that move from signal generation to symbolic analysis and audio classification. The first pipeline synthesizes note sequences as sine and sawtooth waveforms, then applies fade, delay, and layered mixing so waveform envelopes and harmonic structure can be inspected directly. The second pipeline classifies symbolic MIDI files by extracting pitch, duration, velocity, density, and drum-channel descriptors, then comparing compact baseline features with an enhanced logistic regression representation. The third pipeline performs spectrogram based instrument classification on audio clips by transforming waveforms into MFCC, STFT, mel-spectrogram, and constant Q features, training neural classifiers, and extending the task from binary guitar vocal recognition to four timbral families. 
 
 ## Output Gallery
 
@@ -17,6 +17,12 @@ The synthesis summary follows one melody through pure sinusoidal rendering, harm
 ![Classifier Animated Panel](outputs/sine_wave_binary_classification/readme/readme_classifier_animated_panel.gif)
 
 The classification summary shows where `piano` and `drums` separate in symbolic feature space, how the full feature vector differs between the two classes, and why the expanded descriptor remains stable across alternate train/test splits.
+
+### Spectrogram Classification
+
+![Spectrogram Animated Panel](outputs/spectrogram_classification/readme/readme_spectrogram_animated_panel.gif)
+
+The spectrogram summary follows audio from waveform to time-frequency features, compares class signatures for acoustic/electronic guitar and acoustic/synthetic voice, and shows how the saved models perform on the fixed evaluation split.
 
 ## Setup
 
@@ -37,6 +43,10 @@ Core dependencies:
 - `imageio`
 - `Pillow`
 - `nbformat`
+- `torch`
+- `torchaudio`
+- `librosa`
+- `soundfile`
 
 ## Data Layout
 
@@ -45,14 +55,15 @@ Input bundle:
 ```text
 data/
   sine_wave_binary_classification/
-    homework1/
-      homework1_stub.ipynb
-      input.wav
-      output.wav
-      piano.zip
-      drums.zip
-      piano/
-      drums/
+    input.wav
+    output.wav
+    piano.zip
+    drums.zip
+    piano/
+    drums/
+  spectrogram_classification/
+    nsynth_subset/
+    nsynth_subset.tar.gz
 ```
 
 Generated outputs:
@@ -67,9 +78,16 @@ outputs/
       classifier/
     readme/
     evaluation/
+  spectrogram_classification/
+    weights/
+    evaluation/
+    visuals/
+      features/
+      models/
+    readme/
 ```
 
-The MIDI utilities search the provided data bundle first, automatically extract `piano.zip` and `drums.zip` when needed, and then write project outputs into separate directories for rendered audio, classifier artifacts, raw visuals, README-ready panels, and compact evaluation summaries.
+The MIDI utilities search the provided data bundle first, automatically extract `piano.zip` and `drums.zip` when needed, and then write project outputs into separate directories for rendered audio, classifier artifacts, raw visuals, README-ready panels, and compact evaluation summaries. The spectrogram utilities resolve the NSynth subset from either the extracted folder or archive, save CPU-loadable model weights, and render feature, training, confusion-matrix, and README panels.
 
 ## Execution Order
 
@@ -80,6 +98,7 @@ python scripts/sine_wave/build_audio_gallery.py
 python scripts/visualiser/render_audio_gallery.py
 python scripts/binary_classify/train_midi_classifier.py --max-files 120
 python scripts/visualiser/render_classifier_gallery.py --max-files 120
+python scripts/visualiser/render_spectrogram_gallery.py
 python evaluation/compute_metrics.py
 python scripts/build_readme_panels.py
 ```
@@ -88,6 +107,13 @@ Optional:
 
 ```bash
 python scripts/visualiser/render_evaluation_gallery.py --max-files 120
+```
+
+Spectrogram specific model artifacts can be regenerated with:
+
+```bash
+python scripts/spectrogram_classification/train_notebook_weights.py --module-name spectrogram_classification --device cpu
+python scripts/visualiser/render_spectrogram_gallery.py
 ```
 
 ## Audio Synthesis
@@ -232,6 +258,111 @@ The panel combines low-dimensional scatter views with the full nine-feature prof
 
 So the apparent `1.0 / 1.0` tie in the saved confusion matrices is real for that specific split, but it is not the whole story. The expanded timing, velocity, and drum-channel features improve robustness once the train/test partition changes.
 
+## Spectrogram Classification
+
+### Model
+
+Each audio clip is represented as a discrete waveform
+
+```math
+x[n], \qquad 0 \le n < N,
+```
+
+loaded as mono audio and resampled for the feature pipeline. The first view is the short-time Fourier transform:
+
+```math
+X[k, m] = \sum_{n=0}^{N-1} x[n]\,w[n-mH]\,e^{-j2\pi kn/K},
+```
+
+where `w` is the analysis window, `H` is the hop length, `K` is the FFT size, `k` indexes frequency bins, and `m` indexes time frames. The linear spectrogram used by the CNN is the power map
+
+```math
+S[k, m] = |X[k, m]|^2.
+```
+
+The mel representation compresses frequency with triangular perceptual filters:
+
+```math
+M[b, m] = \sum_k B_{b,k}S[k,m],
+```
+
+then maps power to decibel space and normalizes each clip:
+
+```math
+D[b,m] = 10\log_{10}\left(\frac{\max(M[b,m], \epsilon)}{\max_{b,m}M[b,m]}\right).
+```
+
+MFCC features summarize the log-mel envelope with a cosine basis:
+
+```math
+c_r[m] = \sum_{b=1}^{B} D[b,m]\cos\left(\frac{\pi r(b-1/2)}{B}\right),
+```
+
+and the MLP input concatenates per-coefficient means and standard deviations:
+
+```math
+\phi_{\text{MFCC}}(x) =
+[\mu(c_1), \ldots, \mu(c_R), \sigma(c_1), \ldots, \sigma(c_R)].
+```
+
+The constant-Q transform uses logarithmically spaced center frequencies
+
+```math
+f_q = f_{\min}2^{q/B},
+```
+
+so its bins align more naturally with musical pitch intervals. For augmentation, pitch shifting creates additional waveforms
+
+```math
+x_{\Delta}[n] = \operatorname{PitchShift}(x[n], \Delta),
+```
+
+with `\Delta = +1` and `\Delta = -1` semitone while preserving the class label.
+
+For each feature function `\phi`, a neural classifier predicts logits
+
+```math
+z = f_{\theta}(\phi(x)),
+```
+
+and class probabilities are produced with softmax:
+
+```math
+P(y=c \mid x) = \frac{e^{z_c}}{\sum_j e^{z_j}}.
+```
+
+Training minimizes cross-entropy:
+
+```math
+\mathcal{L}(\theta) =
+-\frac{1}{B}\sum_{i=1}^{B}\log P(y_i \mid x_i).
+```
+
+The binary task separates `guitar` from `vocal`. The extended model separates four timbral families:
+
+```text
+guitar_acoustic, guitar_electronic, vocal_acoustic, vocal_synthetic
+```
+
+The final four-class model uses a compact spectral-statistics representation with MFCC, mel, spectral contrast, centroid, bandwidth, rolloff, flatness, zero-crossing rate, and RMS summaries. This feature vector is paired with a batch-normalized MLP, which improves the acoustic/electronic guitar separation that was weak with a plain mel CNN.
+
+### Static Panel
+
+![Spectrogram Static Panel](outputs/spectrogram_classification/readme/readme_spectrogram_static_panel.png)
+
+### Current Metrics
+
+| Model | Feature View | Classes | Test Accuracy | Notes |
+| --- | --- | ---: | ---: | --- |
+| `mfcc_mlp` | MFCC statistics | 2 | `0.9350` | compact cepstral baseline |
+| `spectrogram_cnn` | STFT power spectrogram | 2 | `0.9187` | direct linear-frequency image |
+| `mel_spectrogram_cnn` | mel-spectrogram | 2 | `0.9675` | strongest non-augmented binary CNN |
+| `cqt_cnn` | constant-Q transform | 2 | `0.9512` | pitch-spaced spectral evidence |
+| `augmented_cqt_cnn` | CQT with pitch-shift augmentation | 2 | `0.9919` | best binary model |
+| `four_class_cnn` | spectral-statistics MLP | 4 | `0.9355` | four-family classifier |
+
+The four-class confusion matrix is concentrated on the diagonal. The remaining errors are mostly between `guitar_acoustic` and `guitar_electronic`, which is the hardest pair because they share pitch range and decay profile but differ in timbral detail.
+
 ## Evaluation
 
 The evaluation folder stays table-first:
@@ -249,3 +380,10 @@ The evaluation folder stays table-first:
 | `baseline_seed_sweep_min` | `0.9167` |
 | `enhanced_seed_sweep_min` | `1.0000` |
 | `row_count` | `240` |
+| `spectrogram_clip_count` | `821` |
+| `spectrogram_binary_best_accuracy` | `0.9919` |
+| `spectrogram_four_class_accuracy` | `0.9355` |
+
+## License
+
+This project is released under the MIT License. See [LICENSE](LICENSE).

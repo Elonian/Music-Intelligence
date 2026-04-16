@@ -1,0 +1,7 @@
+output_name,weight_name,train_size,valid_size,test_size,final_valid_accuracy,best_valid_accuracy,train_accuracy,valid_accuracy,test_accuracy
+mfcc_mlp,best_mlp_model.weights,574,123,123,0.9756,0.9756,0.9739,0.9756,0.9350
+spectrogram_cnn,best_spec_model.weights,574,123,123,0.9593,0.9593,0.9390,0.9593,0.9187
+mel_spectrogram_cnn,best_mel_model.weights,574,123,123,0.9756,0.9756,0.9843,0.9756,0.9675
+cqt_cnn,best_q_model.weights,574,123,123,0.9675,0.9675,0.9652,0.9675,0.9512
+augmented_cqt_cnn,best_augmented_model.weights,1724,369,369,0.9973,0.9973,0.9948,0.9973,0.9919
+four_class_cnn,best_model_7.weights,574,123,124,0.9431,0.9593,0.9878,0.9593,0.9355

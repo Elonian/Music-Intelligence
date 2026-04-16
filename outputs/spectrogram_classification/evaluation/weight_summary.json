@@ -1,0 +1,506 @@
+{
+  "experiments": [
+    {
+      "output_name": "mfcc_mlp",
+      "weight_name": "best_mlp_model.weights",
+      "weight_path": "/mntdatalora/src/Music-Intelligence/outputs/spectrogram_classification/weights/best_mlp_model.weights",
+      "train_size": 574,
+      "valid_size": 123,
+      "test_size": 123,
+      "train_accuracy": 0.9738675958188153,
+      "valid_accuracy": 0.975609756097561,
+      "test_accuracy": 0.9349593495934959,
+      "labels": [
+        "guitar",
+        "vocal"
+      ],
+      "confusion_matrix": [
+        [
+          55,
+          3
+        ],
+        [
+          5,
+          60
+        ]
+      ],
+      "final_valid_accuracy": 0.975609756097561,
+      "best_valid_accuracy": 0.975609756097561,
+      "history": [
+        {
+          "epoch": 0,
+          "loss": 10.300848563512167,
+          "valid_accuracy": 0.3983739837398374
+        },
+        {
+          "epoch": 1,
+          "loss": 3.5810370759831534,
+          "valid_accuracy": 0.5040650406504065
+        },
+        {
+          "epoch": 2,
+          "loss": 0.483455306953854,
+          "valid_accuracy": 0.8536585365853658
+        },
+        {
+          "epoch": 3,
+          "loss": 0.33442336238092846,
+          "valid_accuracy": 0.8617886178861789
+        },
+        {
+          "epoch": 4,
+          "loss": 0.2566606971538729,
+          "valid_accuracy": 0.9105691056910569
+        },
+        {
+          "epoch": 5,
+          "loss": 0.20277077880584532,
+          "valid_accuracy": 0.926829268292683
+        },
+        {
+          "epoch": 6,
+          "loss": 0.16249190788302156,
+          "valid_accuracy": 0.9512195121951219
+        },
+        {
+          "epoch": 7,
+          "loss": 0.13275253907259968,
+          "valid_accuracy": 0.959349593495935
+        },
+        {
+          "epoch": 8,
+          "loss": 0.11117673199623823,
+          "valid_accuracy": 0.975609756097561
+        },
+        {
+          "epoch": 9,
+          "loss": 0.09366712791638242,
+          "valid_accuracy": 0.975609756097561
+        }
+      ]
+    },
+    {
+      "output_name": "spectrogram_cnn",
+      "weight_name": "best_spec_model.weights",
+      "weight_path": "/mntdatalora/src/Music-Intelligence/outputs/spectrogram_classification/weights/best_spec_model.weights",
+      "train_size": 574,
+      "valid_size": 123,
+      "test_size": 123,
+      "train_accuracy": 0.9390243902439024,
+      "valid_accuracy": 0.959349593495935,
+      "test_accuracy": 0.9186991869918699,
+      "labels": [
+        "guitar",
+        "vocal"
+      ],
+      "confusion_matrix": [
+        [
+          58,
+          0
+        ],
+        [
+          10,
+          55
+        ]
+      ],
+      "final_valid_accuracy": 0.959349593495935,
+      "best_valid_accuracy": 0.959349593495935,
+      "history": [
+        {
+          "epoch": 0,
+          "loss": 0.632582899596956,
+          "valid_accuracy": 0.8536585365853658
+        },
+        {
+          "epoch": 1,
+          "loss": 0.5772364950842328,
+          "valid_accuracy": 0.8861788617886179
+        },
+        {
+          "epoch": 2,
+          "loss": 0.5508007340961032,
+          "valid_accuracy": 0.9186991869918699
+        },
+        {
+          "epoch": 3,
+          "loss": 0.5265174979964892,
+          "valid_accuracy": 0.9349593495934959
+        },
+        {
+          "epoch": 4,
+          "loss": 0.5013992935419083,
+          "valid_accuracy": 0.926829268292683
+        },
+        {
+          "epoch": 5,
+          "loss": 0.4736746574441592,
+          "valid_accuracy": 0.9349593495934959
+        },
+        {
+          "epoch": 6,
+          "loss": 0.4413991860217518,
+          "valid_accuracy": 0.9349593495934959
+        },
+        {
+          "epoch": 7,
+          "loss": 0.4060964526401626,
+          "valid_accuracy": 0.943089430894309
+        },
+        {
+          "epoch": 8,
+          "loss": 0.3723352559738689,
+          "valid_accuracy": 0.9349593495934959
+        },
+        {
+          "epoch": 9,
+          "loss": 0.34236585679981446,
+          "valid_accuracy": 0.959349593495935
+        }
+      ]
+    },
+    {
+      "output_name": "mel_spectrogram_cnn",
+      "weight_name": "best_mel_model.weights",
+      "weight_path": "/mntdatalora/src/Music-Intelligence/outputs/spectrogram_classification/weights/best_mel_model.weights",
+      "train_size": 574,
+      "valid_size": 123,
+      "test_size": 123,
+      "train_accuracy": 0.9843205574912892,
+      "valid_accuracy": 0.975609756097561,
+      "test_accuracy": 0.967479674796748,
+      "labels": [
+        "guitar",
+        "vocal"
+      ],
+      "confusion_matrix": [
+        [
+          54,
+          4
+        ],
+        [
+          0,
+          65
+        ]
+      ],
+      "final_valid_accuracy": 0.975609756097561,
+      "best_valid_accuracy": 0.975609756097561,
+      "history": [
+        {
+          "epoch": 0,
+          "loss": 0.489973579843839,
+          "valid_accuracy": 0.8211382113821138
+        },
+        {
+          "epoch": 1,
+          "loss": 0.35868869639105266,
+          "valid_accuracy": 0.9024390243902439
+        },
+        {
+          "epoch": 2,
+          "loss": 0.29861514642834663,
+          "valid_accuracy": 0.943089430894309
+        },
+        {
+          "epoch": 3,
+          "loss": 0.25952565876974,
+          "valid_accuracy": 0.959349593495935
+        },
+        {
+          "epoch": 4,
+          "loss": 0.23132131207320425,
+          "valid_accuracy": 0.959349593495935
+        },
+        {
+          "epoch": 5,
+          "loss": 0.20846535141269365,
+          "valid_accuracy": 0.967479674796748
+        },
+        {
+          "epoch": 6,
+          "loss": 0.18861495620674557,
+          "valid_accuracy": 0.967479674796748
+        },
+        {
+          "epoch": 7,
+          "loss": 0.1712202847831779,
+          "valid_accuracy": 0.975609756097561
+        },
+        {
+          "epoch": 8,
+          "loss": 0.1563150535027186,
+          "valid_accuracy": 0.975609756097561
+        },
+        {
+          "epoch": 9,
+          "loss": 0.14315188262197706,
+          "valid_accuracy": 0.975609756097561
+        }
+      ]
+    },
+    {
+      "output_name": "cqt_cnn",
+      "weight_name": "best_q_model.weights",
+      "weight_path": "/mntdatalora/src/Music-Intelligence/outputs/spectrogram_classification/weights/best_q_model.weights",
+      "train_size": 574,
+      "valid_size": 123,
+      "test_size": 123,
+      "train_accuracy": 0.9651567944250871,
+      "valid_accuracy": 0.967479674796748,
+      "test_accuracy": 0.9512195121951219,
+      "labels": [
+        "guitar",
+        "vocal"
+      ],
+      "confusion_matrix": [
+        [
+          57,
+          1
+        ],
+        [
+          5,
+          60
+        ]
+      ],
+      "final_valid_accuracy": 0.967479674796748,
+      "best_valid_accuracy": 0.967479674796748,
+      "history": [
+        {
+          "epoch": 0,
+          "loss": 0.5711187091138628,
+          "valid_accuracy": 0.8211382113821138
+        },
+        {
+          "epoch": 1,
+          "loss": 0.4766432684328821,
+          "valid_accuracy": 0.8211382113821138
+        },
+        {
+          "epoch": 2,
+          "loss": 0.42911669032441246,
+          "valid_accuracy": 0.8373983739837398
+        },
+        {
+          "epoch": 3,
+          "loss": 0.3859341185953882,
+          "valid_accuracy": 0.8699186991869918
+        },
+        {
+          "epoch": 4,
+          "loss": 0.34925366275840336,
+          "valid_accuracy": 0.8943089430894309
+        },
+        {
+          "epoch": 5,
+          "loss": 0.31805652793910766,
+          "valid_accuracy": 0.9105691056910569
+        },
+        {
+          "epoch": 6,
+          "loss": 0.2903730252550708,
+          "valid_accuracy": 0.9349593495934959
+        },
+        {
+          "epoch": 7,
+          "loss": 0.2654755115509033,
+          "valid_accuracy": 0.959349593495935
+        },
+        {
+          "epoch": 8,
+          "loss": 0.24290281368626487,
+          "valid_accuracy": 0.959349593495935
+        },
+        {
+          "epoch": 9,
+          "loss": 0.22203155317240292,
+          "valid_accuracy": 0.967479674796748
+        }
+      ]
+    },
+    {
+      "output_name": "augmented_cqt_cnn",
+      "weight_name": "best_augmented_model.weights",
+      "weight_path": "/mntdatalora/src/Music-Intelligence/outputs/spectrogram_classification/weights/best_augmented_model.weights",
+      "train_size": 1724,
+      "valid_size": 369,
+      "test_size": 369,
+      "train_accuracy": 0.9947795823665894,
+      "valid_accuracy": 0.997289972899729,
+      "test_accuracy": 0.991869918699187,
+      "labels": [
+        "guitar",
+        "vocal"
+      ],
+      "confusion_matrix": [
+        [
+          174,
+          0
+        ],
+        [
+          3,
+          192
+        ]
+      ],
+      "final_valid_accuracy": 0.997289972899729,
+      "best_valid_accuracy": 0.997289972899729,
+      "history": [
+        {
+          "epoch": 0,
+          "loss": 0.5266678465737237,
+          "valid_accuracy": 0.8834688346883469
+        },
+        {
+          "epoch": 1,
+          "loss": 0.3956112865772512,
+          "valid_accuracy": 0.9349593495934959
+        },
+        {
+          "epoch": 2,
+          "loss": 0.3406958360638883,
+          "valid_accuracy": 0.9566395663956639
+        },
+        {
+          "epoch": 3,
+          "loss": 0.30046818612350357,
+          "valid_accuracy": 0.967479674796748
+        },
+        {
+          "epoch": 4,
+          "loss": 0.2666533574875858,
+          "valid_accuracy": 0.975609756097561
+        },
+        {
+          "epoch": 5,
+          "loss": 0.23814578030120442,
+          "valid_accuracy": 0.983739837398374
+        },
+        {
+          "epoch": 6,
+          "loss": 0.2140195308322156,
+          "valid_accuracy": 0.989159891598916
+        },
+        {
+          "epoch": 7,
+          "loss": 0.1936748323755132,
+          "valid_accuracy": 0.994579945799458
+        },
+        {
+          "epoch": 8,
+          "loss": 0.17628228102155305,
+          "valid_accuracy": 0.997289972899729
+        },
+        {
+          "epoch": 9,
+          "loss": 0.16097023952062484,
+          "valid_accuracy": 0.997289972899729
+        }
+      ]
+    },
+    {
+      "output_name": "four_class_cnn",
+      "weight_name": "best_model_7.weights",
+      "weight_path": "/mntdatalora/src/Music-Intelligence/outputs/spectrogram_classification/weights/best_model_7.weights",
+      "train_size": 574,
+      "valid_size": 123,
+      "test_size": 124,
+      "train_accuracy": 0.9878048780487805,
+      "valid_accuracy": 0.959349593495935,
+      "test_accuracy": 0.9354838709677419,
+      "labels": [
+        "guitar_acoustic",
+        "guitar_electronic",
+        "vocal_acoustic",
+        "vocal_synthetic"
+      ],
+      "confusion_matrix": [
+        [
+          37,
+          3,
+          0,
+          0
+        ],
+        [
+          5,
+          13,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          19,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          47
+        ]
+      ],
+      "final_valid_accuracy": 0.943089430894309,
+      "best_valid_accuracy": 0.959349593495935,
+      "history": [
+        {
+          "epoch": 0,
+          "loss": 0.5987340576118894,
+          "train_accuracy": 0.8292682926829268,
+          "valid_accuracy": 0.7560975609756098
+        },
+        {
+          "epoch": 1,
+          "loss": 0.3092265325701899,
+          "train_accuracy": 0.9494773519163763,
+          "valid_accuracy": 0.9349593495934959
+        },
+        {
+          "epoch": 2,
+          "loss": 0.19856787907580534,
+          "train_accuracy": 0.9651567944250871,
+          "valid_accuracy": 0.943089430894309
+        },
+        {
+          "epoch": 3,
+          "loss": 0.17528675496578217,
+          "train_accuracy": 0.9041811846689896,
+          "valid_accuracy": 0.8780487804878049
+        },
+        {
+          "epoch": 4,
+          "loss": 0.14603658894904786,
+          "train_accuracy": 0.9878048780487805,
+          "valid_accuracy": 0.959349593495935
+        },
+        {
+          "epoch": 5,
+          "loss": 0.19077528614757788,
+          "train_accuracy": 0.9738675958188153,
+          "valid_accuracy": 0.959349593495935
+        },
+        {
+          "epoch": 6,
+          "loss": 0.18152941013168958,
+          "train_accuracy": 0.9721254355400697,
+          "valid_accuracy": 0.926829268292683
+        },
+        {
+          "epoch": 7,
+          "loss": 0.0995297370892432,
+          "train_accuracy": 0.9651567944250871,
+          "valid_accuracy": 0.943089430894309
+        },
+        {
+          "epoch": 8,
+          "loss": 0.07806710096903974,
+          "train_accuracy": 0.9825783972125436,
+          "valid_accuracy": 0.959349593495935
+        },
+        {
+          "epoch": 9,
+          "loss": 0.12037420629834135,
+          "train_accuracy": 0.9773519163763066,
+          "valid_accuracy": 0.943089430894309
+        }
+      ]
+    }
+  ]
+}
