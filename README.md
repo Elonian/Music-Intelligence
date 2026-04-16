@@ -2,7 +2,7 @@
 
 ## Abstract
 
-This project presents three connected music intelligence pipelines that move from signal generation to symbolic analysis and audio classification. The first pipeline synthesizes note sequences as sine and sawtooth waveforms, then applies fade, delay, and layered mixing so waveform envelopes and harmonic structure can be inspected directly. The second pipeline classifies symbolic MIDI files by extracting pitch, duration, velocity, density, and drum-channel descriptors, then comparing compact baseline features with an enhanced logistic regression representation. The third pipeline performs spectrogram based instrument classification on audio clips by transforming waveforms into MFCC, STFT, mel-spectrogram, and constant Q features, training neural classifiers, and extending the task from binary guitar vocal recognition to four timbral families. 
+This project presents four connected music intelligence pipelines that move from signal generation to symbolic analysis, audio classification, and probabilistic composition. The first pipeline synthesizes note sequences as sine and sawtooth waveforms, then applies fade, delay, and layered mixing so waveform envelopes and harmonic structure can be inspected directly. The second pipeline classifies symbolic MIDI files by extracting pitch, duration, velocity, density, and drum-channel descriptors, then comparing compact baseline features with an enhanced logistic regression representation. The third pipeline performs spectrogram based instrument classification on audio clips by transforming waveforms into MFCC, STFT, mel-spectrogram, and constant Q features, training neural classifiers, and extending the task from binary guitar vocal recognition to four timbral families. The fourth pipeline models monophonic MIDI melodies with first and second order Markov chains, evaluates pitch and rhythm perplexity, and generates a new MIDI sequence from learned pitch transitions and beat-position rhythm probabilities.
 
 ## Output Gallery
 
@@ -23,6 +23,12 @@ The classification summary shows where `piano` and `drums` separate in symbolic 
 ![Spectrogram Animated Panel](outputs/spectrogram_classification/readme/readme_spectrogram_animated_panel.gif)
 
 The spectrogram summary follows audio from waveform to time-frequency features, compares class signatures for acoustic/electronic guitar and acoustic/synthetic voice, and shows how the saved models perform on the fixed evaluation split.
+
+### Symbolic Music Generation
+
+![Symbolic Generation Animated Panel](outputs/symbolic_music_generation/readme/readme_symbolic_animated_panel.gif)
+
+The generation summary shows the Markov model improving as more MIDI files enter the corpus: pitch probabilities stabilize, transition structure becomes clearer, perplexity changes over time, and the sampled melody is revealed as a piano-roll sequence.
 
 ## Setup
 
@@ -47,6 +53,9 @@ Core dependencies:
 - `torchaudio`
 - `librosa`
 - `soundfile`
+- `miditok`
+- `symusic`
+- `MIDIUtil`
 
 ## Data Layout
 
@@ -64,6 +73,9 @@ data/
   spectrogram_classification/
     nsynth_subset/
     nsynth_subset.tar.gz
+  symbolic_music_generation/
+    PDMX_subset.zip
+    PDMX_subset/
 ```
 
 Generated outputs:
@@ -85,9 +97,16 @@ outputs/
       features/
       models/
     readme/
+  symbolic_music_generation/
+    generated/
+    metrics/
+    tables/
+    evaluation/
+    visuals/
+    readme/
 ```
 
-The MIDI utilities search the provided data bundle first, automatically extract `piano.zip` and `drums.zip` when needed, and then write project outputs into separate directories for rendered audio, classifier artifacts, raw visuals, README-ready panels, and compact evaluation summaries. The spectrogram utilities resolve the NSynth subset from either the extracted folder or archive, save CPU-loadable model weights, and render feature, training, confusion-matrix, and README panels.
+The MIDI utilities search the provided data bundle first, automatically extract `piano.zip` and `drums.zip` when needed, and then write project outputs into separate directories for rendered audio, classifier artifacts, raw visuals, README-ready panels, and compact evaluation summaries. The spectrogram utilities resolve the NSynth subset from either the extracted folder or archive, save CPU loadable model weights, and render feature, training, confusion matrix. The symbolic generation utilities resolve the PDMX subset, build Markov pitch and rhythm tables, write `q10.mid`.
 
 ## Execution Order
 
@@ -99,7 +118,10 @@ python scripts/visualiser/render_audio_gallery.py
 python scripts/binary_classify/train_midi_classifier.py --max-files 120
 python scripts/visualiser/render_classifier_gallery.py --max-files 120
 python scripts/visualiser/render_spectrogram_gallery.py
+python scripts/symbolic_music_generation/build_markov_outputs.py
+python scripts/visualiser/render_symbolic_generation_gallery.py
 python evaluation/compute_metrics.py
+python evaluation/evaluate_symbolic_generation.py
 python scripts/build_readme_panels.py
 ```
 
@@ -363,6 +385,129 @@ The final four-class model uses a compact spectral-statistics representation wit
 
 The four-class confusion matrix is concentrated on the diagonal. The remaining errors are mostly between `guitar_acoustic` and `guitar_electronic`, which is the hardest pair because they share pitch range and decay profile but differ in timbral detail.
 
+## Symbolic Music Generation
+
+### Model
+
+Each monophonic MIDI file is converted into an ordered pitch sequence
+
+```math
+w_{1:N} = (w_1, w_2, \ldots, w_N),
+```
+
+where `w_i` is the MIDI pitch of the `i`-th note event. The unigram pitch model counts every pitch in the corpus:
+
+```math
+C(a) = \sum_{i=1}^{N}\mathbf{1}[w_i=a],
+\qquad
+P(a) = \frac{C(a)}{\sum_v C(v)}.
+```
+
+The first-order Markov chain estimates the probability of the next pitch from the previous pitch:
+
+```math
+C(a,b) = \sum_{i=2}^{N}\mathbf{1}[w_{i-1}=a,\;w_i=b],
+```
+
+```math
+P(w_i=b \mid w_{i-1}=a) =
+\frac{C(a,b)}{\sum_v C(a,v)}.
+```
+
+Generation samples from this categorical distribution:
+
+```math
+w_i \sim P(w_i \mid w_{i-1}).
+```
+
+The pitch bigram perplexity for a melody is
+
+```math
+\mathrm{PP}_{2}(w_{1:N}) =
+\exp\left(
+-\frac{1}{N}
+\left[
+\log P(w_1) + \sum_{i=2}^{N}\log P(w_i \mid w_{i-1})
+\right]
+\right).
+```
+
+The second-order Markov chain adds one more note of context:
+
+```math
+C(a,b,c) =
+\sum_{i=3}^{N}\mathbf{1}[w_{i-2}=a,\;w_{i-1}=b,\;w_i=c],
+```
+
+```math
+P(w_i=c \mid w_{i-2}=a,w_{i-1}=b) =
+\frac{C(a,b,c)}{\sum_v C(a,b,v)}.
+```
+
+Its perplexity uses the unigram probability for the first note, the bigram probability for the second note, and the trigram probability after that:
+
+```math
+\mathrm{PP}_{3}(w_{1:N}) =
+\exp\left(
+-\frac{1}{N}
+\left[
+\log P(w_1)
++ \log P(w_2 \mid w_1)
++ \sum_{i=3}^{N}\log P(w_i \mid w_{i-2},w_{i-1})
+\right]
+\right).
+```
+
+Rhythm is modeled separately from pitch. Each note is represented as a pair
+
+```math
+r_i = (p_i,\ell_i),
+```
+
+where `p_i` is the note position inside a 32-slot bar and `\ell_i` is the quantized beat length from `{2, 4, 8, 16, 32}`. Three rhythm models are compared:
+
+```math
+P(\ell_i \mid \ell_{i-1}),
+\qquad
+P(\ell_i \mid p_i),
+\qquad
+P(\ell_i \mid \ell_{i-1},p_i).
+```
+
+The rhythm perplexities use the same negative mean log probability form as the pitch models, but the sequence being predicted is the beat length sequence. The final generator uses the second order pitch model and the beat-position rhythm model:
+
+```math
+\ell_i \sim P(\ell_i \mid p_i),
+\qquad
+p_{i+1} = (p_i + \ell_i)\bmod 32.
+```
+
+The generated MIDI file therefore combines learned local melodic transitions with bar position aware note lengths, producing `q10.mid` with the requested number of note events.
+
+### Static Panel
+
+![Symbolic Static Panel](outputs/symbolic_music_generation/readme/readme_symbolic_static_panel.png)
+
+### Current Metrics
+
+| Model | Predicted Event | Context | Mean Perplexity | Interpretation |
+| --- | --- | --- | ---: | --- |
+| pitch bigram | next pitch | previous pitch | `10.1369` | first-order melodic baseline |
+| pitch trigram | next pitch | previous two pitches | `6.8603` | stronger pitch model with local phrase memory |
+| beat bigram | beat length | previous beat length | `1.8240` | rhythm-only first-order baseline |
+| beat position | beat length | bar position | `1.9226` | position-aware rhythm model used for generation |
+| beat trigram | beat length | previous beat length and bar position | `1.6477` | strongest rhythm perplexity among the three |
+
+Dataset and generation summary:
+
+| Metric | Value |
+| --- | ---: |
+| `symbolic_file_count` | `1000` |
+| `symbolic_note_event_count` | `156861` |
+| `symbolic_unique_pitch_count` | `46` |
+| `generated_q10_note_count` | `500` |
+| `generated_length_matches_request` | `true` |
+
 ## Evaluation
 
 The evaluation folder stays table-first:
@@ -383,6 +528,15 @@ The evaluation folder stays table-first:
 | `spectrogram_clip_count` | `821` |
 | `spectrogram_binary_best_accuracy` | `0.9919` |
 | `spectrogram_four_class_accuracy` | `0.9355` |
+| `symbolic_file_count` | `1000` |
+| `symbolic_note_event_count` | `156861` |
+| `symbolic_unique_pitch_count` | `46` |
+| `symbolic_note_bigram_perplexity` | `10.1369` |
+| `symbolic_note_trigram_perplexity` | `6.8603` |
+| `symbolic_beat_bigram_perplexity` | `1.8240` |
+| `symbolic_beat_position_perplexity` | `1.9226` |
+| `symbolic_beat_trigram_perplexity` | `1.6477` |
+| `symbolic_generated_note_count` | `500` |
 
 ## License
 

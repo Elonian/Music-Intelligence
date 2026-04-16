@@ -1,0 +1,646 @@
+{
+  "note_bigram": {
+    "35": [
+      {
+        "next": 37,
+        "probability": 1.0
+      }
+    ],
+    "36": [
+      {
+        "next": 48,
+        "probability": 1.0
+      }
+    ],
+    "37": [
+      {
+        "next": 35,
+        "probability": 0.9375
+      },
+      {
+        "next": 37,
+        "probability": 0.0625
+      }
+    ],
+    "38": [
+      {
+        "next": 47,
+        "probability": 1.0
+      }
+    ],
+    "43": [
+      {
+        "next": 36,
+        "probability": 0.2857142857142857
+      },
+      {
+        "next": 48,
+        "probability": 0.7142857142857143
+      }
+    ],
+    "45": [
+      {
+        "next": 50,
+        "probability": 1.0
+      }
+    ],
+    "47": [
+      {
+        "next": 43,
+        "probability": 1.0
+      }
+    ],
+    "48": [
+      {
+        "next": 36,
+        "probability": 0.125
+      },
+      {
+        "next": 43,
+        "probability": 0.625
+      },
+      {
+        "next": 45,
+        "probability": 0.125
+      },
+      {
+        "next": 53,
+        "probability": 0.125
+      }
+    ],
+    "50": [
+      {
+        "next": 38,
+        "probability": 0.13333333333333333
+      },
+      {
+        "next": 50,
+        "probability": 0.06666666666666667
+      },
+      {
+        "next": 53,
+        "probability": 0.06666666666666667
+      },
+      {
+        "next": 64,
+        "probability": 0.26666666666666666
+      },
+      {
+        "next": 65,
+        "probability": 0.4
+      },
+      {
+        "next": 69,
+        "probability": 0.06666666666666667
+      }
+    ],
+    "52": [
+      {
+        "next": 52,
+        "probability": 0.013333333333333334
+      },
+      {
+        "next": 53,
+        "probability": 0.02666666666666667
+      },
+      {
+        "next": 55,
+        "probability": 0.013333333333333334
+      },
+      {
+        "next": 57,
+        "probability": 0.013333333333333334
+      },
+      {
+        "next": 66,
+        "probability": 0.37333333333333335
+      },
+      {
+        "next": 67,
+        "probability": 0.56
+      }
+    ],
+    "53": [
+      {
+        "next": 52,
+        "probability": 0.10344827586206896
+      },
+      {
+        "next": 53,
+        "probability": 0.034482758620689655
+      },
+      {
+        "next": 55,
+        "probability": 0.10344827586206896
+      },
+      {
+        "next": 57,
+        "probability": 0.034482758620689655
+      },
+      {
+        "next": 64,
+        "probability": 0.034482758620689655
+      },
+      {
+        "next": 67,
+        "probability": 0.27586206896551724
+      },
+      {
+        "next": 69,
+        "probability": 0.41379310344827586
+      }
+    ],
+    "54": [
+      {
+        "next": 57,
+        "probability": 1.0
+      }
+    ]
+  },
+  "note_trigram": {
+    "(35, 37)": [
+      {
+        "next": 35,
+        "probability": 0.9333333333333333
+      },
+      {
+        "next": 37,
+        "probability": 0.06666666666666667
+      }
+    ],
+    "(36, 48)": [
+      {
+        "next": 43,
+        "probability": 0.6
+      },
+      {
+        "next": 45,
+        "probability": 0.4
+      }
+    ],
+    "(37, 35)": [
+      {
+        "next": 37,
+        "probability": 1.0
+      }
+    ],
+    "(37, 37)": [
+      {
+        "next": 35,
+        "probability": 1.0
+      }
+    ],
+    "(38, 47)": [
+      {
+        "next": 43,
+        "probability": 1.0
+      }
+    ],
+    "(43, 36)": [
+      {
+        "next": 48,
+        "probability": 1.0
+      }
+    ],
+    "(43, 48)": [
+      {
+        "next": 36,
+        "probability": 0.2
+      },
+      {
+        "next": 43,
+        "probability": 0.6
+      },
+      {
+        "next": 53,
+        "probability": 0.2
+      }
+    ],
+    "(45, 50)": [
+      {
+        "next": 38,
+        "probability": 1.0
+      }
+    ],
+    "(47, 43)": [
+      {
+        "next": 48,
+        "probability": 1.0
+      }
+    ],
+    "(48, 36)": [
+      {
+        "next": 48,
+        "probability": 1.0
+      }
+    ],
+    "(48, 43)": [
+      {
+        "next": 36,
+        "probability": 0.4
+      },
+      {
+        "next": 48,
+        "probability": 0.6
+      }
+    ],
+    "(48, 45)": [
+      {
+        "next": 50,
+        "probability": 1.0
+      }
+    ]
+  },
+  "beat_bigram": {
+    "2": [
+      {
+        "next": 2,
+        "probability": 0.6758116883116884
+      },
+      {
+        "next": 4,
+        "probability": 0.30616883116883115
+      },
+      {
+        "next": 8,
+        "probability": 0.01753246753246753
+      },
+      {
+        "next": 16,
+        "probability": 0.000487012987012987
+      }
+    ],
+    "4": [
+      {
+        "next": 2,
+        "probability": 0.013726183461009624
+      },
+      {
+        "next": 4,
+        "probability": 0.8924847770575526
+      },
+      {
+        "next": 8,
+        "probability": 0.08927126301316048
+      },
+      {
+        "next": 16,
+        "probability": 0.004305637399332155
+      },
+      {
+        "next": 32,
+        "probability": 0.00021213906894519742
+      }
+    ],
+    "8": [
+      {
+        "next": 2,
+        "probability": 0.010481384870761204
+      },
+      {
+        "next": 4,
+        "probability": 0.5307090348589044
+      },
+      {
+        "next": 8,
+        "probability": 0.4284562485179037
+      },
+      {
+        "next": 16,
+        "probability": 0.029215081811714488
+      },
+      {
+        "next": 32,
+        "probability": 0.0011382499407161489
+      }
+    ],
+    "16": [
+      {
+        "next": 2,
+        "probability": 0.0023273855702094647
+      },
+      {
+        "next": 4,
+        "probability": 0.29712955779674166
+      },
+      {
+        "next": 8,
+        "probability": 0.5275407292474786
+      },
+      {
+        "next": 16,
+        "probability": 0.16834755624515127
+      },
+      {
+        "next": 32,
+        "probability": 0.004654771140418929
+      }
+    ],
+    "32": [
+      {
+        "next": 4,
+        "probability": 0.2692307692307692
+      },
+      {
+        "next": 8,
+        "probability": 0.23076923076923078
+      },
+      {
+        "next": 16,
+        "probability": 0.34615384615384615
+      },
+      {
+        "next": 32,
+        "probability": 0.15384615384615385
+      }
+    ]
+  },
+  "beat_position": {
+    "0": [
+      {
+        "next": 2,
+        "probability": 0.024341756494080227
+      },
+      {
+        "next": 4,
+        "probability": 0.649452200035342
+      },
+      {
+        "next": 8,
+        "probability": 0.30477999646580667
+      },
+      {
+        "next": 16,
+        "probability": 0.018510337515462095
+      },
+      {
+        "next": 32,
+        "probability": 0.0029157094893090653
+      }
+    ],
+    "2": [
+      {
+        "next": 2,
+        "probability": 0.9855855855855856
+      },
+      {
+        "next": 4,
+        "probability": 0.014414414414414415
+      }
+    ],
+    "4": [
+      {
+        "next": 2,
+        "probability": 0.025183630640083946
+      },
+      {
+        "next": 4,
+        "probability": 0.9680613850996852
+      },
+      {
+        "next": 8,
+        "probability": 0.00675498426023085
+      }
+    ],
+    "6": [
+      {
+        "next": 2,
+        "probability": 1.0
+      }
+    ],
+    "8": [
+      {
+        "next": 2,
+        "probability": 0.029462502269838386
+      },
+      {
+        "next": 4,
+        "probability": 0.7934901035046305
+      },
+      {
+        "next": 8,
+        "probability": 0.1719629562375159
+      },
+      {
+        "next": 16,
+        "probability": 0.005084437988015254
+      }
+    ],
+    "10": [
+      {
+        "next": 2,
+        "probability": 0.9848254931714719
+      },
+      {
+        "next": 4,
+        "probability": 0.015174506828528073
+      }
+    ],
+    "12": [
+      {
+        "next": 2,
+        "probability": 0.019971469329529243
+      },
+      {
+        "next": 4,
+        "probability": 0.9740480632064085
+      },
+      {
+        "next": 8,
+        "probability": 0.005925600790080105
+      },
+      {
+        "next": 16,
+        "probability": 5.48666739822232e-05
+      }
+    ],
+    "14": [
+      {
+        "next": 2,
+        "probability": 1.0
+      }
+    ],
+    "16": [
+      {
+        "next": 2,
+        "probability": 0.016356610047631885
+      },
+      {
+        "next": 4,
+        "probability": 0.6375483059225308
+      },
+      {
+        "next": 8,
+        "probability": 0.3065066954255415
+      },
+      {
+        "next": 16,
+        "probability": 0.03954345286240676
+      },
+      {
+        "next": 32,
+        "probability": 4.493574188909859e-05
+      }
+    ],
+    "18": [
+      {
+        "next": 2,
+        "probability": 0.9732620320855615
+      },
+      {
+        "next": 4,
+        "probability": 0.026737967914438502
+      }
+    ],
+    "20": [
+      {
+        "next": 2,
+        "probability": 0.016638254347084897
+      },
+      {
+        "next": 4,
+        "probability": 0.9804977838390726
+      },
+      {
+        "next": 8,
+        "probability": 0.002863961813842482
+      }
+    ],
+    "22": [
+      {
+        "next": 2,
+        "probability": 1.0
+      }
+    ]
+  },
+  "beat_trigram": {
+    "(2, 0)": [
+      {
+        "next": 2,
+        "probability": 0.39568345323741005
+      },
+      {
+        "next": 4,
+        "probability": 0.539568345323741
+      },
+      {
+        "next": 8,
+        "probability": 0.06474820143884892
+      }
+    ],
+    "(2, 2)": [
+      {
+        "next": 2,
+        "probability": 0.9855855855855856
+      },
+      {
+        "next": 4,
+        "probability": 0.014414414414414415
+      }
+    ],
+    "(2, 4)": [
+      {
+        "next": 2,
+        "probability": 0.3713235294117647
+      },
+      {
+        "next": 4,
+        "probability": 0.6231617647058824
+      },
+      {
+        "next": 8,
+        "probability": 0.0055147058823529415
+      }
+    ],
+    "(2, 6)": [
+      {
+        "next": 2,
+        "probability": 1.0
+      }
+    ],
+    "(2, 8)": [
+      {
+        "next": 2,
+        "probability": 0.3723958333333333
+      },
+      {
+        "next": 4,
+        "probability": 0.5963541666666666
+      },
+      {
+        "next": 8,
+        "probability": 0.03125
+      }
+    ],
+    "(2, 10)": [
+      {
+        "next": 2,
+        "probability": 0.9848254931714719
+      },
+      {
+        "next": 4,
+        "probability": 0.015174506828528073
+      }
+    ],
+    "(2, 12)": [
+      {
+        "next": 2,
+        "probability": 0.3359497645211931
+      },
+      {
+        "next": 4,
+        "probability": 0.6640502354788069
+      }
+    ],
+    "(2, 14)": [
+      {
+        "next": 2,
+        "probability": 1.0
+      }
+    ],
+    "(2, 16)": [
+      {
+        "next": 2,
+        "probability": 0.26706231454005935
+      },
+      {
+        "next": 4,
+        "probability": 0.6142433234421365
+      },
+      {
+        "next": 8,
+        "probability": 0.10979228486646884
+      },
+      {
+        "next": 16,
+        "probability": 0.008902077151335312
+      }
+    ],
+    "(2, 18)": [
+      {
+        "next": 2,
+        "probability": 0.9732620320855615
+      },
+      {
+        "next": 4,
+        "probability": 0.026737967914438502
+      }
+    ],
+    "(2, 20)": [
+      {
+        "next": 2,
+        "probability": 0.32967032967032966
+      },
+      {
+        "next": 4,
+        "probability": 0.6703296703296703
+      }
+    ],
+    "(2, 22)": [
+      {
+        "next": 2,
+        "probability": 1.0
+      }
+    ]
+  }
+}

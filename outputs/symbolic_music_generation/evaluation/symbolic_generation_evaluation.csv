@@ -1,0 +1,13 @@
+metric,value
+file_count,1000
+note_event_count,156861
+unique_pitch_count,46
+mean_note_bigram_perplexity,10.136866125
+mean_note_trigram_perplexity,6.860287333333333
+mean_beat_bigram_perplexity,1.8239891666666666
+mean_beat_position_perplexity,1.92262175
+mean_beat_trigram_perplexity,1.6476722083333335
+generated_note_count,500
+generated_length_requested,500
+generated_length_matches,True
+generated_midi_path,/mntdatalora/src/Music-Intelligence/outputs/symbolic_music_generation/generated/q10.mid

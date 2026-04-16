@@ -1,0 +1,114 @@
+{
+  "file_count": 1000,
+  "note_event_count": 156861,
+  "beat_event_count": 156861,
+  "unique_pitch_count": 46,
+  "top_pitches": [
+    {
+      "value": 74,
+      "score": 19834.0
+    },
+    {
+      "value": 69,
+      "score": 19315.0
+    },
+    {
+      "value": 71,
+      "score": 17249.0
+    },
+    {
+      "value": 76,
+      "score": 15518.0
+    },
+    {
+      "value": 67,
+      "score": 12003.0
+    },
+    {
+      "value": 78,
+      "score": 9714.0
+    },
+    {
+      "value": 79,
+      "score": 9400.0
+    },
+    {
+      "value": 72,
+      "score": 9395.0
+    },
+    {
+      "value": 73,
+      "score": 6921.0
+    },
+    {
+      "value": 81,
+      "score": 6442.0
+    },
+    {
+      "value": 66,
+      "score": 6087.0
+    },
+    {
+      "value": 64,
+      "score": 5976.0
+    }
+  ],
+  "top_pitch_probabilities": [
+    {
+      "value": 74,
+      "score": 0.12644315668011807
+    },
+    {
+      "value": 69,
+      "score": 0.12313449487125544
+    },
+    {
+      "value": 71,
+      "score": 0.10996359834503158
+    },
+    {
+      "value": 76,
+      "score": 0.09892835057790018
+    },
+    {
+      "value": 67,
+      "score": 0.07651997628473617
+    },
+    {
+      "value": 78,
+      "score": 0.06192743894275824
+    },
+    {
+      "value": 79,
+      "score": 0.059925666673041736
+    },
+    {
+      "value": 72,
+      "score": 0.05989379131842842
+    },
+    {
+      "value": 73,
+      "score": 0.04412186585575765
+    },
+    {
+      "value": 81,
+      "score": 0.04106820688380158
+    },
+    {
+      "value": 66,
+      "score": 0.03880505670625586
+    },
+    {
+      "value": 64,
+      "score": 0.03809742383384015
+    }
+  ],
+  "mean_note_bigram_perplexity": 10.136866125,
+  "mean_note_trigram_perplexity": 6.860287333333333,
+  "mean_beat_bigram_perplexity": 1.8239891666666666,
+  "mean_beat_position_perplexity": 1.92262175,
+  "mean_beat_trigram_perplexity": 1.6476722083333335,
+  "generated_midi_path": "/mntdatalora/src/Music-Intelligence/outputs/symbolic_music_generation/generated/q10.mid",
+  "generated_note_count": 500,
+  "generated_length_requested": 500
+}

@@ -10,3 +10,6 @@ torch>=2.3
 torchaudio>=2.3
 librosa>=0.11
 soundfile>=0.13
+miditok>=3.0
+symusic>=0.5
+MIDIUtil>=1.2
