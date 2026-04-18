@@ -1,0 +1,67 @@
+{
+  "rows": [
+    {
+      "model": "pitch_zones",
+      "run_dir": "",
+      "log_dir": "",
+      "best_val_loss": "",
+      "final_val_loss": "",
+      "final_val_accuracy": "",
+      "test_or_rule_accuracy": 0.5555032725254818
+    },
+    {
+      "model": "note_mlp",
+      "run_dir": "/mntdatalora/src/Music-Intelligence/outputs/automatic_music_instrumentation/main_training_20260418_191121/runs/suite_note_mlp",
+      "log_dir": "/mntdatalora/src/Music-Intelligence/logs/automatic_music_instrumentation/main_training_20260418_191121/suite_note_mlp",
+      "best_val_loss": 1.042386391706634,
+      "final_val_loss": 1.0453527576742117,
+      "final_val_accuracy": 0.5749509908190426,
+      "test_or_rule_accuracy": ""
+    },
+    {
+      "model": "sequence_lstm",
+      "run_dir": "/mntdatalora/src/Music-Intelligence/outputs/automatic_music_instrumentation/main_training_20260418_191121/runs/suite_sequence_lstm",
+      "log_dir": "/mntdatalora/src/Music-Intelligence/logs/automatic_music_instrumentation/main_training_20260418_191121/suite_sequence_lstm",
+      "best_val_loss": 0.8575405046256662,
+      "final_val_loss": 0.8574847701000191,
+      "final_val_accuracy": 0.6556796035574054,
+      "test_or_rule_accuracy": ""
+    },
+    {
+      "model": "bidirectional_lstm",
+      "run_dir": "/mntdatalora/src/Music-Intelligence/outputs/automatic_music_instrumentation/main_training_20260418_191121/runs/suite_bidirectional_lstm",
+      "log_dir": "/mntdatalora/src/Music-Intelligence/logs/automatic_music_instrumentation/main_training_20260418_191121/suite_bidirectional_lstm",
+      "best_val_loss": 0.7895132198668363,
+      "final_val_loss": 0.8168169188569163,
+      "final_val_accuracy": 0.6767032486906931,
+      "test_or_rule_accuracy": ""
+    },
+    {
+      "model": "compact_transformer",
+      "run_dir": "/mntdatalora/src/Music-Intelligence/outputs/automatic_music_instrumentation/main_training_20260418_191121/runs/suite_compact_transformer",
+      "log_dir": "/mntdatalora/src/Music-Intelligence/logs/automatic_music_instrumentation/main_training_20260418_191121/suite_compact_transformer",
+      "best_val_loss": 0.924212898775848,
+      "final_val_loss": 0.94006605873331,
+      "final_val_accuracy": 0.6222700017821521,
+      "test_or_rule_accuracy": ""
+    },
+    {
+      "model": "causal_transformer",
+      "run_dir": "/mntdatalora/src/Music-Intelligence/outputs/automatic_music_instrumentation/main_training_20260418_191121/runs/suite_causal_transformer",
+      "log_dir": "/mntdatalora/src/Music-Intelligence/logs/automatic_music_instrumentation/main_training_20260418_191121/suite_causal_transformer",
+      "best_val_loss": 0.9390100864639059,
+      "final_val_loss": 0.9583411303877133,
+      "final_val_accuracy": 0.6102749688123393,
+      "test_or_rule_accuracy": ""
+    },
+    {
+      "model": "full_transformer",
+      "run_dir": "/mntdatalora/src/Music-Intelligence/outputs/automatic_music_instrumentation/main_training_20260418_191121/runs/suite_full_transformer",
+      "log_dir": "/mntdatalora/src/Music-Intelligence/logs/automatic_music_instrumentation/main_training_20260418_191121/suite_full_transformer",
+      "best_val_loss": 0.8608378755767443,
+      "final_val_loss": 0.8948605907590765,
+      "final_val_accuracy": 0.6441789740553157,
+      "test_or_rule_accuracy": ""
+    }
+  ]
+}

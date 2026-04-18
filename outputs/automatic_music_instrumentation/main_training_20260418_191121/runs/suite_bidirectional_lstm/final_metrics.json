@@ -1,0 +1,11 @@
+{
+  "model_name": "bidirectional_lstm",
+  "device": "cuda",
+  "log_dir": "/mntdatalora/src/Music-Intelligence/logs/automatic_music_instrumentation/main_training_20260418_191121/suite_bidirectional_lstm",
+  "train_files": 10717,
+  "valid_files": 2734,
+  "best_val_loss": 0.7895132198668363,
+  "final_val_loss": 0.8168169188569163,
+  "final_val_accuracy": 0.6767032486906931,
+  "num_predictions": 347894
+}

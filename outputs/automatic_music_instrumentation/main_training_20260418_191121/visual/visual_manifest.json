@@ -1,0 +1,37 @@
+{
+  "suite_root": "/mntdatalora/src/Music-Intelligence/outputs/automatic_music_instrumentation/main_training_20260418_191121",
+  "output_dir": "/mntdatalora/src/Music-Intelligence/outputs/automatic_music_instrumentation/main_training_20260418_191121/visual",
+  "sample_file": "/mntdatalora/src/Music-Intelligence/data/automatic_music_instrumentation/processed/samples/processed/9726ce9ac31b7d9f595e6ea91225c5ca.npy",
+  "events_rendered": 713,
+  "max_beats": 128,
+  "device": "cuda",
+  "paths": {
+    "readme_static_panel": "/mntdatalora/src/Music-Intelligence/outputs/automatic_music_instrumentation/main_training_20260418_191121/visual/readme_automatic_instrumentation_static_panel.png",
+    "readme_animated_panel": "/mntdatalora/src/Music-Intelligence/outputs/automatic_music_instrumentation/main_training_20260418_191121/visual/readme_automatic_instrumentation_animated_panel.gif",
+    "cover_panel": "/mntdatalora/src/Music-Intelligence/outputs/automatic_music_instrumentation/main_training_20260418_191121/visual/cover_panel.png",
+    "paper_arrangement_panel": "/mntdatalora/src/Music-Intelligence/outputs/automatic_music_instrumentation/main_training_20260418_191121/visual/paper_arrangement_panel.png",
+    "model_prediction_comparison": "/mntdatalora/src/Music-Intelligence/outputs/automatic_music_instrumentation/main_training_20260418_191121/visual/model_prediction_comparison.png",
+    "training_dashboard": "/mntdatalora/src/Music-Intelligence/outputs/automatic_music_instrumentation/main_training_20260418_191121/visual/training_dashboard.png",
+    "confusion_matrix_wall": "/mntdatalora/src/Music-Intelligence/outputs/automatic_music_instrumentation/main_training_20260418_191121/visual/confusion_matrix_wall.png"
+  },
+  "scores": {
+    "pitch_zones": 0.5555032725254818,
+    "note_mlp": 0.5749509908190426,
+    "sequence_lstm": 0.6556796035574054,
+    "bidirectional_lstm": 0.6767032486906931,
+    "compact_transformer": 0.6222700017821521,
+    "causal_transformer": 0.6102749688123393,
+    "full_transformer": 0.6441789740553157
+  },
+  "sample_agreement": {
+    "pitch_zones": 0.3814866760168303,
+    "note_mlp": 0.423562412342216,
+    "sequence_lstm": 0.3450210378681627,
+    "bidirectional_lstm": 0.302945301542777,
+    "compact_transformer": 0.45161290322580644,
+    "causal_transformer": 0.4740532959326788,
+    "full_transformer": 0.6718092566619915
+  },
+  "gif_frames": 16,
+  "basic_gallery": null
+}

@@ -1,0 +1,11 @@
+{
+  "model_name": "compact_transformer",
+  "device": "cuda",
+  "log_dir": "/mntdatalora/src/Music-Intelligence/logs/automatic_music_instrumentation/main_training_20260418_191121/suite_compact_transformer",
+  "train_files": 10717,
+  "valid_files": 2734,
+  "best_val_loss": 0.924212898775848,
+  "final_val_loss": 0.94006605873331,
+  "final_val_accuracy": 0.6222700017821521,
+  "num_predictions": 347894
+}

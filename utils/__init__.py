@@ -11,18 +11,24 @@ from utils.audio_synthesis import (
     render_melody,
 )
 from utils.io_helpers import ensure_dir, load_json, read_csv_rows, save_json, write_csv_rows
-from utils.midi_dataset import (
-    baseline_feature_vector,
-    enhanced_feature_vector,
-    find_midi_files,
-    summarize_midi_file,
-)
 from utils.project_paths import (
+    AUTOMATIC_INSTRUMENTATION_CLEAN_MIDI_DIR,
+    AUTOMATIC_INSTRUMENTATION_DATA_ROOT,
+    AUTOMATIC_INSTRUMENTATION_LOG_ROOT,
+    AUTOMATIC_INSTRUMENTATION_METRICS_DIR,
+    AUTOMATIC_INSTRUMENTATION_MODEL_DIR,
+    AUTOMATIC_INSTRUMENTATION_NOTEBOOK_DIR,
+    AUTOMATIC_INSTRUMENTATION_OUTPUT_ROOT,
+    AUTOMATIC_INSTRUMENTATION_PROCESSED_DIR,
+    AUTOMATIC_INSTRUMENTATION_PROCESSED_ZIP_DIR,
+    AUTOMATIC_INSTRUMENTATION_RAW_DIR,
+    AUTOMATIC_INSTRUMENTATION_VISUAL_DIR,
     AUDIO_OUTPUT_DIR,
     CLASSIFIER_OUTPUT_DIR,
     DATA_ROOT,
     EVALUATION_DIR,
     EVALUATION_OUTPUT_DIR,
+    LOG_ROOT,
     OUTPUT_ROOT,
     ROOT,
     SPECTROGRAM_DATA_ROOT,
@@ -49,12 +55,41 @@ from utils.project_paths import (
     VISUAL_SYMBOLIC_README_DIR,
 )
 
+try:
+    from utils.midi_dataset import (
+        baseline_feature_vector,
+        enhanced_feature_vector,
+        find_midi_files,
+        summarize_midi_file,
+    )
+except ModuleNotFoundError:
+    def _missing_mido(*args, **kwargs):
+        del args, kwargs
+        raise ModuleNotFoundError("Install mido to use MIDI dataset helper functions.")
+
+    baseline_feature_vector = _missing_mido
+    enhanced_feature_vector = _missing_mido
+    find_midi_files = _missing_mido
+    summarize_midi_file = _missing_mido
+
 __all__ = [
+    "AUTOMATIC_INSTRUMENTATION_CLEAN_MIDI_DIR",
+    "AUTOMATIC_INSTRUMENTATION_DATA_ROOT",
+    "AUTOMATIC_INSTRUMENTATION_LOG_ROOT",
+    "AUTOMATIC_INSTRUMENTATION_METRICS_DIR",
+    "AUTOMATIC_INSTRUMENTATION_MODEL_DIR",
+    "AUTOMATIC_INSTRUMENTATION_NOTEBOOK_DIR",
+    "AUTOMATIC_INSTRUMENTATION_OUTPUT_ROOT",
+    "AUTOMATIC_INSTRUMENTATION_PROCESSED_DIR",
+    "AUTOMATIC_INSTRUMENTATION_PROCESSED_ZIP_DIR",
+    "AUTOMATIC_INSTRUMENTATION_RAW_DIR",
+    "AUTOMATIC_INSTRUMENTATION_VISUAL_DIR",
     "AUDIO_OUTPUT_DIR",
     "CLASSIFIER_OUTPUT_DIR",
     "DATA_ROOT",
     "EVALUATION_DIR",
     "EVALUATION_OUTPUT_DIR",
+    "LOG_ROOT",
     "OUTPUT_ROOT",
     "ROOT",
     "SAMPLE_RATE",

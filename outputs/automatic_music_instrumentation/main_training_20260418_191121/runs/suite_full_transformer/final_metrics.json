@@ -1,0 +1,11 @@
+{
+  "model_name": "full_transformer",
+  "device": "cuda",
+  "log_dir": "/mntdatalora/src/Music-Intelligence/logs/automatic_music_instrumentation/main_training_20260418_191121/suite_full_transformer",
+  "train_files": 10717,
+  "valid_files": 2734,
+  "best_val_loss": 0.8608378755767443,
+  "final_val_loss": 0.8948605907590765,
+  "final_val_accuracy": 0.6441789740553157,
+  "num_predictions": 347894
+}

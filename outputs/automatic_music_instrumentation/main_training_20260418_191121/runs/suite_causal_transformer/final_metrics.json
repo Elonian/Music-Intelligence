@@ -1,0 +1,11 @@
+{
+  "model_name": "causal_transformer",
+  "device": "cuda",
+  "log_dir": "/mntdatalora/src/Music-Intelligence/logs/automatic_music_instrumentation/main_training_20260418_191121/suite_causal_transformer",
+  "train_files": 10717,
+  "valid_files": 2734,
+  "best_val_loss": 0.9390100864639059,
+  "final_val_loss": 0.9583411303877133,
+  "final_val_accuracy": 0.6102749688123393,
+  "num_predictions": 347894
+}

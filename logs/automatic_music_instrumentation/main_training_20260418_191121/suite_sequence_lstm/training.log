@@ -1,0 +1,342 @@
+2026-04-18 19:13:55,453 | INFO | Run directory: /mntdatalora/src/Music-Intelligence/outputs/automatic_music_instrumentation/main_training_20260418_191121/runs/suite_sequence_lstm
+2026-04-18 19:13:55,453 | INFO | Log directory: /mntdatalora/src/Music-Intelligence/logs/automatic_music_instrumentation/main_training_20260418_191121/suite_sequence_lstm
+2026-04-18 19:13:55,453 | INFO | Model: sequence_lstm | device: cuda
+2026-04-18 19:13:55,453 | INFO | Collecting train/valid split files from /mntdatalora/src/Music-Intelligence/data/automatic_music_instrumentation/processed
+2026-04-18 19:13:55,657 | INFO | Train files: 10717 | valid files: 2734
+2026-04-18 19:13:55,657 | INFO | Building dataloaders | packed_train=True packed_valid=True preload=False workers=4 batch_size=16
+2026-04-18 19:13:55,659 | INFO | Dataloaders ready
+2026-04-18 19:13:55,672 | INFO | Starting epoch 1/20
+2026-04-18 19:13:55,934 | INFO | step=1 epoch=0 batch=1 train_loss=1.604289 lr=0.00001009
+2026-04-18 19:13:56,596 | INFO | step=50 epoch=0 batch=50 train_loss=1.597857 lr=0.00001450
+2026-04-18 19:13:57,236 | INFO | step=100 epoch=0 batch=100 train_loss=1.550933 lr=0.00001900
+2026-04-18 19:13:57,857 | INFO | step=150 epoch=0 batch=150 train_loss=1.458623 lr=0.00002350
+2026-04-18 19:13:58,484 | INFO | step=200 epoch=0 batch=200 train_loss=1.340057 lr=0.00002800
+2026-04-18 19:13:59,386 | INFO | step=250 epoch=0 batch=250 train_loss=1.509107 lr=0.00003250
+2026-04-18 19:14:00,025 | INFO | step=300 epoch=0 batch=300 train_loss=1.312407 lr=0.00003700
+2026-04-18 19:14:00,645 | INFO | step=350 epoch=0 batch=350 train_loss=1.441814 lr=0.00004150
+2026-04-18 19:14:01,305 | INFO | step=400 epoch=0 batch=400 train_loss=1.341572 lr=0.00004600
+2026-04-18 19:14:01,940 | INFO | step=450 epoch=0 batch=450 train_loss=1.385771 lr=0.00005050
+2026-04-18 19:14:02,559 | INFO | step=500 epoch=0 batch=500 train_loss=1.436563 lr=0.00005500
+2026-04-18 19:14:03,903 | INFO | validation step=500 val_loss=1.341619 val_acc=0.432773
+2026-04-18 19:14:04,072 | INFO | new best checkpoint at step=500 val_loss=1.341619
+2026-04-18 19:14:04,699 | INFO | step=550 epoch=0 batch=550 train_loss=1.426162 lr=0.00005950
+2026-04-18 19:14:05,337 | INFO | step=600 epoch=0 batch=600 train_loss=1.331027 lr=0.00006400
+2026-04-18 19:14:06,005 | INFO | step=650 epoch=0 batch=650 train_loss=1.553706 lr=0.00006850
+2026-04-18 19:14:06,505 | INFO | Starting epoch 2/20
+2026-04-18 19:14:06,903 | INFO | step=700 epoch=1 batch=30 train_loss=1.295922 lr=0.00007300
+2026-04-18 19:14:07,534 | INFO | step=750 epoch=1 batch=80 train_loss=1.454586 lr=0.00007750
+2026-04-18 19:14:08,156 | INFO | step=800 epoch=1 batch=130 train_loss=1.453978 lr=0.00008200
+2026-04-18 19:14:08,793 | INFO | step=850 epoch=1 batch=180 train_loss=1.588577 lr=0.00008650
+2026-04-18 19:14:09,424 | INFO | step=900 epoch=1 batch=230 train_loss=1.207916 lr=0.00009100
+2026-04-18 19:14:10,046 | INFO | step=950 epoch=1 batch=280 train_loss=1.244401 lr=0.00009550
+2026-04-18 19:14:10,652 | INFO | step=1000 epoch=1 batch=330 train_loss=1.266926 lr=0.00010000
+2026-04-18 19:14:11,735 | INFO | validation step=1000 val_loss=1.285899 val_acc=0.471911
+2026-04-18 19:14:12,016 | INFO | new best checkpoint at step=1000 val_loss=1.285899
+2026-04-18 19:14:12,632 | INFO | step=1050 epoch=1 batch=380 train_loss=1.237650 lr=0.00010000
+2026-04-18 19:14:13,227 | INFO | step=1100 epoch=1 batch=430 train_loss=1.197961 lr=0.00010000
+2026-04-18 19:14:13,870 | INFO | step=1150 epoch=1 batch=480 train_loss=1.446810 lr=0.00010000
+2026-04-18 19:14:14,498 | INFO | step=1200 epoch=1 batch=530 train_loss=1.113900 lr=0.00010000
+2026-04-18 19:14:15,145 | INFO | step=1250 epoch=1 batch=580 train_loss=1.140539 lr=0.00010000
+2026-04-18 19:14:15,811 | INFO | step=1300 epoch=1 batch=630 train_loss=1.144885 lr=0.00010000
+2026-04-18 19:14:16,958 | INFO | Starting epoch 3/20
+2026-04-18 19:14:17,117 | INFO | step=1350 epoch=2 batch=10 train_loss=0.915463 lr=0.00010000
+2026-04-18 19:14:17,770 | INFO | step=1400 epoch=2 batch=60 train_loss=0.985860 lr=0.00010000
+2026-04-18 19:14:18,400 | INFO | step=1450 epoch=2 batch=110 train_loss=0.973021 lr=0.00010000
+2026-04-18 19:14:19,018 | INFO | step=1500 epoch=2 batch=160 train_loss=0.940454 lr=0.00010000
+2026-04-18 19:14:20,258 | INFO | validation step=1500 val_loss=1.049489 val_acc=0.569084
+2026-04-18 19:14:20,548 | INFO | new best checkpoint at step=1500 val_loss=1.049489
+2026-04-18 19:14:21,159 | INFO | step=1550 epoch=2 batch=210 train_loss=1.041207 lr=0.00010000
+2026-04-18 19:14:21,796 | INFO | step=1600 epoch=2 batch=260 train_loss=0.829371 lr=0.00010000
+2026-04-18 19:14:22,424 | INFO | step=1650 epoch=2 batch=310 train_loss=1.036116 lr=0.00010000
+2026-04-18 19:14:23,048 | INFO | step=1700 epoch=2 batch=360 train_loss=1.263716 lr=0.00010000
+2026-04-18 19:14:23,654 | INFO | step=1750 epoch=2 batch=410 train_loss=0.864399 lr=0.00010000
+2026-04-18 19:14:24,312 | INFO | step=1800 epoch=2 batch=460 train_loss=0.880433 lr=0.00010000
+2026-04-18 19:14:24,921 | INFO | step=1850 epoch=2 batch=510 train_loss=0.963726 lr=0.00010000
+2026-04-18 19:14:25,550 | INFO | step=1900 epoch=2 batch=560 train_loss=1.040693 lr=0.00010000
+2026-04-18 19:14:26,169 | INFO | step=1950 epoch=2 batch=610 train_loss=0.899822 lr=0.00010000
+2026-04-18 19:14:26,861 | INFO | step=2000 epoch=2 batch=660 train_loss=0.926060 lr=0.00010000
+2026-04-18 19:14:27,944 | INFO | validation step=2000 val_loss=1.044185 val_acc=0.568808
+2026-04-18 19:14:28,256 | INFO | new best checkpoint at step=2000 val_loss=1.044185
+2026-04-18 19:14:28,906 | INFO | Starting epoch 4/20
+2026-04-18 19:14:29,458 | INFO | step=2050 epoch=3 batch=40 train_loss=1.038916 lr=0.00010000
+2026-04-18 19:14:30,069 | INFO | step=2100 epoch=3 batch=90 train_loss=0.870425 lr=0.00010000
+2026-04-18 19:14:30,716 | INFO | step=2150 epoch=3 batch=140 train_loss=0.856175 lr=0.00010000
+2026-04-18 19:14:31,356 | INFO | step=2200 epoch=3 batch=190 train_loss=0.999515 lr=0.00010000
+2026-04-18 19:14:31,986 | INFO | step=2250 epoch=3 batch=240 train_loss=1.013501 lr=0.00010000
+2026-04-18 19:14:32,608 | INFO | step=2300 epoch=3 batch=290 train_loss=1.233285 lr=0.00010000
+2026-04-18 19:14:33,243 | INFO | step=2350 epoch=3 batch=340 train_loss=0.878059 lr=0.00010000
+2026-04-18 19:14:33,859 | INFO | step=2400 epoch=3 batch=390 train_loss=0.932959 lr=0.00010000
+2026-04-18 19:14:34,491 | INFO | step=2450 epoch=3 batch=440 train_loss=1.206955 lr=0.00010000
+2026-04-18 19:14:35,129 | INFO | step=2500 epoch=3 batch=490 train_loss=1.045279 lr=0.00010000
+2026-04-18 19:14:36,264 | INFO | validation step=2500 val_loss=1.017416 val_acc=0.585598
+2026-04-18 19:14:36,549 | INFO | new best checkpoint at step=2500 val_loss=1.017416
+2026-04-18 19:14:37,213 | INFO | step=2550 epoch=3 batch=540 train_loss=0.908281 lr=0.00010000
+2026-04-18 19:14:37,819 | INFO | step=2600 epoch=3 batch=590 train_loss=0.919947 lr=0.00010000
+2026-04-18 19:14:38,446 | INFO | step=2650 epoch=3 batch=640 train_loss=1.440321 lr=0.00010000
+2026-04-18 19:14:39,256 | INFO | Starting epoch 5/20
+2026-04-18 19:14:39,517 | INFO | step=2700 epoch=4 batch=20 train_loss=0.897007 lr=0.00010000
+2026-04-18 19:14:40,099 | INFO | step=2750 epoch=4 batch=70 train_loss=0.995176 lr=0.00010000
+2026-04-18 19:14:40,718 | INFO | step=2800 epoch=4 batch=120 train_loss=0.865074 lr=0.00010000
+2026-04-18 19:14:41,388 | INFO | step=2850 epoch=4 batch=170 train_loss=0.776924 lr=0.00010000
+2026-04-18 19:14:42,026 | INFO | step=2900 epoch=4 batch=220 train_loss=1.060933 lr=0.00010000
+2026-04-18 19:14:42,653 | INFO | step=2950 epoch=4 batch=270 train_loss=1.184847 lr=0.00010000
+2026-04-18 19:14:43,291 | INFO | step=3000 epoch=4 batch=320 train_loss=0.828020 lr=0.00010000
+2026-04-18 19:14:44,361 | INFO | validation step=3000 val_loss=1.012056 val_acc=0.587550
+2026-04-18 19:14:44,679 | INFO | new best checkpoint at step=3000 val_loss=1.012056
+2026-04-18 19:14:45,321 | INFO | step=3050 epoch=4 batch=370 train_loss=0.974232 lr=0.00010000
+2026-04-18 19:14:45,942 | INFO | step=3100 epoch=4 batch=420 train_loss=0.961902 lr=0.00010000
+2026-04-18 19:14:46,544 | INFO | step=3150 epoch=4 batch=470 train_loss=0.970541 lr=0.00010000
+2026-04-18 19:14:47,133 | INFO | step=3200 epoch=4 batch=520 train_loss=0.859693 lr=0.00010000
+2026-04-18 19:14:47,775 | INFO | step=3250 epoch=4 batch=570 train_loss=0.877438 lr=0.00010000
+2026-04-18 19:14:48,360 | INFO | step=3300 epoch=4 batch=620 train_loss=1.089939 lr=0.00010000
+2026-04-18 19:14:48,950 | INFO | step=3350 epoch=4 batch=670 train_loss=1.089011 lr=0.00010000
+2026-04-18 19:14:49,450 | INFO | Starting epoch 6/20
+2026-04-18 19:14:50,094 | INFO | step=3400 epoch=5 batch=50 train_loss=0.956213 lr=0.00010000
+2026-04-18 19:14:50,700 | INFO | step=3450 epoch=5 batch=100 train_loss=1.363331 lr=0.00010000
+2026-04-18 19:14:51,314 | INFO | step=3500 epoch=5 batch=150 train_loss=1.030646 lr=0.00010000
+2026-04-18 19:14:52,482 | INFO | validation step=3500 val_loss=1.007973 val_acc=0.587302
+2026-04-18 19:14:52,775 | INFO | new best checkpoint at step=3500 val_loss=1.007973
+2026-04-18 19:14:53,376 | INFO | step=3550 epoch=5 batch=200 train_loss=0.909170 lr=0.00010000
+2026-04-18 19:14:54,015 | INFO | step=3600 epoch=5 batch=250 train_loss=0.731182 lr=0.00010000
+2026-04-18 19:14:54,629 | INFO | step=3650 epoch=5 batch=300 train_loss=1.060194 lr=0.00010000
+2026-04-18 19:14:55,234 | INFO | step=3700 epoch=5 batch=350 train_loss=0.939693 lr=0.00010000
+2026-04-18 19:14:55,874 | INFO | step=3750 epoch=5 batch=400 train_loss=0.989493 lr=0.00010000
+2026-04-18 19:14:56,536 | INFO | step=3800 epoch=5 batch=450 train_loss=0.985210 lr=0.00010000
+2026-04-18 19:14:57,157 | INFO | step=3850 epoch=5 batch=500 train_loss=0.862851 lr=0.00010000
+2026-04-18 19:14:57,803 | INFO | step=3900 epoch=5 batch=550 train_loss=0.886985 lr=0.00010000
+2026-04-18 19:14:58,400 | INFO | step=3950 epoch=5 batch=600 train_loss=0.751762 lr=0.00010000
+2026-04-18 19:14:59,015 | INFO | step=4000 epoch=5 batch=650 train_loss=0.900334 lr=0.00010000
+2026-04-18 19:15:00,106 | INFO | validation step=4000 val_loss=0.993567 val_acc=0.597222
+2026-04-18 19:15:00,397 | INFO | new best checkpoint at step=4000 val_loss=0.993567
+2026-04-18 19:15:01,174 | INFO | Starting epoch 7/20
+2026-04-18 19:15:01,550 | INFO | step=4050 epoch=6 batch=30 train_loss=0.864187 lr=0.00010000
+2026-04-18 19:15:02,180 | INFO | step=4100 epoch=6 batch=80 train_loss=0.796810 lr=0.00010000
+2026-04-18 19:15:02,784 | INFO | step=4150 epoch=6 batch=130 train_loss=0.714914 lr=0.00010000
+2026-04-18 19:15:03,380 | INFO | step=4200 epoch=6 batch=180 train_loss=1.140178 lr=0.00010000
+2026-04-18 19:15:04,013 | INFO | step=4250 epoch=6 batch=230 train_loss=0.864559 lr=0.00010000
+2026-04-18 19:15:04,651 | INFO | step=4300 epoch=6 batch=280 train_loss=0.753492 lr=0.00010000
+2026-04-18 19:15:05,258 | INFO | step=4350 epoch=6 batch=330 train_loss=0.976366 lr=0.00010000
+2026-04-18 19:15:05,858 | INFO | step=4400 epoch=6 batch=380 train_loss=0.785913 lr=0.00010000
+2026-04-18 19:15:06,654 | INFO | step=4450 epoch=6 batch=430 train_loss=0.824360 lr=0.00010000
+2026-04-18 19:15:07,262 | INFO | step=4500 epoch=6 batch=480 train_loss=1.039057 lr=0.00010000
+2026-04-18 19:15:08,432 | INFO | validation step=4500 val_loss=0.973936 val_acc=0.601195
+2026-04-18 19:15:09,147 | INFO | new best checkpoint at step=4500 val_loss=0.973936
+2026-04-18 19:15:09,741 | INFO | step=4550 epoch=6 batch=530 train_loss=0.944014 lr=0.00010000
+2026-04-18 19:15:10,377 | INFO | step=4600 epoch=6 batch=580 train_loss=0.939470 lr=0.00010000
+2026-04-18 19:15:11,022 | INFO | step=4650 epoch=6 batch=630 train_loss=0.886726 lr=0.00010000
+2026-04-18 19:15:12,097 | INFO | Starting epoch 8/20
+2026-04-18 19:15:12,249 | INFO | step=4700 epoch=7 batch=10 train_loss=0.964549 lr=0.00010000
+2026-04-18 19:15:12,875 | INFO | step=4750 epoch=7 batch=60 train_loss=0.798240 lr=0.00010000
+2026-04-18 19:15:13,468 | INFO | step=4800 epoch=7 batch=110 train_loss=0.881869 lr=0.00010000
+2026-04-18 19:15:14,080 | INFO | step=4850 epoch=7 batch=160 train_loss=1.000228 lr=0.00010000
+2026-04-18 19:15:14,713 | INFO | step=4900 epoch=7 batch=210 train_loss=0.821364 lr=0.00010000
+2026-04-18 19:15:15,332 | INFO | step=4950 epoch=7 batch=260 train_loss=0.973890 lr=0.00010000
+2026-04-18 19:15:15,931 | INFO | step=5000 epoch=7 batch=310 train_loss=0.972309 lr=0.00010000
+2026-04-18 19:15:17,071 | INFO | validation step=5000 val_loss=0.955805 val_acc=0.615785
+2026-04-18 19:15:17,366 | INFO | new best checkpoint at step=5000 val_loss=0.955805
+2026-04-18 19:15:17,991 | INFO | step=5050 epoch=7 batch=360 train_loss=0.941215 lr=0.00010000
+2026-04-18 19:15:18,622 | INFO | step=5100 epoch=7 batch=410 train_loss=1.031596 lr=0.00010000
+2026-04-18 19:15:19,254 | INFO | step=5150 epoch=7 batch=460 train_loss=0.974423 lr=0.00010000
+2026-04-18 19:15:19,874 | INFO | step=5200 epoch=7 batch=510 train_loss=0.855603 lr=0.00010000
+2026-04-18 19:15:20,473 | INFO | step=5250 epoch=7 batch=560 train_loss=0.623492 lr=0.00010000
+2026-04-18 19:15:21,146 | INFO | step=5300 epoch=7 batch=610 train_loss=0.709989 lr=0.00010000
+2026-04-18 19:15:21,771 | INFO | step=5350 epoch=7 batch=660 train_loss=0.854989 lr=0.00010000
+2026-04-18 19:15:22,392 | INFO | Starting epoch 9/20
+2026-04-18 19:15:22,915 | INFO | step=5400 epoch=8 batch=40 train_loss=0.834174 lr=0.00010000
+2026-04-18 19:15:23,544 | INFO | step=5450 epoch=8 batch=90 train_loss=0.975360 lr=0.00010000
+2026-04-18 19:15:24,149 | INFO | step=5500 epoch=8 batch=140 train_loss=0.784906 lr=0.00010000
+2026-04-18 19:15:25,259 | INFO | validation step=5500 val_loss=0.950666 val_acc=0.613457
+2026-04-18 19:15:25,591 | INFO | new best checkpoint at step=5500 val_loss=0.950666
+2026-04-18 19:15:26,226 | INFO | step=5550 epoch=8 batch=190 train_loss=0.758001 lr=0.00010000
+2026-04-18 19:15:26,847 | INFO | step=5600 epoch=8 batch=240 train_loss=1.156000 lr=0.00010000
+2026-04-18 19:15:27,497 | INFO | step=5650 epoch=8 batch=290 train_loss=0.960769 lr=0.00010000
+2026-04-18 19:15:28,120 | INFO | step=5700 epoch=8 batch=340 train_loss=0.721908 lr=0.00010000
+2026-04-18 19:15:28,725 | INFO | step=5750 epoch=8 batch=390 train_loss=0.792698 lr=0.00010000
+2026-04-18 19:15:29,366 | INFO | step=5800 epoch=8 batch=440 train_loss=0.743522 lr=0.00010000
+2026-04-18 19:15:29,978 | INFO | step=5850 epoch=8 batch=490 train_loss=1.007178 lr=0.00010000
+2026-04-18 19:15:30,605 | INFO | step=5900 epoch=8 batch=540 train_loss=0.543635 lr=0.00010000
+2026-04-18 19:15:31,215 | INFO | step=5950 epoch=8 batch=590 train_loss=0.937519 lr=0.00010000
+2026-04-18 19:15:31,863 | INFO | step=6000 epoch=8 batch=640 train_loss=0.966893 lr=0.00010000
+2026-04-18 19:15:32,938 | INFO | validation step=6000 val_loss=0.934465 val_acc=0.621822
+2026-04-18 19:15:33,300 | INFO | new best checkpoint at step=6000 val_loss=0.934465
+2026-04-18 19:15:34,507 | INFO | Starting epoch 10/20
+2026-04-18 19:15:34,771 | INFO | step=6050 epoch=9 batch=20 train_loss=0.909586 lr=0.00010000
+2026-04-18 19:15:35,382 | INFO | step=6100 epoch=9 batch=70 train_loss=1.050548 lr=0.00010000
+2026-04-18 19:15:36,019 | INFO | step=6150 epoch=9 batch=120 train_loss=0.591265 lr=0.00010000
+2026-04-18 19:15:36,638 | INFO | step=6200 epoch=9 batch=170 train_loss=0.839936 lr=0.00010000
+2026-04-18 19:15:37,252 | INFO | step=6250 epoch=9 batch=220 train_loss=0.774423 lr=0.00010000
+2026-04-18 19:15:37,889 | INFO | step=6300 epoch=9 batch=270 train_loss=0.829029 lr=0.00010000
+2026-04-18 19:15:38,497 | INFO | step=6350 epoch=9 batch=320 train_loss=0.878301 lr=0.00010000
+2026-04-18 19:15:39,088 | INFO | step=6400 epoch=9 batch=370 train_loss=0.971591 lr=0.00010000
+2026-04-18 19:15:39,705 | INFO | step=6450 epoch=9 batch=420 train_loss=0.810942 lr=0.00010000
+2026-04-18 19:15:40,347 | INFO | step=6500 epoch=9 batch=470 train_loss=0.804392 lr=0.00010000
+2026-04-18 19:15:41,440 | INFO | validation step=6500 val_loss=0.950491 val_acc=0.609220
+2026-04-18 19:15:42,305 | INFO | step=6550 epoch=9 batch=520 train_loss=0.803041 lr=0.00010000
+2026-04-18 19:15:42,913 | INFO | step=6600 epoch=9 batch=570 train_loss=0.878947 lr=0.00010000
+2026-04-18 19:15:43,545 | INFO | step=6650 epoch=9 batch=620 train_loss=0.953994 lr=0.00010000
+2026-04-18 19:15:44,164 | INFO | step=6700 epoch=9 batch=670 train_loss=0.729885 lr=0.00010000
+2026-04-18 19:15:44,790 | INFO | Starting epoch 11/20
+2026-04-18 19:15:45,431 | INFO | step=6750 epoch=10 batch=50 train_loss=0.897598 lr=0.00010000
+2026-04-18 19:15:46,056 | INFO | step=6800 epoch=10 batch=100 train_loss=0.716049 lr=0.00010000
+2026-04-18 19:15:46,685 | INFO | step=6850 epoch=10 batch=150 train_loss=0.722478 lr=0.00010000
+2026-04-18 19:15:47,334 | INFO | step=6900 epoch=10 batch=200 train_loss=0.849809 lr=0.00010000
+2026-04-18 19:15:47,921 | INFO | step=6950 epoch=10 batch=250 train_loss=1.199588 lr=0.00010000
+2026-04-18 19:15:48,538 | INFO | step=7000 epoch=10 batch=300 train_loss=0.713934 lr=0.00010000
+2026-04-18 19:15:49,602 | INFO | validation step=7000 val_loss=0.916422 val_acc=0.626015
+2026-04-18 19:15:50,278 | INFO | new best checkpoint at step=7000 val_loss=0.916422
+2026-04-18 19:15:50,876 | INFO | step=7050 epoch=10 batch=350 train_loss=0.807849 lr=0.00010000
+2026-04-18 19:15:51,510 | INFO | step=7100 epoch=10 batch=400 train_loss=0.867196 lr=0.00010000
+2026-04-18 19:15:52,116 | INFO | step=7150 epoch=10 batch=450 train_loss=0.871721 lr=0.00010000
+2026-04-18 19:15:52,755 | INFO | step=7200 epoch=10 batch=500 train_loss=0.758998 lr=0.00010000
+2026-04-18 19:15:53,360 | INFO | step=7250 epoch=10 batch=550 train_loss=0.744427 lr=0.00010000
+2026-04-18 19:15:53,997 | INFO | step=7300 epoch=10 batch=600 train_loss=0.944213 lr=0.00010000
+2026-04-18 19:15:54,639 | INFO | step=7350 epoch=10 batch=650 train_loss=0.913688 lr=0.00010000
+2026-04-18 19:15:55,467 | INFO | Starting epoch 12/20
+2026-04-18 19:15:55,843 | INFO | step=7400 epoch=11 batch=30 train_loss=0.795212 lr=0.00010000
+2026-04-18 19:15:56,535 | INFO | step=7450 epoch=11 batch=80 train_loss=0.695344 lr=0.00010000
+2026-04-18 19:15:57,138 | INFO | step=7500 epoch=11 batch=130 train_loss=0.996625 lr=0.00010000
+2026-04-18 19:15:58,217 | INFO | validation step=7500 val_loss=0.898121 val_acc=0.636648
+2026-04-18 19:15:58,681 | INFO | new best checkpoint at step=7500 val_loss=0.898121
+2026-04-18 19:15:59,298 | INFO | step=7550 epoch=11 batch=180 train_loss=0.749682 lr=0.00010000
+2026-04-18 19:15:59,903 | INFO | step=7600 epoch=11 batch=230 train_loss=0.944376 lr=0.00010000
+2026-04-18 19:16:00,535 | INFO | step=7650 epoch=11 batch=280 train_loss=0.717264 lr=0.00010000
+2026-04-18 19:16:01,213 | INFO | step=7700 epoch=11 batch=330 train_loss=0.729868 lr=0.00010000
+2026-04-18 19:16:01,840 | INFO | step=7750 epoch=11 batch=380 train_loss=0.947250 lr=0.00010000
+2026-04-18 19:16:02,451 | INFO | step=7800 epoch=11 batch=430 train_loss=0.968394 lr=0.00010000
+2026-04-18 19:16:03,110 | INFO | step=7850 epoch=11 batch=480 train_loss=1.001119 lr=0.00010000
+2026-04-18 19:16:03,729 | INFO | step=7900 epoch=11 batch=530 train_loss=1.057306 lr=0.00010000
+2026-04-18 19:16:04,330 | INFO | step=7950 epoch=11 batch=580 train_loss=0.725246 lr=0.00010000
+2026-04-18 19:16:04,997 | INFO | step=8000 epoch=11 batch=630 train_loss=1.007289 lr=0.00010000
+2026-04-18 19:16:06,125 | INFO | validation step=8000 val_loss=0.924302 val_acc=0.624650
+2026-04-18 19:16:07,982 | INFO | Starting epoch 13/20
+2026-04-18 19:16:08,131 | INFO | step=8050 epoch=12 batch=10 train_loss=0.652855 lr=0.00010000
+2026-04-18 19:16:08,732 | INFO | step=8100 epoch=12 batch=60 train_loss=0.832155 lr=0.00010000
+2026-04-18 19:16:09,344 | INFO | step=8150 epoch=12 batch=110 train_loss=1.126930 lr=0.00010000
+2026-04-18 19:16:09,964 | INFO | step=8200 epoch=12 batch=160 train_loss=0.879743 lr=0.00010000
+2026-04-18 19:16:10,589 | INFO | step=8250 epoch=12 batch=210 train_loss=0.584842 lr=0.00010000
+2026-04-18 19:16:11,273 | INFO | step=8300 epoch=12 batch=260 train_loss=0.908624 lr=0.00010000
+2026-04-18 19:16:11,887 | INFO | step=8350 epoch=12 batch=310 train_loss=0.994272 lr=0.00010000
+2026-04-18 19:16:12,502 | INFO | step=8400 epoch=12 batch=360 train_loss=0.721408 lr=0.00010000
+2026-04-18 19:16:13,115 | INFO | step=8450 epoch=12 batch=410 train_loss=0.724585 lr=0.00010000
+2026-04-18 19:16:13,748 | INFO | step=8500 epoch=12 batch=460 train_loss=0.815107 lr=0.00010000
+2026-04-18 19:16:14,842 | INFO | validation step=8500 val_loss=0.917523 val_acc=0.625374
+2026-04-18 19:16:15,987 | INFO | step=8550 epoch=12 batch=510 train_loss=0.688636 lr=0.00010000
+2026-04-18 19:16:16,639 | INFO | step=8600 epoch=12 batch=560 train_loss=0.739643 lr=0.00010000
+2026-04-18 19:16:17,263 | INFO | step=8650 epoch=12 batch=610 train_loss=0.695316 lr=0.00010000
+2026-04-18 19:16:17,894 | INFO | step=8700 epoch=12 batch=660 train_loss=0.928062 lr=0.00010000
+2026-04-18 19:16:18,812 | INFO | Starting epoch 14/20
+2026-04-18 19:16:19,382 | INFO | step=8750 epoch=13 batch=40 train_loss=0.889818 lr=0.00010000
+2026-04-18 19:16:20,045 | INFO | step=8800 epoch=13 batch=90 train_loss=0.745500 lr=0.00010000
+2026-04-18 19:16:20,660 | INFO | step=8850 epoch=13 batch=140 train_loss=1.069544 lr=0.00010000
+2026-04-18 19:16:21,300 | INFO | step=8900 epoch=13 batch=190 train_loss=0.658164 lr=0.00010000
+2026-04-18 19:16:21,943 | INFO | step=8950 epoch=13 batch=240 train_loss=0.668038 lr=0.00010000
+2026-04-18 19:16:22,619 | INFO | step=9000 epoch=13 batch=290 train_loss=0.684410 lr=0.00010000
+2026-04-18 19:16:23,876 | INFO | validation step=9000 val_loss=0.906623 val_acc=0.633558
+2026-04-18 19:16:24,991 | INFO | step=9050 epoch=13 batch=340 train_loss=0.782985 lr=0.00010000
+2026-04-18 19:16:25,601 | INFO | step=9100 epoch=13 batch=390 train_loss=0.669783 lr=0.00010000
+2026-04-18 19:16:26,293 | INFO | step=9150 epoch=13 batch=440 train_loss=0.750527 lr=0.00010000
+2026-04-18 19:16:26,918 | INFO | step=9200 epoch=13 batch=490 train_loss=0.944457 lr=0.00010000
+2026-04-18 19:16:27,557 | INFO | step=9250 epoch=13 batch=540 train_loss=0.754509 lr=0.00010000
+2026-04-18 19:16:28,212 | INFO | step=9300 epoch=13 batch=590 train_loss=0.774416 lr=0.00010000
+2026-04-18 19:16:28,816 | INFO | step=9350 epoch=13 batch=640 train_loss=0.837755 lr=0.00010000
+2026-04-18 19:16:29,939 | INFO | Starting epoch 15/20
+2026-04-18 19:16:30,202 | INFO | step=9400 epoch=14 batch=20 train_loss=0.819594 lr=0.00010000
+2026-04-18 19:16:30,841 | INFO | step=9450 epoch=14 batch=70 train_loss=1.020909 lr=0.00010000
+2026-04-18 19:16:31,547 | INFO | step=9500 epoch=14 batch=120 train_loss=0.878655 lr=0.00010000
+2026-04-18 19:16:32,904 | INFO | validation step=9500 val_loss=0.886588 val_acc=0.640252
+2026-04-18 19:16:33,551 | INFO | new best checkpoint at step=9500 val_loss=0.886588
+2026-04-18 19:16:34,251 | INFO | step=9550 epoch=14 batch=170 train_loss=0.920551 lr=0.00010000
+2026-04-18 19:16:34,988 | INFO | step=9600 epoch=14 batch=220 train_loss=0.719924 lr=0.00010000
+2026-04-18 19:16:35,648 | INFO | step=9650 epoch=14 batch=270 train_loss=0.990523 lr=0.00010000
+2026-04-18 19:16:36,410 | INFO | step=9700 epoch=14 batch=320 train_loss=0.520214 lr=0.00010000
+2026-04-18 19:16:37,109 | INFO | step=9750 epoch=14 batch=370 train_loss=0.779690 lr=0.00010000
+2026-04-18 19:16:37,773 | INFO | step=9800 epoch=14 batch=420 train_loss=0.589684 lr=0.00010000
+2026-04-18 19:16:38,491 | INFO | step=9850 epoch=14 batch=470 train_loss=0.889509 lr=0.00010000
+2026-04-18 19:16:39,221 | INFO | step=9900 epoch=14 batch=520 train_loss=0.832333 lr=0.00010000
+2026-04-18 19:16:39,970 | INFO | step=9950 epoch=14 batch=570 train_loss=0.756805 lr=0.00010000
+2026-04-18 19:16:40,698 | INFO | step=10000 epoch=14 batch=620 train_loss=0.725673 lr=0.00010000
+2026-04-18 19:16:41,974 | INFO | validation step=10000 val_loss=0.887061 val_acc=0.640494
+2026-04-18 19:16:43,024 | INFO | step=10050 epoch=14 batch=670 train_loss=0.994576 lr=0.00010000
+2026-04-18 19:16:43,714 | INFO | Starting epoch 16/20
+2026-04-18 19:16:44,420 | INFO | step=10100 epoch=15 batch=50 train_loss=0.773598 lr=0.00010000
+2026-04-18 19:16:45,158 | INFO | step=10150 epoch=15 batch=100 train_loss=0.559310 lr=0.00010000
+2026-04-18 19:16:45,855 | INFO | step=10200 epoch=15 batch=150 train_loss=0.759601 lr=0.00010000
+2026-04-18 19:16:46,576 | INFO | step=10250 epoch=15 batch=200 train_loss=0.608205 lr=0.00010000
+2026-04-18 19:16:47,345 | INFO | step=10300 epoch=15 batch=250 train_loss=0.733522 lr=0.00010000
+2026-04-18 19:16:48,101 | INFO | step=10350 epoch=15 batch=300 train_loss=0.741036 lr=0.00010000
+2026-04-18 19:16:48,785 | INFO | step=10400 epoch=15 batch=350 train_loss=0.801816 lr=0.00010000
+2026-04-18 19:16:49,547 | INFO | step=10450 epoch=15 batch=400 train_loss=0.765964 lr=0.00010000
+2026-04-18 19:16:50,272 | INFO | step=10500 epoch=15 batch=450 train_loss=0.873280 lr=0.00010000
+2026-04-18 19:16:51,680 | INFO | validation step=10500 val_loss=0.886584 val_acc=0.644432
+2026-04-18 19:16:52,161 | INFO | new best checkpoint at step=10500 val_loss=0.886584
+2026-04-18 19:16:52,851 | INFO | step=10550 epoch=15 batch=500 train_loss=0.699621 lr=0.00010000
+2026-04-18 19:16:53,609 | INFO | step=10600 epoch=15 batch=550 train_loss=0.674635 lr=0.00010000
+2026-04-18 19:16:54,268 | INFO | step=10650 epoch=15 batch=600 train_loss=0.838032 lr=0.00010000
+2026-04-18 19:16:54,964 | INFO | step=10700 epoch=15 batch=650 train_loss=0.666081 lr=0.00010000
+2026-04-18 19:16:55,805 | INFO | Starting epoch 17/20
+2026-04-18 19:16:56,259 | INFO | step=10750 epoch=16 batch=30 train_loss=0.647312 lr=0.00010000
+2026-04-18 19:16:56,942 | INFO | step=10800 epoch=16 batch=80 train_loss=0.922712 lr=0.00010000
+2026-04-18 19:16:57,722 | INFO | step=10850 epoch=16 batch=130 train_loss=0.724032 lr=0.00010000
+2026-04-18 19:16:58,424 | INFO | step=10900 epoch=16 batch=180 train_loss=1.204345 lr=0.00010000
+2026-04-18 19:16:59,262 | INFO | step=10950 epoch=16 batch=230 train_loss=0.642384 lr=0.00010000
+2026-04-18 19:17:00,016 | INFO | step=11000 epoch=16 batch=280 train_loss=0.534127 lr=0.00010000
+2026-04-18 19:17:01,409 | INFO | validation step=11000 val_loss=0.864906 val_acc=0.650980
+2026-04-18 19:17:01,855 | INFO | new best checkpoint at step=11000 val_loss=0.864906
+2026-04-18 19:17:02,526 | INFO | step=11050 epoch=16 batch=330 train_loss=0.953796 lr=0.00010000
+2026-04-18 19:17:03,259 | INFO | step=11100 epoch=16 batch=380 train_loss=1.021513 lr=0.00010000
+2026-04-18 19:17:03,999 | INFO | step=11150 epoch=16 batch=430 train_loss=0.827706 lr=0.00010000
+2026-04-18 19:17:04,762 | INFO | step=11200 epoch=16 batch=480 train_loss=0.538173 lr=0.00010000
+2026-04-18 19:17:05,473 | INFO | step=11250 epoch=16 batch=530 train_loss=0.622594 lr=0.00010000
+2026-04-18 19:17:06,462 | INFO | step=11300 epoch=16 batch=580 train_loss=1.014569 lr=0.00010000
+2026-04-18 19:17:07,174 | INFO | step=11350 epoch=16 batch=630 train_loss=0.961563 lr=0.00010000
+2026-04-18 19:17:08,167 | INFO | Starting epoch 18/20
+2026-04-18 19:17:08,340 | INFO | step=11400 epoch=17 batch=10 train_loss=0.892737 lr=0.00010000
+2026-04-18 19:17:09,012 | INFO | step=11450 epoch=17 batch=60 train_loss=0.931870 lr=0.00010000
+2026-04-18 19:17:09,682 | INFO | step=11500 epoch=17 batch=110 train_loss=0.892339 lr=0.00010000
+2026-04-18 19:17:10,973 | INFO | validation step=11500 val_loss=0.870396 val_acc=0.646714
+2026-04-18 19:17:11,997 | INFO | step=11550 epoch=17 batch=160 train_loss=0.725682 lr=0.00010000
+2026-04-18 19:17:12,723 | INFO | step=11600 epoch=17 batch=210 train_loss=0.919337 lr=0.00010000
+2026-04-18 19:17:13,632 | INFO | step=11650 epoch=17 batch=260 train_loss=0.916122 lr=0.00010000
+2026-04-18 19:17:14,559 | INFO | step=11700 epoch=17 batch=310 train_loss=0.938448 lr=0.00010000
+2026-04-18 19:17:15,338 | INFO | step=11750 epoch=17 batch=360 train_loss=0.702364 lr=0.00010000
+2026-04-18 19:17:16,181 | INFO | step=11800 epoch=17 batch=410 train_loss=0.957913 lr=0.00010000
+2026-04-18 19:17:17,129 | INFO | step=11850 epoch=17 batch=460 train_loss=0.739303 lr=0.00010000
+2026-04-18 19:17:17,915 | INFO | step=11900 epoch=17 batch=510 train_loss=1.023557 lr=0.00010000
+2026-04-18 19:17:18,889 | INFO | step=11950 epoch=17 batch=560 train_loss=0.716183 lr=0.00010000
+2026-04-18 19:17:20,082 | INFO | step=12000 epoch=17 batch=610 train_loss=0.902939 lr=0.00010000
+2026-04-18 19:17:22,143 | INFO | validation step=12000 val_loss=0.860779 val_acc=0.652739
+2026-04-18 19:17:22,770 | INFO | new best checkpoint at step=12000 val_loss=0.860779
+2026-04-18 19:17:23,782 | INFO | step=12050 epoch=17 batch=660 train_loss=0.687281 lr=0.00010000
+2026-04-18 19:17:26,695 | INFO | Starting epoch 19/20
+2026-04-18 19:17:27,348 | INFO | step=12100 epoch=18 batch=40 train_loss=0.702948 lr=0.00010000
+2026-04-18 19:17:28,031 | INFO | step=12150 epoch=18 batch=90 train_loss=0.760260 lr=0.00010000
+2026-04-18 19:17:28,772 | INFO | step=12200 epoch=18 batch=140 train_loss=0.857332 lr=0.00010000
+2026-04-18 19:17:29,504 | INFO | step=12250 epoch=18 batch=190 train_loss=0.678516 lr=0.00010000
+2026-04-18 19:17:30,204 | INFO | step=12300 epoch=18 batch=240 train_loss=0.755393 lr=0.00010000
+2026-04-18 19:17:30,872 | INFO | step=12350 epoch=18 batch=290 train_loss=0.808367 lr=0.00010000
+2026-04-18 19:17:31,597 | INFO | step=12400 epoch=18 batch=340 train_loss=0.774966 lr=0.00010000
+2026-04-18 19:17:32,315 | INFO | step=12450 epoch=18 batch=390 train_loss=0.654565 lr=0.00010000
+2026-04-18 19:17:33,036 | INFO | step=12500 epoch=18 batch=440 train_loss=0.777858 lr=0.00010000
+2026-04-18 19:17:34,394 | INFO | validation step=12500 val_loss=0.857541 val_acc=0.653067
+2026-04-18 19:17:35,048 | INFO | new best checkpoint at step=12500 val_loss=0.857541
+2026-04-18 19:17:35,781 | INFO | step=12550 epoch=18 batch=490 train_loss=0.741757 lr=0.00010000
+2026-04-18 19:17:36,550 | INFO | step=12600 epoch=18 batch=540 train_loss=0.622287 lr=0.00010000
+2026-04-18 19:17:37,512 | INFO | step=12650 epoch=18 batch=590 train_loss=0.753349 lr=0.00010000
+2026-04-18 19:17:38,489 | INFO | step=12700 epoch=18 batch=640 train_loss=0.659422 lr=0.00010000
+2026-04-18 19:17:40,603 | INFO | Starting epoch 20/20
+2026-04-18 19:17:40,887 | INFO | step=12750 epoch=19 batch=20 train_loss=0.961965 lr=0.00010000
+2026-04-18 19:17:41,825 | INFO | step=12800 epoch=19 batch=70 train_loss=0.789648 lr=0.00010000
+2026-04-18 19:17:42,824 | INFO | step=12850 epoch=19 batch=120 train_loss=0.964088 lr=0.00010000
+2026-04-18 19:17:43,737 | INFO | step=12900 epoch=19 batch=170 train_loss=0.659568 lr=0.00010000
+2026-04-18 19:17:44,774 | INFO | step=12950 epoch=19 batch=220 train_loss=0.832813 lr=0.00010000
+2026-04-18 19:17:45,559 | INFO | step=13000 epoch=19 batch=270 train_loss=0.726514 lr=0.00010000
+2026-04-18 19:17:47,627 | INFO | validation step=13000 val_loss=0.869601 val_acc=0.648028
+2026-04-18 19:17:48,689 | INFO | step=13050 epoch=19 batch=320 train_loss=0.862298 lr=0.00010000
+2026-04-18 19:17:49,355 | INFO | step=13100 epoch=19 batch=370 train_loss=0.557385 lr=0.00010000
+2026-04-18 19:17:50,044 | INFO | step=13150 epoch=19 batch=420 train_loss=0.804622 lr=0.00010000
+2026-04-18 19:17:50,776 | INFO | step=13200 epoch=19 batch=470 train_loss=0.800959 lr=0.00010000
+2026-04-18 19:17:51,489 | INFO | step=13250 epoch=19 batch=520 train_loss=0.843251 lr=0.00010000
+2026-04-18 19:17:52,178 | INFO | step=13300 epoch=19 batch=570 train_loss=0.886016 lr=0.00010000
+2026-04-18 19:17:52,928 | INFO | step=13350 epoch=19 batch=620 train_loss=0.699748 lr=0.00010000
+2026-04-18 19:17:53,629 | INFO | step=13400 epoch=19 batch=670 train_loss=0.630818 lr=0.00010000
+2026-04-18 19:17:57,337 | INFO | completed final_val_loss=0.857485 final_val_accuracy=0.655680 best_val_loss=0.857541

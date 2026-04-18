@@ -2,7 +2,9 @@
 
 ## Abstract
 
-This project presents four connected music intelligence pipelines that move from signal generation to symbolic analysis, audio classification, and probabilistic composition. The first pipeline synthesizes note sequences as sine and sawtooth waveforms, then applies fade, delay, and layered mixing so waveform envelopes and harmonic structure can be inspected directly. The second pipeline classifies symbolic MIDI files by extracting pitch, duration, velocity, density, and drum-channel descriptors, then comparing compact baseline features with an enhanced logistic regression representation. The third pipeline performs spectrogram based instrument classification on audio clips by transforming waveforms into MFCC, STFT, mel-spectrogram, and constant Q features, training neural classifiers, and extending the task from binary guitar vocal recognition to four timbral families. The fourth pipeline models monophonic MIDI melodies with first and second order Markov chains, evaluates pitch and rhythm perplexity, and generates a new MIDI sequence from learned pitch transitions and beat-position rhythm probabilities.
+This project presents five connected music intelligence pipelines that move from signal generation to symbolic analysis, audio classification, probabilistic composition, and automatic instrumentation. The first pipeline synthesizes note sequences as sine and sawtooth waveforms, then applies fade, delay, and layered mixing so waveform envelopes and harmonic structure can be inspected directly. The second pipeline classifies symbolic MIDI files by extracting pitch, duration, velocity, density, and drum-channel descriptors, then comparing compact baseline features with an enhanced logistic regression representation. The third pipeline performs spectrogram based instrument classification on audio clips by transforming waveforms into MFCC, STFT, mel-spectrogram, and constant Q features, training neural classifiers, and extending the task from binary guitar vocal recognition to four timbral families. The fourth pipeline models monophonic MIDI melodies with first and second order Markov chains, evaluates pitch and rhythm perplexity, and generates a new MIDI sequence from learned pitch transitions and beat-position rhythm probabilities. The fifth pipeline trains rule, MLP, recurrent, bidirectional recurrent, and Transformer arrangers for assigning instruments to symbolic note streams.
+
+The automatic instrumentation stage treats an existing symbolic arrangement as a mixture of note events and learns to recover the instrument assignment for every note. This turns a single piano-roll-like input stream into labeled output parts for `piano`, `guitar`, `bass`, `strings`, and `brass`, then evaluates the arrangers with validation accuracy, loss curves, prediction-roll comparisons, and confusion matrices.
 
 ## Output Gallery
 
@@ -29,6 +31,12 @@ The spectrogram summary follows audio from waveform to time-frequency features, 
 ![Symbolic Generation Animated Panel](outputs/symbolic_music_generation/readme/readme_symbolic_animated_panel.gif)
 
 The generation summary shows the Markov model improving as more MIDI files enter the corpus: pitch probabilities stabilize, transition structure becomes clearer, perplexity changes over time, and the sampled melody is revealed as a piano-roll sequence.
+
+### Automatic Instrumentation
+
+![Automatic Instrumentation Animated Panel](outputs/automatic_music_instrumentation/main_training_20260418_191121/visual/readme_automatic_instrumentation_animated_panel.gif)
+
+The instrumentation summary follows the same symbolic note stream through saved training checkpoints: online LSTM, offline BiLSTM, and Transformer predictions evolve while suite scores, validation curves, and confusion matrices update in the same view.
 
 ## Setup
 
@@ -104,9 +112,14 @@ outputs/
     evaluation/
     visuals/
     readme/
+  automatic_music_instrumentation/
+    main_training_20260418_191121/
+      runs/
+      model_suite/
+      visual/
 ```
 
-The MIDI utilities search the provided data bundle first, automatically extract `piano.zip` and `drums.zip` when needed, and then write project outputs into separate directories for rendered audio, classifier artifacts, raw visuals, README-ready panels, and compact evaluation summaries. The spectrogram utilities resolve the NSynth subset from either the extracted folder or archive, save CPU loadable model weights, and render feature, training, confusion matrix. The symbolic generation utilities resolve the PDMX subset, build Markov pitch and rhythm tables, write `q10.mid`.
+The MIDI utilities search the provided data bundle first, automatically extract `piano.zip` and `drums.zip` when needed, and then write project outputs into separate directories for rendered audio, classifier artifacts, raw visuals, README-ready panels, and compact evaluation summaries. The spectrogram utilities resolve the NSynth subset from either the extracted folder or archive, save CPU loadable model weights, and render feature, training, confusion matrix. The symbolic generation utilities resolve the PDMX subset, build Markov pitch and rhythm tables, write `q10.mid`. The automatic instrumentation utilities read processed note-event arrays, train a suite of arrangers, save checkpoint histories, and render final README visuals under the training run's `visual/` directory.
 
 ## Execution Order
 
@@ -120,6 +133,7 @@ python scripts/visualiser/render_classifier_gallery.py --max-files 120
 python scripts/visualiser/render_spectrogram_gallery.py
 python scripts/symbolic_music_generation/build_markov_outputs.py
 python scripts/visualiser/render_symbolic_generation_gallery.py
+python scripts/visualiser/render_automatic_instrumentation_gallery.py --suite-root outputs/automatic_music_instrumentation/main_training_20260418_191121
 python evaluation/compute_metrics.py
 python evaluation/evaluate_symbolic_generation.py
 python scripts/build_readme_panels.py
@@ -508,6 +522,120 @@ Dataset and generation summary:
 | `generated_q10_note_count` | `500` |
 | `generated_length_matches_request` | `true` |
 
+## Automatic Instrumentation
+
+### Model
+
+Automatic instrumentation is framed as note level part assignment. A processed arrangement is represented as an ordered event sequence
+
+```math
+\mathcal{X} = \{x_i\}_{i=1}^{N},
+\qquad
+x_i = (t_i, p_i, d_i),
+```
+
+where `t_i` is the quantized onset step, `p_i` is the MIDI pitch, and `d_i` is the quantized duration. The target label for each note is
+
+```math
+y_i \in \mathcal{C},
+\qquad
+\mathcal{C} = \{\text{piano},\text{guitar},\text{bass},\text{strings},\text{brass}\}.
+```
+
+The system flow is:
+
+```text
+existing multitrack MIDI
+  -> cleaned symbolic note events
+  -> single mixed note stream x_i = (onset, pitch, duration)
+  -> note-level instrument classifier
+  -> predicted labels y_hat_i
+  -> separated output parts for piano, guitar, bass, strings, and brass
+```
+
+The model predicts an instrument distribution for each event:
+
+```math
+P_\theta(y_i=c \mid x_{1:N}, i),
+\qquad
+\hat{y}_i = \arg\max_{c \in \mathcal{C}} P_\theta(y_i=c \mid x_{1:N}, i).
+```
+
+The fixed pitch-zone baseline ignores sequence context and assigns labels from pitch alone:
+
+```math
+z(p_i)=
+\begin{cases}
+\text{bass}, & p_i < 44,\\
+\text{guitar}, & 44 \le p_i < 72,\\
+\text{piano}, & 72 \le p_i < 83,\\
+\text{strings}, & 83 \le p_i < 105,\\
+\text{brass}, & p_i \ge 105.
+\end{cases}
+```
+
+The learned models embed pitch, duration, beat, and position features before classification:
+
+```math
+e_i =
+E_p(p_i) + E_d(d_i) + E_b(\lfloor t_i / 24 \rfloor) + E_r(t_i \bmod 24).
+```
+
+The per-note MLP estimates each `y_i` independently from `e_i`. The online LSTM and causal Transformer estimate `y_i` using only current and previous events, while the offline BiLSTM and offline Transformer can use both left and right context:
+
+```math
+h_i^{\text{online}} = f_\theta(e_1,\ldots,e_i),
+\qquad
+h_i^{\text{offline}} = f_\theta(e_1,\ldots,e_N)_i.
+```
+
+All learned models are trained with token-level cross entropy over the note labels:
+
+```math
+\mathcal{L}(\theta)
+=
+-\frac{1}{N}
+\sum_{i=1}^{N}
+\log P_\theta(y_i \mid x_{1:N}, i).
+```
+
+The final arrangement is reconstructed by routing each input note to the predicted output part:
+
+```math
+\mathcal{P}_c
+=
+\{x_i : \hat{y}_i = c\},
+\qquad
+c \in \mathcal{C}.
+```
+
+
+### Final Static Evidence Panel
+
+![Automatic Instrumentation Static Panel](outputs/automatic_music_instrumentation/main_training_20260418_191121/visual/readme_automatic_instrumentation_static_panel.png)
+
+The final static panel keeps the complete evidence view in one place: input mixture, ground-truth labels, model prediction rows, suite ranking, validation curve, and a confusion-matrix wall for the main sequence models.
+
+### Full Model Comparison
+
+![Automatic Instrumentation Model Comparison](outputs/automatic_music_instrumentation/main_training_20260418_191121/visual/model_prediction_comparison.png)
+
+This comparison expands the prediction-roll view to the full suite so the rule baseline, independent classifier, recurrent models, and Transformer variants can be inspected on the same sample.
+
+### Evaluation Table
+
+| Model | Family | Context | Best Val Loss | Final Val Loss | Validation / Rule Score | Visual Sample Agreement |
+| --- | --- | --- | ---: | ---: | ---: | ---: |
+| `pitch_zones` | fixed pitch-zone rule | pitch only | `n/a` | `n/a` | `0.5555` | `0.3815` |
+| `note_mlp` | independent note classifier | per note | `1.0424` | `1.0454` | `0.5750` | `0.4236` |
+| `sequence_lstm` | online recurrent model | past and current notes | `0.8575` | `0.8575` | `0.6557` | `0.3450` |
+| `bidirectional_lstm` | offline bidirectional recurrent model | past and future notes | `0.7895` | `0.8168` | `0.6767` | `0.3029` |
+| `compact_transformer` | compact offline attention model | full-sequence attention | `0.9242` | `0.9401` | `0.6223` | `0.4516` |
+| `causal_transformer` | online causal attention model | masked past attention | `0.9390` | `0.9583` | `0.6103` | `0.4741` |
+| `full_transformer` | full offline attention model | full-sequence attention | `0.8608` | `0.8949` | `0.6442` | `0.6718` |
+
+The README panel uses a 713-note sample from the processed automatic-instrumentation dataset. Its animation samples saved training checkpoints for the online LSTM, offline BiLSTM, and full Transformer rows, while the final static panel shows the model ranking, validation curves, and a three-model confusion-matrix wall.
+
 ## Evaluation
 
 The evaluation folder stays table-first:
@@ -537,6 +665,9 @@ The evaluation folder stays table-first:
 | `symbolic_beat_position_perplexity` | `1.9226` |
 | `symbolic_beat_trigram_perplexity` | `1.6477` |
 | `symbolic_generated_note_count` | `500` |
+| `automatic_instrumentation_best_score` | `0.6767` |
+| `automatic_instrumentation_best_model` | `bidirectional_lstm` |
+| `automatic_instrumentation_best_transformer_score` | `0.6442` |
 
 ## License
 

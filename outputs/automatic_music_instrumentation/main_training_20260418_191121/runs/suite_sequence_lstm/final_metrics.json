@@ -1,0 +1,11 @@
+{
+  "model_name": "sequence_lstm",
+  "device": "cuda",
+  "log_dir": "/mntdatalora/src/Music-Intelligence/logs/automatic_music_instrumentation/main_training_20260418_191121/suite_sequence_lstm",
+  "train_files": 10717,
+  "valid_files": 2734,
+  "best_val_loss": 0.8575405046256662,
+  "final_val_loss": 0.8574847701000191,
+  "final_val_accuracy": 0.6556796035574054,
+  "num_predictions": 347894
+}

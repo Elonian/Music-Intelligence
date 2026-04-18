@@ -1,0 +1,11 @@
+{
+  "model_name": "note_mlp",
+  "device": "cuda",
+  "log_dir": "/mntdatalora/src/Music-Intelligence/logs/automatic_music_instrumentation/main_training_20260418_191121/suite_note_mlp",
+  "train_files": 10717,
+  "valid_files": 2734,
+  "best_val_loss": 1.042386391706634,
+  "final_val_loss": 1.0453527576742117,
+  "final_val_accuracy": 0.5749509908190426,
+  "num_predictions": 347894
+}

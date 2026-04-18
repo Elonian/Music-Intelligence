@@ -1,3 +1,6 @@
 data/
 *.pyc
 __pycache__/
+
+# Ignore generated model checkpoints under outputs.
+outputs/**/*.pt
