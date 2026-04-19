@@ -1,0 +1,50 @@
+{
+  "run_name": "full_transformer",
+  "split": "test",
+  "reference_files": 2746,
+  "paper_objective_metrics": [
+    "pitch_class_entropy",
+    "scale_consistency_percent",
+    "groove_consistency_percent"
+  ],
+  "paper_metric_rule": "For the paper objective metrics, closer to the reference split mean is better.",
+  "reference_summary_path": "/mntdatalora/src/Music-Intelligence/outputs/multitrack_generation/evaluation/full_transformer/generation_quality/reference_quality_summary.json",
+  "generated_quality_path": "/mntdatalora/src/Music-Intelligence/outputs/multitrack_generation/evaluation/full_transformer/generation_quality/generated_quality.csv",
+  "candidate_scores_path": "/mntdatalora/src/Music-Intelligence/outputs/multitrack_generation/evaluation/full_transformer/generation_quality/candidate_scores.csv",
+  "best_candidate_path": "/mntdatalora/src/Music-Intelligence/outputs/multitrack_generation/evaluation/full_transformer/generation_quality/best_candidate.json",
+  "existing_best": {
+    "name": "full_transformer_rich_selected",
+    "quality_score": 2.126834348195178,
+    "note_count": 199,
+    "paper_metric_distance": 0.5200421460122829
+  },
+  "best_candidate": {
+    "name": "candidate_010",
+    "prompt": "all_instruments",
+    "config": {
+      "decoding": "topk",
+      "temperature": 0.95,
+      "top_k": 12,
+      "top_p": 0.9,
+      "max_seq_len": 640,
+      "seed": 709,
+      "prevent_pad": true,
+      "enforce_event_order": true,
+      "enforce_monotonic_beats": true,
+      "sample_valid_beat_logits": true,
+      "enforce_positive_duration": true,
+      "restrict_note_instruments_to_prompt": true,
+      "avoid_duplicate_notes": true,
+      "duplicate_retry_count": 8
+    },
+    "quality_score": 2.524290550639336,
+    "note_count": 220,
+    "paper_metric_distance": 0.5702335028552787
+  },
+  "candidate_improved_over_existing": false,
+  "reference_means": {
+    "pitch_class_entropy": 2.366236246167045,
+    "scale_consistency_percent": 97.87461116198355,
+    "groove_consistency_percent": 94.78058921797702
+  }
+}

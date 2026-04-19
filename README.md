@@ -2,9 +2,11 @@
 
 ## Abstract
 
-This project presents five connected music intelligence pipelines that move from signal generation to symbolic analysis, audio classification, probabilistic composition, and automatic instrumentation. The first pipeline synthesizes note sequences as sine and sawtooth waveforms, then applies fade, delay, and layered mixing so waveform envelopes and harmonic structure can be inspected directly. The second pipeline classifies symbolic MIDI files by extracting pitch, duration, velocity, density, and drum-channel descriptors, then comparing compact baseline features with an enhanced logistic regression representation. The third pipeline performs spectrogram based instrument classification on audio clips by transforming waveforms into MFCC, STFT, mel-spectrogram, and constant Q features, training neural classifiers, and extending the task from binary guitar vocal recognition to four timbral families. The fourth pipeline models monophonic MIDI melodies with first and second order Markov chains, evaluates pitch and rhythm perplexity, and generates a new MIDI sequence from learned pitch transitions and beat-position rhythm probabilities. The fifth pipeline trains rule, MLP, recurrent, bidirectional recurrent, and Transformer arrangers for assigning instruments to symbolic note streams.
+This project presents six connected music intelligence pipelines that move from signal generation to symbolic analysis, audio classification, probabilistic composition, multitrack generation, and automatic instrumentation. The first pipeline synthesizes note sequences as sine and sawtooth waveforms, then applies fade, delay, and layered mixing so waveform envelopes and harmonic structure can be inspected directly. The second pipeline classifies symbolic MIDI files by extracting pitch, duration, velocity, density, and drum-channel descriptors. The third pipeline performs spectrogram based instrument classification on audio clips with MFCC, STFT, mel-spectrogram, and constant-Q features. The fourth pipeline models monophonic MIDI melodies with Markov chains and evaluates pitch and rhythm perplexity. The fifth pipeline trains a multitrack Transformer that generates piano, guitar, bass, strings, and brass event streams. The sixth pipeline trains rule, MLP, recurrent, bidirectional recurrent, and Transformer arrangers for assigning instruments to symbolic note streams.
 
 The automatic instrumentation stage treats an existing symbolic arrangement as a mixture of note events and learns to recover the instrument assignment for every note. This turns a single piano-roll-like input stream into labeled output parts for `piano`, `guitar`, `bass`, `strings`, and `brass`, then evaluates the arrangers with validation accuracy, loss curves, prediction-roll comparisons, and confusion matrices.
+
+The multitrack generation stage uses a six-field event representation `(type, beat, position, pitch, duration, instrument)`. It is evaluated with notebook metrics such as loss, per-field accuracy, and confusion matrices, and with paper-style generation metrics such as pitch-class entropy, scale consistency, and groove consistency.
 
 ## Output Gallery
 
@@ -31,6 +33,12 @@ The spectrogram summary follows audio from waveform to time-frequency features, 
 ![Symbolic Generation Animated Panel](outputs/symbolic_music_generation/readme/readme_symbolic_animated_panel.gif)
 
 The generation summary shows the Markov model improving as more MIDI files enter the corpus: pitch probabilities stabilize, transition structure becomes clearer, perplexity changes over time, and the sampled melody is revealed as a piano-roll sequence.
+
+### Multitrack Transformer Generation
+
+![Multitrack Transformer Animated Panel](outputs/multitrack_generation/readme/readme_multitrack_generation_animated_panel.gif)
+
+The multitrack summary shows final confusion matrices, training curves, generated piano roll, and instrument balance for the selected rich sample.
 
 ### Automatic Instrumentation
 
@@ -117,9 +125,15 @@ outputs/
       runs/
       model_suite/
       visual/
+  multitrack_generation/
+    runs/
+    evaluation/
+    generated/
+    visuals/
+    readme/
 ```
 
-The MIDI utilities search the provided data bundle first, automatically extract `piano.zip` and `drums.zip` when needed, and then write project outputs into separate directories for rendered audio, classifier artifacts, raw visuals, README-ready panels, and compact evaluation summaries. The spectrogram utilities resolve the NSynth subset from either the extracted folder or archive, save CPU loadable model weights, and render feature, training, confusion matrix. The symbolic generation utilities resolve the PDMX subset, build Markov pitch and rhythm tables, write `q10.mid`. The automatic instrumentation utilities read processed note-event arrays, train a suite of arrangers, save checkpoint histories, and render final README visuals under the training run's `visual/` directory.
+The MIDI utilities search the provided data bundle first, automatically extract `piano.zip` and `drums.zip` when needed, and then write project outputs into separate directories for rendered audio, classifier artifacts, raw visuals, README-ready panels, and compact evaluation summaries. The spectrogram utilities resolve the NSynth subset from either the extracted folder or archive, save CPU-loadable model weights, and render feature, training, and confusion-matrix views. The symbolic generation utilities resolve the PDMX subset, build Markov pitch and rhythm tables, and write `q10.mid`. The multitrack utilities train the Transformer, evaluate the checkpoint, search generation settings, and render README panels under `outputs/multitrack_generation`. The automatic instrumentation utilities read processed note-event arrays, train a suite of arrangers, save checkpoint histories, and render final README visuals under the training run's `visual/` directory.
 
 ## Execution Order
 
@@ -134,6 +148,7 @@ python scripts/visualiser/render_spectrogram_gallery.py
 python scripts/symbolic_music_generation/build_markov_outputs.py
 python scripts/visualiser/render_symbolic_generation_gallery.py
 python scripts/visualiser/render_automatic_instrumentation_gallery.py --suite-root outputs/automatic_music_instrumentation/main_training_20260418_191121
+python -m scripts.visualiser.render_multitrack_generation_gallery --training-run-name full_transformer --generated-name full_transformer_rich_selected
 python evaluation/compute_metrics.py
 python evaluation/evaluate_symbolic_generation.py
 python scripts/build_readme_panels.py
@@ -150,6 +165,14 @@ Spectrogram specific model artifacts can be regenerated with:
 ```bash
 python scripts/spectrogram_classification/train_notebook_weights.py --module-name spectrogram_classification --device cpu
 python scripts/visualiser/render_spectrogram_gallery.py
+```
+
+Multitrack generation artifacts can be regenerated with:
+
+```bash
+python -m scripts.multitrack_generation.workflows.evaluate_model --checkpoint outputs/multitrack_generation/runs/full_transformer/checkpoints/best_model.pt --run-name full_transformer
+python -m scripts.multitrack_generation.workflows.evaluate_generation_quality --checkpoint outputs/multitrack_generation/runs/full_transformer/checkpoints/best_model.pt --run-name full_transformer --generated-path outputs/multitrack_generation/generated/full_transformer_rich_selected --search --search-name full_transformer_rich_selected --prompts all_instruments --num-search-samples 28 --max-seq-len 640 --min-notes 128
+python -m scripts.visualiser.render_multitrack_generation_gallery --training-run-name full_transformer --generated-name full_transformer_rich_selected
 ```
 
 ## Audio Synthesis
@@ -522,6 +545,52 @@ Dataset and generation summary:
 | `generated_q10_note_count` | `500` |
 | `generated_length_matches_request` | `true` |
 
+## Multitrack Transformer Generation
+
+### Model
+
+The multitrack generator represents every event with six fields:
+
+```math
+x_i = (\tau_i, b_i, r_i, p_i, d_i, c_i),
+```
+
+where `type` identifies song, instrument, note, and padding events; `beat` and `position` locate the onset; `pitch` and `duration` define the note; and `instrument` chooses one of piano, guitar, bass, strings, and brass.
+
+The Transformer predicts the next event one field at a time:
+
+```math
+P_\theta(x_{i+1} \mid x_{\le i})
+=
+P(\tau)P(b)P(r)P(p)P(d)P(c).
+```
+
+Training uses cross entropy over all six fields. The notebook-style evaluation reports test loss, overall accuracy, per-field accuracy, and confusion matrices. The generation evaluation also compares the generated piece to the held-out split using pitch-class entropy, scale consistency, and groove consistency.
+
+### Static Panel
+
+![Multitrack Transformer Static Panel](outputs/multitrack_generation/readme/readme_multitrack_generation_static_panel.png)
+
+### Current Metrics
+
+| Metric | Value |
+| --- | ---: |
+| `test_loss` | `4.2684` |
+| `test_accuracy` | `0.8008` |
+| `generated_notes` | `220` |
+| `active_instruments` | `5` |
+| `pitch_class_entropy` | `2.3506` |
+| `scale_consistency_percent` | `100.0000` |
+| `groove_consistency_percent` | `94.2708` |
+
+Generated artifacts:
+
+| Artifact | Path |
+| --- | --- |
+| MIDI | `outputs/multitrack_generation/generated/full_transformer_rich_selected/full_transformer_rich_selected.mid` |
+| WAV preview | `outputs/multitrack_generation/generated/full_transformer_rich_selected/full_transformer_rich_selected.wav` |
+| Generation summary | `outputs/multitrack_generation/generated/full_transformer_rich_selected/summary.json` |
+
 ## Automatic Instrumentation
 
 ### Model
@@ -665,6 +734,13 @@ The evaluation folder stays table-first:
 | `symbolic_beat_position_perplexity` | `1.9226` |
 | `symbolic_beat_trigram_perplexity` | `1.6477` |
 | `symbolic_generated_note_count` | `500` |
+| `multitrack_test_loss` | `4.2684` |
+| `multitrack_test_accuracy` | `0.8008` |
+| `multitrack_generated_note_count` | `220` |
+| `multitrack_active_instruments` | `5` |
+| `multitrack_pitch_class_entropy` | `2.3506` |
+| `multitrack_scale_consistency_percent` | `100.0000` |
+| `multitrack_groove_consistency_percent` | `94.2708` |
 | `automatic_instrumentation_best_score` | `0.6767` |
 | `automatic_instrumentation_best_model` | `bidirectional_lstm` |
 | `automatic_instrumentation_best_transformer_score` | `0.6442` |

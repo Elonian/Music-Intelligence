@@ -1,0 +1,26 @@
+{
+  "loss": 4.268367501540267,
+  "per_field_loss": {
+    "type": 0.018192565621070512,
+    "beat": 0.21797462141342114,
+    "position": 0.5409066531490236,
+    "pitch": 1.3116471999318515,
+    "duration": 1.8256888382835204,
+    "instrument": 0.3539576231413796
+  },
+  "accuracy": 0.8007977657446438,
+  "per_field_accuracy": {
+    "type": 0.9933607776435691,
+    "beat": 0.9301512176016083,
+    "position": 0.8326390087180878,
+    "pitch": 0.6456315067254994,
+    "duration": 0.5388095961961419,
+    "instrument": 0.864194487582956
+  },
+  "active_tokens": 365103,
+  "checkpoint": "outputs/multitrack_generation/runs/full_transformer/checkpoints/best_model.pt",
+  "processed_dir": "/mntdatalora/src/Music-Intelligence/data/automatic_music_instrumentation/processed",
+  "split": "test",
+  "files": 2746,
+  "device": "cuda"
+}

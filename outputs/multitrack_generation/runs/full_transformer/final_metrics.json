@@ -1,0 +1,31 @@
+{
+  "run_dir": "/mntdatalora/src/Music-Intelligence/outputs/multitrack_generation/runs/full_transformer",
+  "log_dir": "/mntdatalora/src/Music-Intelligence/logs/multitrack_generation/full_transformer",
+  "processed_dir": "/mntdatalora/src/Music-Intelligence/data/automatic_music_instrumentation/processed",
+  "model_name": "full",
+  "positional_mode": "sequence",
+  "device": "cuda",
+  "train_files": 10717,
+  "valid_files": 2734,
+  "steps": 33500,
+  "best_val_loss": 4.255742067996779,
+  "final_val_loss": 4.28384660139641,
+  "final_val_accuracy": 0.8027703666648139,
+  "per_field_loss": {
+    "type": 0.01861305612646038,
+    "beat": 0.21587018968265057,
+    "position": 0.5360380337161582,
+    "pitch": 1.3040151840650143,
+    "duration": 1.8504038548815422,
+    "instrument": 0.35890628292458404
+  },
+  "per_field_accuracy": {
+    "type": 0.993538435884609,
+    "beat": 0.9324495581123895,
+    "position": 0.8361541882052137,
+    "pitch": 0.6518509254627314,
+    "duration": 0.5376382635762326,
+    "instrument": 0.8649908287477072
+  },
+  "active_tokens": 359820
+}

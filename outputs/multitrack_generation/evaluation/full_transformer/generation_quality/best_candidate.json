@@ -1,0 +1,117 @@
+{
+  "kind": "candidate",
+  "name": "candidate_010",
+  "prompt": "all_instruments",
+  "config": {
+    "decoding": "topk",
+    "temperature": 0.95,
+    "top_k": 12,
+    "top_p": 0.9,
+    "max_seq_len": 640,
+    "seed": 709,
+    "prevent_pad": true,
+    "enforce_event_order": true,
+    "enforce_monotonic_beats": true,
+    "sample_valid_beat_logits": true,
+    "enforce_positive_duration": true,
+    "restrict_note_instruments_to_prompt": true,
+    "avoid_duplicate_notes": true,
+    "duplicate_retry_count": 8
+  },
+  "generation_seconds": 1.3403331330046058,
+  "inference_notes_per_second": 164.138298593596,
+  "metrics": {
+    "note_count": 220,
+    "length_beats": 32.25,
+    "length_seconds": 16.125,
+    "notes_per_beat": 6.821705426356589,
+    "unique_pitch_count": 19,
+    "unique_pitch_class_count": 6,
+    "active_instrument_count": 5,
+    "instrument_entropy": 1.7863684864780942,
+    "average_polyphony": 2.124031007751938,
+    "max_polyphony": 18,
+    "mean_duration_steps": 7.472727272727273,
+    "pitch_class_entropy": 2.350642067228416,
+    "scale_consistency_percent": 100.0,
+    "best_scale": "1:major",
+    "groove_consistency_percent": 94.27083333333334,
+    "instrument_counts": {
+      "piano": 84,
+      "guitar": 11,
+      "bass": 25,
+      "strings": 7,
+      "brass": 93
+    },
+    "sequence_valid": true,
+    "sequence_len": 228,
+    "raw_note_events": 220,
+    "unique_note_events": 220,
+    "duplicate_note_rate": 0.0,
+    "has_start_song": true,
+    "has_start_notes": true,
+    "has_end_song": true,
+    "declared_instruments": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "note_instrument_violation_rate": 0.0
+  },
+  "score": {
+    "quality_score": 2.524290550639336,
+    "paper_metric_distance": 0.5702335028552787,
+    "paper_metric_distance_components": {
+      "pitch_class_entropy": 0.028359530456443675,
+      "scale_consistency_percent": 0.4343085122451023,
+      "groove_consistency_percent": 0.10756546015373279
+    },
+    "shape_metric_distance": 1.9540570477840573,
+    "shape_metric_distance_components": {
+      "notes_per_beat": 0.9241269711587843,
+      "active_instrument_count": 2.4520056938825907,
+      "average_polyphony": 0.5808049695573295,
+      "instrument_entropy": 1.6260825019271739
+    },
+    "validity_penalty": 0.0
+  },
+  "saved_bundle": {
+    "name": "full_transformer_rich_selected",
+    "output_dir": "/mntdatalora/src/Music-Intelligence/outputs/multitrack_generation/generated/full_transformer_rich_selected",
+    "sequence_len": 228,
+    "note_count": 220,
+    "type_counts": {
+      "SOS": 1,
+      "Instrument": 5,
+      "SON": 1,
+      "Note": 220,
+      "EOS": 1,
+      "PAD": 0
+    },
+    "instrument_counts": {
+      "piano": 84,
+      "guitar": 11,
+      "bass": 25,
+      "strings": 7,
+      "brass": 93
+    },
+    "config": {
+      "decoding": "topk",
+      "temperature": 0.95,
+      "top_k": 12,
+      "top_p": 0.9,
+      "max_seq_len": 640,
+      "seed": 709,
+      "prevent_pad": true,
+      "enforce_event_order": true,
+      "enforce_monotonic_beats": true,
+      "sample_valid_beat_logits": true,
+      "enforce_positive_duration": true,
+      "restrict_note_instruments_to_prompt": true,
+      "avoid_duplicate_notes": true,
+      "duplicate_retry_count": 8
+    }
+  }
+}

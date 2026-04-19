@@ -1,0 +1,37 @@
+{
+  "name": "full_transformer_rich_selected",
+  "output_dir": "/mntdatalora/src/Music-Intelligence/outputs/multitrack_generation/generated/full_transformer_rich_selected",
+  "sequence_len": 228,
+  "note_count": 220,
+  "type_counts": {
+    "SOS": 1,
+    "Instrument": 5,
+    "SON": 1,
+    "Note": 220,
+    "EOS": 1,
+    "PAD": 0
+  },
+  "instrument_counts": {
+    "piano": 84,
+    "guitar": 11,
+    "bass": 25,
+    "strings": 7,
+    "brass": 93
+  },
+  "config": {
+    "decoding": "topk",
+    "temperature": 0.95,
+    "top_k": 12,
+    "top_p": 0.9,
+    "max_seq_len": 640,
+    "seed": 709,
+    "prevent_pad": true,
+    "enforce_event_order": true,
+    "enforce_monotonic_beats": true,
+    "sample_valid_beat_logits": true,
+    "enforce_positive_duration": true,
+    "restrict_note_instruments_to_prompt": true,
+    "avoid_duplicate_notes": true,
+    "duplicate_retry_count": 8
+  }
+}
