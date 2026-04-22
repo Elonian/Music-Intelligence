@@ -803,17 +803,22 @@ def _readme_dashboard_frame(
 
 
 def render_readme_panel(training_run_name: str, generated_name: str, output_root: Path = MULTITRACK_GENERATION_OUTPUT_ROOT) -> Path:
-    output_path = ensure_dir(MULTITRACK_GENERATION_README_DIR) / "readme_multitrack_generation_static_panel.png"
+    readme_dir = ensure_dir(MULTITRACK_GENERATION_README_DIR)
+    output_path = readme_dir / "readme_multitrack_transformer_static_panel.png"
+    legacy_static_path = readme_dir / "readme_multitrack_generation_static_panel.png"
     static = _readme_dashboard_frame(training_run_name, generated_name, output_root, progress=1.0)
     static.save(output_path)
+    static.save(legacy_static_path)
 
-    gif_path = MULTITRACK_GENERATION_README_DIR / "readme_multitrack_generation_animated_panel.gif"
+    gif_path = readme_dir / "readme_multitrack_transformer_animated_panel.gif"
+    legacy_gif_path = readme_dir / "readme_multitrack_generation_animated_panel.gif"
     frames: list[Image.Image] = []
     for frame_index in range(18):
         progress = (frame_index + 1) / 18.0
         frame = _readme_dashboard_frame(training_run_name, generated_name, output_root, progress=progress)
         frames.append(frame.convert("P", palette=Image.Palette.ADAPTIVE, colors=224))
     frames[0].save(gif_path, save_all=True, append_images=frames[1:], duration=135, loop=0, optimize=False)
+    frames[0].save(legacy_gif_path, save_all=True, append_images=frames[1:], duration=135, loop=0, optimize=False)
     return output_path
 
 

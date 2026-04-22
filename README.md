@@ -38,7 +38,7 @@ The generation summary shows the Markov model improving as more MIDI files enter
 
 ### Multitrack Transformer Generation
 
-![Multitrack Transformer Animated Panel](outputs/multitrack_generation/readme/readme_multitrack_generation_animated_panel.gif)
+![Multitrack Transformer Animated Panel](outputs/multitrack_generation/readme/readme_multitrack_transformer_animated_panel.gif)
 
 The multitrack summary shows final confusion matrices, training curves, generated piano roll, and instrument balance for the selected rich sample.
 
@@ -606,7 +606,7 @@ Training uses cross entropy over all six fields. The notebook style evaluation r
 
 ### Static Panel
 
-![Multitrack Transformer Static Panel](outputs/multitrack_generation/readme/readme_multitrack_generation_static_panel.png)
+![Multitrack Transformer Static Panel](outputs/multitrack_generation/readme/readme_multitrack_transformer_static_panel.png)
 
 ### Current Metrics
 
@@ -839,7 +839,7 @@ z_u =
 Candidate tracks are then ranked by cosine similarity to the query representation, excluding tracks already present in the query:
 
 ```math
-\operatorname{score}(j \mid Q_u)
+\mathrm{score}(j \mid Q_u)
 =
 \frac{z_u^\top q_j}{\|z_u\|_2\|q_j\|_2},
 \qquad
@@ -849,8 +849,8 @@ j \notin Q_u.
 The ranked continuation list is
 
 ```math
-R_u = \operatorname{argsort}_{j \notin Q_u}
-\left[-\operatorname{score}(j \mid Q_u)\right].
+R_u = \mathrm{argsort}_{j \notin Q_u}
+\left[-\mathrm{score}(j \mid Q_u)\right].
 ```
 
 The audio baseline uses the same retrieval shape but replaces learned WRMF factors with precomputed audio embeddings. For each track embedding
@@ -870,7 +870,7 @@ a_u =
 and the audio score is
 
 ```math
-\operatorname{score}_{\text{audio}}(j \mid Q_u)
+\mathrm{score}_{\mathrm{audio}}(j \mid Q_u)
 =
 \frac{a_u^\top e_j}{\|a_u\|_2\|e_j\|_2}.
 ```
@@ -882,7 +882,7 @@ This makes the comparison strict: both systems rank by cosine similarity from th
 For a playlist `u`, let `R_{u,k}` be the top `k` recommended tracks and let `T_u` be the hidden target set. Precision at `k` is
 
 ```math
-\operatorname{Precision@k}(u)
+\mathrm{Precision@k}(u)
 =
 \frac{|R_{u,k} \cap T_u|}{k}.
 ```
@@ -890,9 +890,9 @@ For a playlist `u`, let `R_{u,k}` be the top `k` recommended tracks and let `T_u
 The target normalized precision used in the reports is also recall at `k`:
 
 ```math
-\operatorname{TargetP@k}(u)
+\mathrm{TargetP@k}(u)
 =
-\operatorname{Recall@k}(u)
+\mathrm{Recall@k}(u)
 =
 \frac{|R_{u,k} \cap T_u|}{|T_u|}.
 ```
@@ -900,7 +900,7 @@ The target normalized precision used in the reports is also recall at `k`:
 Hit rate at `k` measures whether at least one hidden target appears in the first `k` recommendations:
 
 ```math
-\operatorname{Hit@k}(u)
+\mathrm{Hit@k}(u)
 =
 \mathbf{1}\{|R_{u,k} \cap T_u| > 0\}.
 ```
@@ -908,10 +908,10 @@ Hit rate at `k` measures whether at least one hidden target appears in the first
 For a target track `t`, its reciprocal rank is
 
 ```math
-\operatorname{RR}(t, R_u)
+\mathrm{RR}(t, R_u)
 =
 \begin{cases}
-\frac{1}{\operatorname{rank}_{R_u}(t)} & \text{if } t \in R_u, \\
+\frac{1}{\mathrm{rank}_{R_u}(t)} & \text{if } t \in R_u, \\
 0 & \text{otherwise.}
 \end{cases}
 ```
@@ -919,39 +919,39 @@ For a target track `t`, its reciprocal rank is
 The project reports playlist MRR by averaging reciprocal rank over the target tracks and then averaging over playlists:
 
 ```math
-\operatorname{MRR}
+\mathrm{MRR}
 =
 \frac{1}{U}
 \sum_{u=1}^{U}
 \frac{1}{|T_u|}
 \sum_{t \in T_u}
-\operatorname{RR}(t, R_u).
+\mathrm{RR}(t, R_u).
 ```
 
 Let `r_{u,n}` be the track id at rank `n` in `R_u`. Average precision at `k` rewards early hits:
 
 ```math
-\operatorname{AP@k}(u)
+\mathrm{AP@k}(u)
 =
 \frac{1}{\min(|T_u|, k)}
 \sum_{n=1}^{k}
-\operatorname{Precision@n}(u)
+\mathrm{Precision@n}(u)
 \mathbf{1}\{r_{u,n} \in T_u\}.
 ```
 
 NDCG at `k` discounts later hits logarithmically:
 
 ```math
-\operatorname{DCG@k}(u)
+\mathrm{DCG@k}(u)
 =
 \sum_{n=1}^{k}
 \frac{\mathbf{1}\{r_{u,n} \in T_u\}}{\log_2(n+1)},
 ```
 
 ```math
-\operatorname{NDCG@k}(u)
+\mathrm{NDCG@k}(u)
 =
-\frac{\operatorname{DCG@k}(u)}
+\frac{\mathrm{DCG@k}(u)}
 {\sum_{n=1}^{\min(|T_u|, k)}\frac{1}{\log_2(n+1)}}.
 ```
 
@@ -959,7 +959,7 @@ NDCG at `k` discounts later hits logarithmically:
 
 ![Automatic Playlist Continuation Static Panel](outputs/automatic_playlist_continuation/full_run_20260422_002634/readme/readme_automatic_playlist_continuation_static_panel.png)
 
-The static panel keeps the final run evidence in one view: dataset coverage, training convergence, model comparison, first relevant rank distribution, top-10 hit examples, embedding coverage, and improved synthesis evidence.
+The static panel keeps the final run evidence in one view: dataset coverage, training convergence, model comparison, first relevant rank distribution, top 10 hit examples, embedding coverage, and improved synthesis evidence.
 
 The animated panel is generated from the metrics rather than from static screenshots. Each frame advances the run state: the loss curve extends over epochs, validation metrics move with training, CF/audio depth curves reveal more ranks, quality bars grow in, and the recommendation hit matrix opens from rank 1 through rank 10.
 
