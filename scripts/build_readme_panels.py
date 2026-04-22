@@ -2,20 +2,30 @@
 from __future__ import annotations
 
 import argparse
+import ast
+import csv
 import io
 import sys
 from dataclasses import dataclass
 from pathlib import Path
 
-import imageio.v2 as imageio
+import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 import numpy as np
 from PIL import Image, ImageDraw, ImageEnhance, ImageFont
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score
-from sklearn.model_selection import train_test_split
-from sklearn.pipeline import make_pipeline
-from sklearn.preprocessing import StandardScaler
+
+try:
+    from sklearn.linear_model import LogisticRegression
+    from sklearn.metrics import accuracy_score
+    from sklearn.model_selection import train_test_split
+    from sklearn.pipeline import make_pipeline
+    from sklearn.preprocessing import StandardScaler
+except ModuleNotFoundError:
+    LogisticRegression = None
+    accuracy_score = None
+    train_test_split = None
+    make_pipeline = None
+    StandardScaler = None
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -23,6 +33,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from utils import (
+    AUTOMATIC_PLAYLIST_CONTINUATION_OUTPUT_ROOT,
     AUDIO_OUTPUT_DIR,
     CLASSIFIER_OUTPUT_DIR,
     OUTPUT_ROOT,
@@ -48,6 +59,18 @@ PIANO_COLOR = "#4C78A8"
 DRUM_COLOR = "#E07A5F"
 BASELINE_COLOR = "#7A8794"
 ENHANCED_COLOR = "#3FA76E"
+ACCENT_APC = (31, 111, 139)
+ACCENT_APC_AUDIO = (208, 113, 63)
+ACCENT_APC_GOOD = (47, 133, 90)
+ACCENT_APC_GOLD = (214, 162, 61)
+
+APC_PANEL_FILES = {
+    "dashboard": "apc_full_run_dashboard.png",
+    "training": "training_diagnostics_showcase.png",
+    "recommender": "recommender_storyboard.png",
+    "examples": "recommendation_examples_panel.png",
+    "synthesis": "synthesis_showcase.png",
+}
 
 BASELINE_FIELDS = (
     "lowest_pitch",
@@ -393,6 +416,9 @@ def _feature_vector_from_row(row: dict, fields: tuple[str, ...]) -> list[float]:
 
 
 def _compute_seed_sweep(rows: list[dict]) -> dict:
+    if any(item is None for item in (LogisticRegression, accuracy_score, train_test_split, make_pipeline, StandardScaler)):
+        raise ModuleNotFoundError("Install scikit-learn to build classifier README panels.")
+
     y = [int(row["target"]) for row in rows]
     baseline_X = [_feature_vector_from_row(row, BASELINE_FIELDS) for row in rows]
     enhanced_X = [_feature_vector_from_row(row, ENHANCED_FIELDS) for row in rows]
@@ -772,15 +798,519 @@ def build_classifier_panels(output_dir: Path) -> None:
     )
 
 
+def _latest_apc_run_dir() -> Path:
+    candidates = [
+        path
+        for path in AUTOMATIC_PLAYLIST_CONTINUATION_OUTPUT_ROOT.glob("full_run_*")
+        if path.is_dir()
+    ]
+    if not candidates:
+        return AUTOMATIC_PLAYLIST_CONTINUATION_OUTPUT_ROOT
+    return max(candidates, key=lambda path: path.stat().st_mtime)
+
+
+def _load_optional_json(path: Path) -> dict:
+    if not path.exists():
+        return {}
+    return load_json(path)
+
+
+def _ensure_apc_visuals(run_dir: Path) -> Path:
+    visual_dir = run_dir / "visuals"
+    required = [visual_dir / filename for filename in APC_PANEL_FILES.values()]
+    if all(path.exists() for path in required):
+        return visual_dir
+
+    from scripts.visualiser.render_automatic_playlist_continuation_gallery import render_gallery
+
+    render_gallery(run_dir, visual_dir, include_gifs=False)
+    return visual_dir
+
+
+def _apc_metric_cards(run_dir: Path) -> list[MetricCardSpec]:
+    summary = _load_optional_json(run_dir / "metrics" / "playlist_continuation_summary.json")
+    training = _load_optional_json(run_dir / "metrics" / "training_validation_summary.json")
+    cf = _load_optional_json(run_dir / "metrics" / "collaborative_filtering_metrics.json")
+    audio = _load_optional_json(run_dir / "metrics" / "audio_similarity_metrics.json")
+    embedding = _load_optional_json(run_dir / "metrics" / "embedding_summary.json")
+
+    train = summary.get("train", {})
+    best = training.get("best_epoch_by_validation_accuracy_at_10", {})
+    requested = float(embedding.get("requested_track_ids", 0) or 0)
+    present = float(embedding.get("selected_files_present", 0) or 0)
+    coverage = present / requested if requested else 0.0
+
+    return [
+        MetricCardSpec("Train Playlists", f"{int(train.get('playlists', 0)):,}", f"{int(train.get('track_rows', 0)):,} track rows"),
+        MetricCardSpec("Best Epoch", str(int(best.get("epoch", 0))) if best else "n/a", f"Hit@10 {float(best.get('validation_accuracy_at_10', 0.0)):.2f}"),
+        MetricCardSpec("CF Quality", f"{float(cf.get('hit_rate_at_10', 0.0)):.2f}", f"MRR {float(cf.get('mrr', 0.0)):.3f}"),
+        MetricCardSpec("Audio Baseline", f"{float(audio.get('hit_rate_at_10', 0.0)):.2f}", f"embeddings {coverage:.0%}"),
+    ]
+
+
+def _apc_specs(visual_dir: Path) -> list[ImageCardSpec]:
+    return [
+        ImageCardSpec("Full Run Dashboard", visual_dir / APC_PANEL_FILES["dashboard"]),
+        ImageCardSpec("Training Diagnostics", visual_dir / APC_PANEL_FILES["training"]),
+        ImageCardSpec("Recommendation Storyboard", visual_dir / APC_PANEL_FILES["recommender"]),
+        ImageCardSpec("Top-10 Examples", visual_dir / APC_PANEL_FILES["examples"]),
+        ImageCardSpec("Synthesis Showcase", visual_dir / APC_PANEL_FILES["synthesis"]),
+    ]
+
+
+def _save_apc_static_panel(run_dir: Path, visual_dir: Path, output_dir: Path, metrics: list[MetricCardSpec]) -> Path:
+    width, height = 1800, 1040
+    pad = 24
+    title_h = 116
+    top_h = 430
+    bottom_h = 265
+    metric_h = 110
+    canvas, draw = _build_shell(
+        width,
+        height,
+        "Automatic Playlist Continuation",
+        "Dataset coverage, WRMF training, recommendation quality, and synthesis outputs",
+    )
+
+    specs = _apc_specs(visual_dir)
+    top_y = title_h + pad
+    left_w = 1030
+    right_w = width - pad * 3 - left_w
+    _paste_card(
+        canvas,
+        draw,
+        _load_card_frames(specs[0], left_w - 12, top_h - 52, 1)[0],
+        (pad, top_y, pad + left_w, top_y + top_h),
+        specs[0].label,
+        ACCENT_APC,
+    )
+    _paste_card(
+        canvas,
+        draw,
+        _load_card_frames(specs[2], right_w - 12, top_h - 52, 1)[0],
+        (pad * 2 + left_w, top_y, width - pad, top_y + top_h),
+        specs[2].label,
+        ACCENT_APC_GOOD,
+    )
+
+    bottom_y = top_y + top_h + pad
+    bottom_w = (width - pad * 4) // 3
+    for idx, spec in enumerate([specs[1], specs[3], specs[4]]):
+        x0 = pad + idx * (bottom_w + pad)
+        _paste_card(
+            canvas,
+            draw,
+            _load_card_frames(spec, bottom_w - 12, bottom_h - 52, 1)[0],
+            (x0, bottom_y, x0 + bottom_w, bottom_y + bottom_h),
+            spec.label,
+            [ACCENT_APC_GOLD, ACCENT_APC_GOOD, ACCENT_APC_AUDIO][idx],
+        )
+
+    metric_w = (width - pad * (len(metrics) + 1)) // len(metrics)
+    metric_y = height - metric_h - pad
+    for idx, metric in enumerate(metrics):
+        x0 = pad + idx * (metric_w + pad)
+        _draw_metric_card(draw, (x0, metric_y, x0 + metric_w, metric_y + metric_h), metric, ACCENT_APC)
+
+    static_out = output_dir / "readme_automatic_playlist_continuation_static_panel.png"
+    ensure_dir(static_out.parent)
+    canvas.save(static_out, format="PNG", optimize=True)
+    return static_out
+
+
+def _figure_to_exact_image(fig: plt.Figure, width: int, height: int, dpi: int = 100) -> Image.Image:
+    buffer = io.BytesIO()
+    fig.savefig(buffer, format="png", dpi=dpi, facecolor=fig.get_facecolor())
+    plt.close(fig)
+    buffer.seek(0)
+    with Image.open(buffer) as img:
+        rendered = img.convert("RGB").copy()
+    if rendered.size != (width, height):
+        rendered = rendered.resize((width, height), Image.Resampling.LANCZOS)
+    return rendered
+
+
+def _apc_training_records(run_dir: Path) -> list[dict]:
+    curve = _load_optional_json(run_dir / "metrics" / "training_validation_curve.json")
+    records = curve.get("records", []) if isinstance(curve, dict) else []
+    if not records:
+        history = _load_optional_json(run_dir / "models" / "wrmf" / "history.json").get("history", [])
+        records = [
+            {
+                "epoch": idx + 1,
+                "train_loss": item.get("loss", 0.0),
+                "validation_accuracy_at_10": 0.0,
+                "validation_precision_at_10": 0.0,
+                "validation_mrr": 0.0,
+                "validation_ndcg_at_10": 0.0,
+            }
+            for idx, item in enumerate(history)
+        ]
+
+    clean_records: list[dict] = []
+    for idx, record in enumerate(records):
+        clean_records.append(
+            {
+                "epoch": int(record.get("epoch", idx + 1)),
+                "train_loss": float(record.get("train_loss", record.get("loss", 0.0)) or 0.0),
+                "validation_accuracy_at_10": float(record.get("validation_accuracy_at_10", 0.0) or 0.0),
+                "validation_precision_at_10": float(record.get("validation_precision_at_10", 0.0) or 0.0),
+                "validation_mrr": float(record.get("validation_mrr", 0.0) or 0.0),
+                "validation_ndcg_at_10": float(record.get("validation_ndcg_at_10", 0.0) or 0.0),
+            }
+        )
+    if not clean_records:
+        clean_records = [
+            {
+                "epoch": 1,
+                "train_loss": 0.0,
+                "validation_accuracy_at_10": 0.0,
+                "validation_precision_at_10": 0.0,
+                "validation_mrr": 0.0,
+                "validation_ndcg_at_10": 0.0,
+            }
+        ]
+    return sorted(clean_records, key=lambda item: item["epoch"])
+
+
+def _apc_preview_hit_matrix(run_dir: Path, max_rows: int = 10) -> tuple[list[str], np.ndarray]:
+    preview_path = run_dir / "rankings" / "collaborative_filtering_preview.csv"
+    rows: list[tuple[str, list[int]]] = []
+    if preview_path.exists():
+        with preview_path.open("r", encoding="utf-8", newline="") as handle:
+            reader = csv.DictReader(handle)
+            for row in reader:
+                try:
+                    top_10 = ast.literal_eval(row.get("top_10", "[]"))
+                    targets = set(ast.literal_eval(row.get("targets", "[]")))
+                except (SyntaxError, ValueError):
+                    continue
+                hits = [1 if track_id in targets else 0 for track_id in top_10[:10]]
+                hits.extend([0] * (10 - len(hits)))
+                rows.append((str(row.get("playlist_id", len(rows))), hits[:10]))
+
+    if not rows:
+        return [f"P{idx + 1}" for idx in range(max_rows)], np.zeros((max_rows, 10), dtype=int)
+
+    rows.sort(key=lambda item: (-sum(item[1]), item[0]))
+    selected = rows[:max_rows]
+    labels = [f"P{playlist_id}" for playlist_id, _ in selected]
+    matrix = np.asarray([hits for _, hits in selected], dtype=int)
+    return labels, matrix
+
+
+def _visible_curve_points(epochs: np.ndarray, values: np.ndarray, epoch_cursor: float) -> tuple[np.ndarray, np.ndarray]:
+    if len(epochs) == 1:
+        return epochs.copy(), values.copy()
+    visible = epochs <= epoch_cursor
+    x = list(epochs[visible])
+    y = list(values[visible])
+    if not x:
+        x = [float(epochs[0])]
+        y = [float(values[0])]
+    elif epoch_cursor > x[-1] and epoch_cursor < epochs[-1]:
+        x.append(float(epoch_cursor))
+        y.append(float(np.interp(epoch_cursor, epochs, values)))
+    return np.asarray(x, dtype=float), np.asarray(y, dtype=float)
+
+
+def _metric_at_depth(metrics: dict, name: str, depths: list[int]) -> np.ndarray:
+    values = [float(metrics.get(f"{name}_at_{depth}", 0.0) or 0.0) for depth in depths]
+    return np.asarray(values, dtype=float)
+
+
+def _save_apc_animated_panel(run_dir: Path, visual_dir: Path, output_dir: Path, metrics: list[MetricCardSpec]) -> Path:
+    del visual_dir
+    width, height, dpi = 1280, 760, 100
+    records = _apc_training_records(run_dir)
+    cf = _load_optional_json(run_dir / "metrics" / "collaborative_filtering_metrics.json")
+    audio = _load_optional_json(run_dir / "metrics" / "audio_similarity_metrics.json")
+    embedding = _load_optional_json(run_dir / "metrics" / "embedding_summary.json")
+    playlists, hit_matrix = _apc_preview_hit_matrix(run_dir, max_rows=10)
+
+    epochs = np.asarray([record["epoch"] for record in records], dtype=float)
+    train_loss = np.asarray([record["train_loss"] for record in records], dtype=float)
+    hit_at_10 = np.asarray([record["validation_accuracy_at_10"] for record in records], dtype=float)
+    target_p_at_10 = np.asarray([record["validation_precision_at_10"] for record in records], dtype=float)
+    mrr = np.asarray([record["validation_mrr"] for record in records], dtype=float)
+    ndcg = np.asarray([record["validation_ndcg_at_10"] for record in records], dtype=float)
+    best_hit = np.maximum.accumulate(hit_at_10)
+
+    depths = [5, 10, 20, 50, 100]
+    cf_depth = _metric_at_depth(cf, "hit_rate", depths)
+    audio_depth = _metric_at_depth(audio, "hit_rate", depths)
+    quality_labels = ["Hit@10", "Target P@10", "MRR", "NDCG@10"]
+    cf_quality = np.asarray(
+        [
+            float(cf.get("hit_rate_at_10", 0.0) or 0.0),
+            float(cf.get("target_precision_at_10", 0.0) or 0.0),
+            float(cf.get("mrr", 0.0) or 0.0),
+            float(cf.get("ndcg_at_10", 0.0) or 0.0),
+        ],
+        dtype=float,
+    )
+    audio_quality = np.asarray(
+        [
+            float(audio.get("hit_rate_at_10", 0.0) or 0.0),
+            float(audio.get("target_precision_at_10", 0.0) or 0.0),
+            float(audio.get("mrr", 0.0) or 0.0),
+            float(audio.get("ndcg_at_10", 0.0) or 0.0),
+        ],
+        dtype=float,
+    )
+    requested = float(embedding.get("requested_track_ids", 0) or 0)
+    present = float(embedding.get("selected_files_present", 0) or 0)
+    embedding_coverage = present / requested if requested else 0.0
+    lift = cf_quality[0] / max(audio_quality[0], 1e-9)
+    final_best_idx = int(np.argmax(hit_at_10))
+
+    frame_count = 36
+    frames: list[Image.Image] = []
+    for frame_idx in range(frame_count):
+        progress = frame_idx / max(frame_count - 1, 1)
+        eased = 1.0 - (1.0 - progress) ** 2
+        epoch_cursor = float(np.interp(eased, [0.0, 1.0], [epochs[0], epochs[-1]]))
+        epoch_label = int(round(epoch_cursor))
+        current_loss = float(np.interp(epoch_cursor, epochs, train_loss))
+        current_hit = float(np.interp(epoch_cursor, epochs, hit_at_10))
+        current_precision = float(np.interp(epoch_cursor, epochs, target_p_at_10))
+        current_mrr = float(np.interp(epoch_cursor, epochs, mrr))
+        current_best_hit = float(np.interp(epoch_cursor, epochs, best_hit))
+        depth_visible = max(2, min(len(depths), int(np.ceil(eased * len(depths)))))
+        topk_visible = max(1, min(10, int(np.ceil(eased * 10))))
+        bar_progress = min(1.0, max(0.0, (progress - 0.12) / 0.68))
+
+        fig = plt.figure(figsize=(width / dpi, height / dpi), dpi=dpi, facecolor=_mpl(BG))
+        fig.text(0.5, 0.965, "Automatic Playlist Continuation", ha="center", va="center", color=_mpl(TEXT), fontsize=24, fontweight="bold")
+        fig.text(
+            0.5,
+            0.928,
+            "Training progress, validation quality, recommendation depth, and top-10 hits rendered from the run metrics",
+            ha="center",
+            va="center",
+            color=_mpl(MUTED),
+            fontsize=11,
+        )
+
+        grid = fig.add_gridspec(
+            3,
+            4,
+            left=0.045,
+            right=0.965,
+            top=0.875,
+            bottom=0.205,
+            hspace=0.48,
+            wspace=0.35,
+            height_ratios=[1.04, 0.96, 0.88],
+        )
+        ax_loss = fig.add_subplot(grid[0, 0:2])
+        ax_validation = fig.add_subplot(grid[1, 0:2])
+        ax_depth = fig.add_subplot(grid[2, 0:2])
+        ax_quality = fig.add_subplot(grid[0, 2:4])
+        ax_hits = fig.add_subplot(grid[1:3, 2:4])
+
+        for ax in (ax_loss, ax_validation, ax_depth, ax_quality, ax_hits):
+            _style_plot_axis(ax)
+
+        x_loss, y_loss = _visible_curve_points(epochs, train_loss, epoch_cursor)
+        ax_loss.plot(x_loss, y_loss, color=_mpl(ACCENT_APC), linewidth=3.0, marker="o", markersize=4.8)
+        ax_loss.fill_between(x_loss, y_loss, np.nanmin(train_loss) * 0.93, color=_mpl(ACCENT_APC), alpha=0.12)
+        ax_loss.scatter([epoch_cursor], [current_loss], s=90, color=_mpl(ACCENT_APC_GOLD), edgecolor="white", linewidth=1.0, zorder=5)
+        ax_loss.set_title("WRMF loss updates each epoch", color=_mpl(TEXT), fontsize=13, fontweight="bold", loc="left")
+        ax_loss.set_xlim(epochs[0], epochs[-1])
+        ax_loss.set_ylim(max(0.0, float(np.nanmin(train_loss)) * 0.86), float(np.nanmax(train_loss)) * 1.08)
+        ax_loss.set_xlabel("Epoch", color=_mpl(MUTED), fontsize=9)
+        ax_loss.set_ylabel("Training loss", color=_mpl(MUTED), fontsize=9)
+        ax_loss.text(
+            0.98,
+            0.88,
+            f"epoch {epoch_label}/{int(epochs[-1])}\nloss {current_loss:.3f}",
+            transform=ax_loss.transAxes,
+            ha="right",
+            va="top",
+            color=_mpl(TEXT),
+            fontsize=10,
+            bbox=dict(boxstyle="round,pad=0.35", facecolor=_mpl(CARD), edgecolor=_mpl(LINE), linewidth=0.9),
+        )
+
+        x_hit, y_hit = _visible_curve_points(epochs, hit_at_10, epoch_cursor)
+        _, y_best = _visible_curve_points(epochs, best_hit, epoch_cursor)
+        _, y_precision = _visible_curve_points(epochs, target_p_at_10, epoch_cursor)
+        _, y_mrr = _visible_curve_points(epochs, mrr, epoch_cursor)
+        _, y_ndcg = _visible_curve_points(epochs, ndcg, epoch_cursor)
+        ax_validation.plot(x_hit, y_hit, color=_mpl(ACCENT_APC_GOOD), linewidth=2.5, marker="o", markersize=4.3, label="Hit@10")
+        ax_validation.plot(x_hit, y_best, color=_mpl(ACCENT_APC_GOLD), linewidth=2.5, linestyle="--", label="best Hit@10")
+        ax_validation.plot(x_hit, y_precision, color=_mpl(ACCENT_APC_AUDIO), linewidth=2.0, label="target P@10")
+        ax_validation.plot(x_hit, y_ndcg, color=(0.48, 0.35, 0.68), linewidth=2.0, label="NDCG@10")
+        ax_validation.plot(x_hit, y_mrr, color=_mpl(MUTED), linewidth=1.8, label="MRR")
+        if epochs[final_best_idx] <= epoch_cursor:
+            ax_validation.scatter([epochs[final_best_idx]], [hit_at_10[final_best_idx]], s=78, color=_mpl(ACCENT_APC_GOLD), edgecolor="white", linewidth=1.0, zorder=5)
+            ax_validation.text(epochs[final_best_idx] + 0.1, hit_at_10[final_best_idx] + 0.025, "best", color=_mpl(TEXT), fontsize=9)
+        ax_validation.set_title("Validation metrics change during training", color=_mpl(TEXT), fontsize=13, fontweight="bold", loc="left")
+        ax_validation.set_xlim(epochs[0], epochs[-1])
+        ax_validation.set_ylim(0.0, max(0.54, float(np.nanmax(hit_at_10)) + 0.06))
+        ax_validation.set_xlabel("Epoch", color=_mpl(MUTED), fontsize=9)
+        ax_validation.set_ylabel("Score", color=_mpl(MUTED), fontsize=9)
+        legend = ax_validation.legend(loc="upper left", ncol=3, frameon=False, fontsize=8.3)
+        if legend is not None:
+            for text in legend.get_texts():
+                text.set_color(_mpl(TEXT))
+
+        ax_depth.plot(depths[:depth_visible], cf_depth[:depth_visible], color=_mpl(ACCENT_APC), linewidth=2.7, marker="o", label="Collaborative filtering")
+        ax_depth.plot(depths[:depth_visible], audio_depth[:depth_visible], color=_mpl(ACCENT_APC_AUDIO), linewidth=2.3, marker="o", label="Audio similarity")
+        ax_depth.set_title("Recall opportunity grows with recommendation depth", color=_mpl(TEXT), fontsize=13, fontweight="bold", loc="left")
+        ax_depth.set_xlim(4, 105)
+        ax_depth.set_ylim(0.0, max(0.72, float(np.nanmax(cf_depth)) + 0.06))
+        ax_depth.set_xticks(depths)
+        ax_depth.set_xlabel("Recommendation depth", color=_mpl(MUTED), fontsize=9)
+        ax_depth.set_ylabel("Hit rate", color=_mpl(MUTED), fontsize=9)
+        legend = ax_depth.legend(loc="lower right", frameon=False, fontsize=8.5)
+        if legend is not None:
+            for text in legend.get_texts():
+                text.set_color(_mpl(TEXT))
+
+        y = np.arange(len(quality_labels))
+        ax_quality.barh(y - 0.18, audio_quality * bar_progress, height=0.32, color=_mpl(ACCENT_APC_AUDIO), label="Audio")
+        ax_quality.barh(y + 0.18, cf_quality * bar_progress, height=0.32, color=_mpl(ACCENT_APC), label="CF")
+        for idx, value in enumerate(cf_quality):
+            if bar_progress > 0.86:
+                ax_quality.text(value + 0.012, idx + 0.18, f"{value:.3f}" if value < 0.1 else f"{value:.2f}", color=_mpl(TEXT), va="center", fontsize=9)
+        ax_quality.set_title("Model quality separates from the audio baseline", color=_mpl(TEXT), fontsize=13, fontweight="bold", loc="left")
+        ax_quality.set_yticks(y, quality_labels)
+        ax_quality.set_xlim(0.0, max(0.52, float(np.nanmax(cf_quality)) + 0.08))
+        ax_quality.invert_yaxis()
+        legend = ax_quality.legend(loc="lower right", frameon=False, fontsize=8.5)
+        if legend is not None:
+            for text in legend.get_texts():
+                text.set_color(_mpl(TEXT))
+
+        revealed = np.full(hit_matrix.shape, np.nan, dtype=float)
+        revealed[:, :topk_visible] = np.where(hit_matrix[:, :topk_visible] > 0, 2.0, 1.0)
+        cmap = plt.matplotlib.colors.ListedColormap([_mpl((232, 226, 216)), _mpl(ACCENT_APC_GOOD)])
+        ax_hits.imshow(revealed - 1.0, cmap=cmap, vmin=0.0, vmax=1.0, aspect="auto")
+        ax_hits.set_title(f"Top-10 target hits reveal over ranks 1-{topk_visible}", color=_mpl(TEXT), fontsize=13, fontweight="bold", loc="left")
+        ax_hits.set_xticks(np.arange(10), [str(idx) for idx in range(1, 11)])
+        ax_hits.set_yticks(np.arange(len(playlists)), playlists)
+        ax_hits.tick_params(axis="y", labelsize=7.5)
+        ax_hits.set_xlabel("Recommendation rank", color=_mpl(MUTED), fontsize=9)
+        ax_hits.set_ylabel("Playlist", color=_mpl(MUTED), fontsize=9)
+        ax_hits.set_xticks(np.arange(-0.5, 10, 1), minor=True)
+        ax_hits.set_yticks(np.arange(-0.5, len(playlists), 1), minor=True)
+        ax_hits.grid(which="minor", color=_mpl(CARD), linewidth=1.1)
+        ax_hits.tick_params(which="minor", bottom=False, left=False)
+        for row_idx, col_idx in zip(*np.where((hit_matrix > 0) & (np.arange(10)[None, :] < topk_visible))):
+            ax_hits.text(col_idx, row_idx, "hit", ha="center", va="center", color="white", fontsize=7.5, fontweight="bold")
+
+        cards = [
+            ("Epoch", f"{epoch_label}/{int(epochs[-1])}", "line extends over time"),
+            ("Loss", f"{current_loss:.3f}", f"start {train_loss[0]:.3f}"),
+            ("Best Hit@10", f"{current_best_hit:.2f}", f"current {current_hit:.2f}"),
+            ("Target P@10", f"{current_precision:.2f}", f"MRR {current_mrr:.3f}"),
+            ("CF lift", f"{lift * bar_progress:.1f}x", "vs audio Hit@10"),
+            ("Embeddings", f"{embedding_coverage * min(1.0, progress * 1.4):.0%}", "selected files present"),
+        ]
+        ax_cards = fig.add_axes([0.035, 0.035, 0.93, 0.125])
+        ax_cards.set_axis_off()
+        card_gap = 0.014
+        card_w = (1.0 - card_gap * (len(cards) - 1)) / len(cards)
+        for idx, (title, value, subtitle) in enumerate(cards):
+            x0 = idx * (card_w + card_gap)
+            ax_cards.add_patch(
+                mpatches.FancyBboxPatch(
+                    (x0, 0.04),
+                    card_w,
+                    0.88,
+                    boxstyle="round,pad=0.012,rounding_size=0.032",
+                    facecolor=_mpl(CARD),
+                    edgecolor=_mpl(LINE),
+                    linewidth=1.2,
+                    transform=ax_cards.transAxes,
+                )
+            )
+            ax_cards.add_patch(
+                mpatches.FancyBboxPatch(
+                    (x0, 0.04),
+                    0.012,
+                    0.88,
+                    boxstyle="round,pad=0.012,rounding_size=0.032",
+                    facecolor=_mpl(ACCENT_APC if idx != 2 else ACCENT_APC_GOLD),
+                    edgecolor=_mpl(ACCENT_APC if idx != 2 else ACCENT_APC_GOLD),
+                    linewidth=0,
+                    transform=ax_cards.transAxes,
+                )
+            )
+            ax_cards.text(x0 + 0.025, 0.73, title, transform=ax_cards.transAxes, color=_mpl(MUTED), fontsize=9.2, va="center")
+            ax_cards.text(x0 + 0.025, 0.43, value, transform=ax_cards.transAxes, color=_mpl(TEXT), fontsize=16, fontweight="bold", va="center")
+            ax_cards.text(x0 + 0.025, 0.16, subtitle, transform=ax_cards.transAxes, color=_mpl(MUTED), fontsize=8.4, va="center")
+
+        frames.append(_figure_to_exact_image(fig, width, height, dpi).quantize(colors=192, method=Image.MEDIANCUT))
+
+    gif_out = output_dir / "readme_automatic_playlist_continuation_animated_panel.gif"
+    ensure_dir(gif_out.parent)
+    frames[0].save(
+        gif_out,
+        save_all=True,
+        append_images=frames[1:],
+        duration=130,
+        loop=0,
+        optimize=False,
+        disposal=2,
+    )
+    return gif_out
+
+
+def _write_apc_readme_snippet(output_dir: Path) -> Path:
+    snippet = output_dir / "README_automatic_playlist_continuation_visuals.md"
+    lines = [
+        "### Automatic Playlist Continuation",
+        "",
+        "![Automatic Playlist Continuation Animated Panel](readme_automatic_playlist_continuation_animated_panel.gif)",
+        "",
+        "![Automatic Playlist Continuation Static Panel](readme_automatic_playlist_continuation_static_panel.png)",
+        "",
+    ]
+    snippet.write_text("\n".join(lines), encoding="utf-8")
+    return snippet
+
+
+def build_automatic_playlist_continuation_panels(run_dir: Path, output_dir: Path | None = None) -> None:
+    run_dir = run_dir.resolve()
+    visual_dir = _ensure_apc_visuals(run_dir)
+    target_dir = ensure_dir((output_dir or run_dir / "readme").resolve())
+    metrics = _apc_metric_cards(run_dir)
+    static_out = _save_apc_static_panel(run_dir, visual_dir, target_dir, metrics)
+    gif_out = _save_apc_animated_panel(run_dir, visual_dir, target_dir, metrics)
+    snippet = _write_apc_readme_snippet(target_dir)
+    print(f"[README Panels] APC static panel: {static_out}")
+    print(f"[README Panels] APC animated panel: {gif_out}")
+    print(f"[README Panels] APC README snippet: {snippet}")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Build README-ready presentation panels from generated outputs.")
     parser.add_argument("--output-dir", type=Path, default=README_DIR)
+    parser.add_argument(
+        "--suite",
+        choices=("legacy", "audio", "classifier", "automatic_playlist_continuation", "all"),
+        default="legacy",
+        help="Which README panel set to build. Default preserves the original audio+classifier behavior.",
+    )
+    parser.add_argument("--apc-run-dir", type=Path, default=None, help="Automatic playlist continuation run folder.")
+    parser.add_argument("--apc-output-dir", type=Path, default=None, help="Output folder for APC README panels. Defaults to APC_RUN_DIR/readme.")
     args = parser.parse_args()
 
-    output_dir = ensure_dir(args.output_dir)
-    build_audio_panels(output_dir)
-    build_classifier_panels(output_dir)
-    print(f"[README Panels] Wrote assets under {output_dir}")
+    if args.suite in ("legacy", "audio", "all"):
+        output_dir = ensure_dir(args.output_dir)
+        build_audio_panels(output_dir)
+        print(f"[README Panels] Wrote audio assets under {output_dir}")
+
+    if args.suite in ("legacy", "classifier", "all"):
+        output_dir = ensure_dir(args.output_dir)
+        build_classifier_panels(output_dir)
+        print(f"[README Panels] Wrote classifier assets under {output_dir}")
+
+    if args.suite in ("automatic_playlist_continuation", "all"):
+        build_automatic_playlist_continuation_panels(args.apc_run_dir or _latest_apc_run_dir(), args.apc_output_dir)
 
 
 if __name__ == "__main__":

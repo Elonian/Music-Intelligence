@@ -1,0 +1,12 @@
+{
+  "adsr_path": "/mntdatalora/src/Music-Intelligence/outputs/automatic_playlist_continuation/full_run_20260422_002634/synthesis/adsr_sawtooth.wav",
+  "lfo_path": "/mntdatalora/src/Music-Intelligence/outputs/automatic_playlist_continuation/full_run_20260422_002634/synthesis/lfo_filtered_sawtooth.wav",
+  "sample_rate": 44100,
+  "lfo_min_hz": 560.0,
+  "lfo_max_hz": 1440.0,
+  "recommended_wavs": {
+    "better_adsr_warm_pad": "/mntdatalora/src/Music-Intelligence/outputs/automatic_playlist_continuation/full_run_20260422_002634/synthesis/better_adsr_warm_pad.wav",
+    "better_lfo_filter_sweep": "/mntdatalora/src/Music-Intelligence/outputs/automatic_playlist_continuation/full_run_20260422_002634/synthesis/better_lfo_filter_sweep.wav"
+  },
+  "better_synthesis_summary": "/mntdatalora/src/Music-Intelligence/outputs/automatic_playlist_continuation/full_run_20260422_002634/synthesis/better_synthesis_summary.json"
+}

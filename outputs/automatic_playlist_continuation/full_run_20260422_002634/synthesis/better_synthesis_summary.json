@@ -1,0 +1,22 @@
+{
+  "description": "Improved stereo synthesis renders with smoother oscillators, ADSR shaping, low-pass movement, and light delay/reverb.",
+  "sample_rate": 44100,
+  "better_adsr_warm_pad": {
+    "path": "/mntdatalora/src/Music-Intelligence/outputs/automatic_playlist_continuation/full_run_20260422_002634/synthesis/better_adsr_warm_pad.wav",
+    "channels": 2,
+    "sample_rate": 44100,
+    "frames": 352800,
+    "duration_seconds": 8.0,
+    "peak": 0.8799999952316284,
+    "rms": 0.20161116123199463
+  },
+  "better_lfo_filter_sweep": {
+    "path": "/mntdatalora/src/Music-Intelligence/outputs/automatic_playlist_continuation/full_run_20260422_002634/synthesis/better_lfo_filter_sweep.wav",
+    "channels": 2,
+    "sample_rate": 44100,
+    "frames": 352800,
+    "duration_seconds": 8.0,
+    "peak": 0.8799999952316284,
+    "rms": 0.24460627138614655
+  }
+}

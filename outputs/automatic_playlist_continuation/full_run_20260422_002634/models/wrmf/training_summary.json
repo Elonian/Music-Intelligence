@@ -1,0 +1,16 @@
+{
+  "dataset": {
+    "playlists": 23149,
+    "track_rows": 148837,
+    "unique_tracks": 15316,
+    "min_length": 3,
+    "mean_length": 6.429521793597996,
+    "median_length": 5.0,
+    "max_length": 71
+  },
+  "interaction_rows": 297674,
+  "positive_rows": 148837,
+  "negative_rows": 148837,
+  "final_loss": 0.8169537893275625,
+  "checkpoint": "/mntdatalora/src/Music-Intelligence/outputs/automatic_playlist_continuation/full_run_20260422_002634/models/wrmf/wrmf_model.pt"
+}

@@ -1,0 +1,85 @@
+{
+  "records": [
+    {
+      "epoch": 1,
+      "train_loss": 4.336336416886844,
+      "validation_accuracy_at_10": 0.43,
+      "validation_precision_at_10": 0.19637759462759463,
+      "validation_mrr": 0.09899858114184946,
+      "validation_ndcg_at_10": 0.16495551702774527
+    },
+    {
+      "epoch": 2,
+      "train_loss": 1.581093391601982,
+      "validation_accuracy_at_10": 0.4,
+      "validation_precision_at_10": 0.18153449328449325,
+      "validation_mrr": 0.1009186530875089,
+      "validation_ndcg_at_10": 0.15847952607351437
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.9453906496775519,
+      "validation_accuracy_at_10": 0.38,
+      "validation_precision_at_10": 0.1744822954822955,
+      "validation_mrr": 0.09287455155827677,
+      "validation_ndcg_at_10": 0.15023901984308657
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.8534021344791163,
+      "validation_accuracy_at_10": 0.38,
+      "validation_precision_at_10": 0.17319261294261293,
+      "validation_mrr": 0.09343398900455002,
+      "validation_ndcg_at_10": 0.14848286840826785
+    },
+    {
+      "epoch": 5,
+      "train_loss": 0.8330664065285647,
+      "validation_accuracy_at_10": 0.42,
+      "validation_precision_at_10": 0.20087973137973136,
+      "validation_mrr": 0.08923834131059033,
+      "validation_ndcg_at_10": 0.1552214986627456
+    },
+    {
+      "epoch": 6,
+      "train_loss": 0.8247181062436185,
+      "validation_accuracy_at_10": 0.43,
+      "validation_precision_at_10": 0.19461385836385836,
+      "validation_mrr": 0.08942183755384794,
+      "validation_ndcg_at_10": 0.15159494917178207
+    },
+    {
+      "epoch": 7,
+      "train_loss": 0.8204055932379261,
+      "validation_accuracy_at_10": 0.44,
+      "validation_precision_at_10": 0.197546398046398,
+      "validation_mrr": 0.09338439967159937,
+      "validation_ndcg_at_10": 0.1551978474204396
+    },
+    {
+      "epoch": 8,
+      "train_loss": 0.8181799480185885,
+      "validation_accuracy_at_10": 0.46,
+      "validation_precision_at_10": 0.20871642246642247,
+      "validation_mrr": 0.07750383470341578,
+      "validation_ndcg_at_10": 0.1464936048926915
+    },
+    {
+      "epoch": 9,
+      "train_loss": 0.8173263709979368,
+      "validation_accuracy_at_10": 0.41,
+      "validation_precision_at_10": 0.18743742368742367,
+      "validation_mrr": 0.08612380735797241,
+      "validation_ndcg_at_10": 0.14357360636885733
+    },
+    {
+      "epoch": 10,
+      "train_loss": 0.8169537893275625,
+      "validation_accuracy_at_10": 0.45,
+      "validation_precision_at_10": 0.1930271672771673,
+      "validation_mrr": 0.0814502032045149,
+      "validation_ndcg_at_10": 0.13929457531070238
+    }
+  ],
+  "validation_accuracy_definition": "hit_rate_at_10: fraction of validation playlists with at least one target track in the top 10 recommendations"
+}

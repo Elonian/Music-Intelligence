@@ -83,10 +83,9 @@ def _text_scale(size: int, bold: bool = False) -> float:
 
 
 def _measure_text(text: str, size: int, bold: bool = False) -> tuple[int, int]:
-    font = _font(10, bold)
+    font = _font(size, bold)
     bbox = font.getbbox(text or " ")
-    scale = _text_scale(size, bold)
-    return max(1, int(math.ceil((bbox[2] - bbox[0]) * scale))), max(1, int(math.ceil((bbox[3] - bbox[1]) * scale)))
+    return max(1, int(math.ceil(bbox[2] - bbox[0]))), max(1, int(math.ceil(bbox[3] - bbox[1])))
 
 
 def _hex(color: str) -> tuple[int, int, int]:
@@ -102,17 +101,11 @@ def _blend(a: str, b: str, t: float) -> tuple[int, int, int]:
 
 
 def _text(draw: ImageDraw.ImageDraw, xy: tuple[int, int], text: str, size: int, color: str = INK, bold: bool = False, anchor: str | None = None) -> None:
-    font = _font(10, bold)
-    bbox = font.getbbox(text or " ")
-    base_w = max(1, bbox[2] - bbox[0])
-    base_h = max(1, bbox[3] - bbox[1])
-    scale = _text_scale(size, bold)
-    width = max(1, int(math.ceil((base_w + 4) * scale)))
-    height = max(1, int(math.ceil((base_h + 4) * scale)))
-    mask = Image.new("L", (base_w + 4, base_h + 4), 0)
-    mask_draw = ImageDraw.Draw(mask)
-    mask_draw.text((2 - bbox[0], 2 - bbox[1]), text, fill=255, font=font)
-    mask = mask.resize((width, height), Image.Resampling.NEAREST)
+    font = _font(size, bold)
+    text = str(text or " ")
+    bbox = draw.textbbox((0, 0), text, font=font)
+    width = max(1, int(math.ceil(bbox[2] - bbox[0])))
+    height = max(1, int(math.ceil(bbox[3] - bbox[1])))
     x, y = int(xy[0]), int(xy[1])
     if anchor:
         if anchor[0] == "r":
@@ -121,8 +114,7 @@ def _text(draw: ImageDraw.ImageDraw, xy: tuple[int, int], text: str, size: int, 
             x -= width // 2
         if len(anchor) > 1 and anchor[1] == "m":
             y -= height // 2
-    patch = Image.new("RGB", (width, height), _hex(color))
-    draw._image.paste(patch, (x, y), mask)
+    draw.text((x - bbox[0], y - bbox[1]), text, fill=_hex(color), font=font)
 
 
 def _fit_text(draw: ImageDraw.ImageDraw, box: tuple[int, int, int, int], text: str, size: int, color: str = INK, bold: bool = False) -> None:
@@ -262,14 +254,28 @@ def _draw_horizontal_bars(
     _panel(draw, box, title)
     left, top, right, bottom = box[0] + 170, box[1] + 58, box[2] - 34, box[3] - 28
     max_value = max(max(values) if values else 0.0, 1e-9)
-    row_h = min(42, max(22, int((bottom - top) / max(len(values), 1))))
+    row_count = max(len(values), 1)
+    row_h = min(42, max(18, int((bottom - top) / row_count)))
+    if top + row_h * row_count > bottom:
+        top = box[1] + 48
+        bottom = box[3] - 16
+        row_h = max(12, int((bottom - top) / row_count))
+    label_size = 16 if row_h >= 24 else 12
+    value_size = 15 if row_h >= 24 else 12
     for index, (label, value, color) in enumerate(zip(labels, values, colors)):
         y = top + index * row_h
-        _text(draw, (box[0] + 22, y + 7), label, 16, MUTED, bold=True)
+        if y + row_h > box[3] - 4:
+            break
+        text_y = y + max(1, (row_h - label_size) // 2)
+        bar_top_offset = max(4, row_h // 4)
+        bar_bottom_offset = max(bar_top_offset + 4, row_h - max(3, row_h // 5))
+        bar_top = y + bar_top_offset
+        bar_bottom = y + bar_bottom_offset
+        _text(draw, (box[0] + 22, text_y), label, label_size, MUTED, bold=True)
         bar_right = int(_scale(value, 0.0, max_value, left, right))
-        draw.rounded_rectangle((left, y + 6, right, y + row_h - 8), radius=5, fill=_hex("#edf2f4"))
-        draw.rounded_rectangle((left, y + 6, max(left + 2, bar_right), y + row_h - 8), radius=5, fill=_hex(color))
-        _text(draw, (right - 2, y + 7), f"{value:.3f}{value_suffix}" if max_value <= 1.5 else f"{_fmt_int(value)}{value_suffix}", 15, INK, anchor="ra")
+        draw.rounded_rectangle((left, bar_top, right, bar_bottom), radius=5, fill=_hex("#edf2f4"))
+        draw.rounded_rectangle((left, bar_top, max(left + 2, bar_right), bar_bottom), radius=5, fill=_hex(color))
+        _text(draw, (right - 2, text_y), f"{value:.3f}{value_suffix}" if max_value <= 1.5 else f"{_fmt_int(value)}{value_suffix}", value_size, INK, anchor="ra")
 
 
 def _draw_stacked_split_bars(draw: ImageDraw.ImageDraw, box: tuple[int, int, int, int], split_counts: dict[str, list[int]]) -> None:
@@ -789,10 +795,10 @@ def _readme_dashboard_frame(
     _draw_line_chart(draw, (42, 650, 770, 882), visible_val_steps, visible_val_accs, "Validation accuracy", GOOD, "accuracy", y_min=0.0, y_max=1.0)
     _draw_readme_piano_roll(draw, (810, 380, 1558, 1050), notes, progress)
 
-    inst_box = (42, 920, 770, 1050)
+    inst_box = (42, 896, 770, 1050)
     counts = summary.get("instrument_counts", {})
     values = [float(counts.get(label, 0)) for label in INSTRUMENT_LABELS]
-    _draw_horizontal_bars(draw, inst_box, values, list(INSTRUMENT_LABELS), INSTRUMENT_COLOR_LIST, "Instrument balance")
+    _draw_horizontal_bars(draw, inst_box, values, list(INSTRUMENT_LABELS), INSTRUMENT_COLOR_LIST, "Generated instrument balance")
     return image
 
 

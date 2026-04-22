@@ -1,0 +1,173 @@
+{
+  "train": {
+    "playlists": 23149,
+    "track_rows": 148837,
+    "unique_tracks": 15316,
+    "min_length": 3,
+    "mean_length": 6.429521793597996,
+    "median_length": 5.0,
+    "max_length": 71
+  },
+  "test": {
+    "playlists": 100,
+    "track_rows": 657,
+    "unique_tracks": 457,
+    "min_length": 3,
+    "mean_length": 6.57,
+    "median_length": 5.0,
+    "max_length": 29
+  },
+  "interaction_rows": 297674,
+  "positive_rows": 148837,
+  "negative_rows": 148837,
+  "query_target_train_coverage": {
+    "query_total": 200,
+    "query_missing": 3,
+    "query_known_rate": 0.985,
+    "target_total": 457,
+    "target_missing": 12,
+    "target_known_rate": 0.973741794310722,
+    "playlists_with_query_missing": 3,
+    "playlists_with_target_missing": 7
+  },
+  "wrmf_training": {
+    "history": [
+      {
+        "epoch": 0,
+        "loss": 4.336336416886844
+      },
+      {
+        "epoch": 1,
+        "loss": 1.581093391601982
+      },
+      {
+        "epoch": 2,
+        "loss": 0.9453906496775519
+      },
+      {
+        "epoch": 3,
+        "loss": 0.8534021344791163
+      },
+      {
+        "epoch": 4,
+        "loss": 0.8330664065285647
+      },
+      {
+        "epoch": 5,
+        "loss": 0.8247181062436185
+      },
+      {
+        "epoch": 6,
+        "loss": 0.8204055932379261
+      },
+      {
+        "epoch": 7,
+        "loss": 0.8181799480185885
+      },
+      {
+        "epoch": 8,
+        "loss": 0.8173263709979368
+      },
+      {
+        "epoch": 9,
+        "loss": 0.8169537893275625
+      }
+    ],
+    "config": {
+      "num_users": 23149,
+      "num_items": 15316,
+      "num_factors": 16,
+      "alpha": 40.0,
+      "lambda_reg": 0.1,
+      "learning_rate": 0.01,
+      "batch_size": 1024,
+      "epochs": 10,
+      "seed": 42,
+      "device": "cuda"
+    },
+    "final_loss": 0.8169537893275625
+  },
+  "collaborative_filtering": {
+    "playlists": 100,
+    "mrr": 0.0814502032045149,
+    "median_first_relevant_rank": 15.0,
+    "mean_first_relevant_rank": 266.65,
+    "missing_first_relevant_rate": 0.0,
+    "catalog_coverage_at_max_k": 0.16035518412118047,
+    "precision_at_5": 0.09,
+    "target_precision_at_5": 0.12765506715506714,
+    "recall_at_5": 0.12765506715506714,
+    "hit_rate_at_5": 0.34,
+    "map_at_5": 0.07865,
+    "ndcg_at_5": 0.12108912160244686,
+    "precision_at_10": 0.075,
+    "target_precision_at_10": 0.1930271672771673,
+    "recall_at_10": 0.1930271672771673,
+    "hit_rate_at_10": 0.45,
+    "map_at_10": 0.08056808862433862,
+    "ndcg_at_10": 0.13929457531070238,
+    "precision_at_20": 0.05949999999999999,
+    "target_precision_at_20": 0.28734920634920635,
+    "recall_at_20": 0.28734920634920635,
+    "hit_rate_at_20": 0.54,
+    "map_at_20": 0.09520215603159904,
+    "ndcg_at_20": 0.17370376867939416,
+    "precision_at_50": 0.0362,
+    "target_precision_at_50": 0.42742277167277165,
+    "recall_at_50": 0.42742277167277165,
+    "hit_rate_at_50": 0.65,
+    "map_at_50": 0.1072755128476329,
+    "ndcg_at_50": 0.21552022689550074,
+    "precision_at_100": 0.022400000000000003,
+    "target_precision_at_100": 0.5154639804639805,
+    "recall_at_100": 0.5154639804639805,
+    "hit_rate_at_100": 0.74,
+    "map_at_100": 0.11110551424034756,
+    "ndcg_at_100": 0.2389761889123158,
+    "mean_novelty_at_10": 0.8647027281279397,
+    "assignment_mrr": 0.0814502032045149,
+    "assignment_precision_at_10": 0.1930271672771673
+  },
+  "audio_similarity": {
+    "playlists": 100,
+    "mrr": 0.010255246921900834,
+    "median_first_relevant_rank": 229.5,
+    "mean_first_relevant_rank": 1196.06,
+    "missing_first_relevant_rate": 0.0,
+    "catalog_coverage_at_max_k": 0.3521154348393837,
+    "precision_at_5": 0.01,
+    "target_precision_at_5": 0.0066410256410256415,
+    "recall_at_5": 0.0066410256410256415,
+    "hit_rate_at_5": 0.03,
+    "map_at_5": 0.009666666666666667,
+    "ndcg_at_5": 0.013579686888844332,
+    "precision_at_10": 0.01,
+    "target_precision_at_10": 0.01728205128205128,
+    "recall_at_10": 0.01728205128205128,
+    "hit_rate_at_10": 0.05,
+    "map_at_10": 0.008379761904761904,
+    "ndcg_at_10": 0.015168699450866897,
+    "precision_at_20": 0.009,
+    "target_precision_at_20": 0.04091575091575091,
+    "recall_at_20": 0.04091575091575091,
+    "hit_rate_at_20": 0.11,
+    "map_at_20": 0.009438013838013837,
+    "ndcg_at_20": 0.022386400615773433,
+    "precision_at_50": 0.0076,
+    "target_precision_at_50": 0.07776404151404151,
+    "recall_at_50": 0.07776404151404151,
+    "hit_rate_at_50": 0.24,
+    "map_at_50": 0.011541538771840885,
+    "ndcg_at_50": 0.03431912703446314,
+    "precision_at_100": 0.0064,
+    "target_precision_at_100": 0.13169627594627595,
+    "recall_at_100": 0.13169627594627595,
+    "hit_rate_at_100": 0.34,
+    "map_at_100": 0.013032770240072926,
+    "ndcg_at_100": 0.0481561420074003,
+    "mean_novelty_at_10": 0.9865719661335843,
+    "assignment_mrr": 0.010255246921900834,
+    "assignment_precision_at_10": 0.01728205128205128,
+    "loaded_embeddings": 15316
+  }
+}

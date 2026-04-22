@@ -1,0 +1,22 @@
+{
+  "run_dir": "/mntdatalora/src/Music-Intelligence/outputs/automatic_playlist_continuation/full_run_20260422_002634",
+  "visual_dir": "/mntdatalora/src/Music-Intelligence/outputs/automatic_playlist_continuation/full_run_20260422_002634/visuals",
+  "include_gifs": false,
+  "assets": [
+    "/mntdatalora/src/Music-Intelligence/outputs/automatic_playlist_continuation/full_run_20260422_002634/visuals/apc_full_run_dashboard.png",
+    "/mntdatalora/src/Music-Intelligence/outputs/automatic_playlist_continuation/full_run_20260422_002634/visuals/training_diagnostics_showcase.png",
+    "/mntdatalora/src/Music-Intelligence/outputs/automatic_playlist_continuation/full_run_20260422_002634/visuals/recommender_storyboard.png",
+    "/mntdatalora/src/Music-Intelligence/outputs/automatic_playlist_continuation/full_run_20260422_002634/visuals/recommendation_examples_panel.png",
+    "/mntdatalora/src/Music-Intelligence/outputs/automatic_playlist_continuation/full_run_20260422_002634/visuals/synthesis_showcase.png",
+    "/mntdatalora/src/Music-Intelligence/outputs/automatic_playlist_continuation/full_run_20260422_002634/visuals/training_loss_validation_accuracy.png",
+    "/mntdatalora/src/Music-Intelligence/outputs/automatic_playlist_continuation/full_run_20260422_002634/visuals/recommender_metric_comparison.png",
+    "/mntdatalora/src/Music-Intelligence/outputs/automatic_playlist_continuation/full_run_20260422_002634/visuals/retrieval_depth_curves.png",
+    "/mntdatalora/src/Music-Intelligence/outputs/automatic_playlist_continuation/full_run_20260422_002634/visuals/dataset_embedding_coverage.png",
+    "/mntdatalora/src/Music-Intelligence/outputs/automatic_playlist_continuation/full_run_20260422_002634/visuals/first_relevant_rank_histogram.png",
+    "/mntdatalora/src/Music-Intelligence/outputs/automatic_playlist_continuation/full_run_20260422_002634/visuals/top10_recommendation_hitmap.png",
+    "/mntdatalora/src/Music-Intelligence/outputs/automatic_playlist_continuation/full_run_20260422_002634/visuals/better_adsr_warm_pad_waveform.png",
+    "/mntdatalora/src/Music-Intelligence/outputs/automatic_playlist_continuation/full_run_20260422_002634/visuals/better_adsr_warm_pad_spectrogram.png",
+    "/mntdatalora/src/Music-Intelligence/outputs/automatic_playlist_continuation/full_run_20260422_002634/visuals/better_lfo_filter_sweep_waveform.png",
+    "/mntdatalora/src/Music-Intelligence/outputs/automatic_playlist_continuation/full_run_20260422_002634/visuals/better_lfo_filter_sweep_spectrogram.png"
+  ]
+}

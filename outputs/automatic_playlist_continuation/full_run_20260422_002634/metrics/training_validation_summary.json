@@ -1,0 +1,21 @@
+{
+  "epochs": 10,
+  "device": "cuda",
+  "validation_accuracy_definition": "hit_rate_at_10: fraction of validation playlists with at least one target track in top 10 recommendations",
+  "best_epoch_by_validation_accuracy_at_10": {
+    "epoch": 8,
+    "train_loss": 0.8181799480185885,
+    "validation_accuracy_at_10": 0.46,
+    "validation_precision_at_10": 0.20871642246642247,
+    "validation_mrr": 0.07750383470341578,
+    "validation_ndcg_at_10": 0.1464936048926915
+  },
+  "final_epoch": {
+    "epoch": 10,
+    "train_loss": 0.8169537893275625,
+    "validation_accuracy_at_10": 0.45,
+    "validation_precision_at_10": 0.1930271672771673,
+    "validation_mrr": 0.0814502032045149,
+    "validation_ndcg_at_10": 0.13929457531070238
+  }
+}

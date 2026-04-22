@@ -2,11 +2,13 @@
 
 ## Abstract
 
-This project presents six connected music intelligence pipelines that move from signal generation to symbolic analysis, audio classification, probabilistic composition, multitrack generation, and automatic instrumentation. The first pipeline synthesizes note sequences as sine and sawtooth waveforms, then applies fade, delay, and layered mixing so waveform envelopes and harmonic structure can be inspected directly. The second pipeline classifies symbolic MIDI files by extracting pitch, duration, velocity, density, and drum-channel descriptors. The third pipeline performs spectrogram based instrument classification on audio clips with MFCC, STFT, mel-spectrogram, and constant-Q features. The fourth pipeline models monophonic MIDI melodies with Markov chains and evaluates pitch and rhythm perplexity. The fifth pipeline trains a multitrack Transformer that generates piano, guitar, bass, strings, and brass event streams. The sixth pipeline trains rule, MLP, recurrent, bidirectional recurrent, and Transformer arrangers for assigning instruments to symbolic note streams.
+This project presents seven connected music intelligence pipelines that move from signal generation to symbolic analysis, audio classification, probabilistic composition, multitrack generation, playlist continuation, and automatic instrumentation. The first pipeline synthesizes note sequences as sine and sawtooth waveforms, then applies fade, delay, and layered mixing so waveform envelopes and harmonic structure can be inspected directly. The second pipeline classifies symbolic MIDI files by extracting pitch, duration, velocity, density, and drum channel descriptors. The third pipeline performs spectrogram based instrument classification on audio clips with MFCC, STFT, mel spectrogram, and constant Q features. The fourth pipeline models monophonic MIDI melodies with Markov chains and evaluates pitch and rhythm perplexity. The fifth pipeline trains a multitrack Transformer that generates piano, guitar, bass, strings, and brass event streams. The sixth pipeline performs automatic playlist continuation with weighted matrix factorization, audio embedding retrieval, validation curves, and recommendation diagnostics. The seventh pipeline trains rule, MLP, recurrent, bidirectional recurrent, and Transformer arrangers for assigning instruments to symbolic note streams.
 
-The automatic instrumentation stage treats an existing symbolic arrangement as a mixture of note events and learns to recover the instrument assignment for every note. This turns a single piano-roll-like input stream into labeled output parts for `piano`, `guitar`, `bass`, `strings`, and `brass`, then evaluates the arrangers with validation accuracy, loss curves, prediction-roll comparisons, and confusion matrices.
+The automatic instrumentation stage treats an existing symbolic arrangement as a mixture of note events and learns to recover the instrument assignment for every note. This turns a single piano roll like input stream into labeled output parts for `piano`, `guitar`, `bass`, `strings`, and `brass`, then evaluates the arrangers with validation accuracy, loss curves, prediction roll comparisons, and confusion matrices.
 
-The multitrack generation stage uses a six-field event representation `(type, beat, position, pitch, duration, instrument)`. It is evaluated with notebook metrics such as loss, per-field accuracy, and confusion matrices, and with paper-style generation metrics such as pitch-class entropy, scale consistency, and groove consistency.
+The multitrack generation stage uses a six field event representation `(type, beat, position, pitch, duration, instrument)`. It is evaluated with loss, per field accuracy, confusion matrices, and objective music generation metrics such as pitch class entropy, scale consistency, and groove consistency.
+
+The automatic playlist continuation stage treats playlist track membership as implicit feedback. It learns latent playlist and track factors with weighted regularized matrix factorization, ranks held out tracks from a two track query seed, compares the learned recommender to a cosine audio embedding baseline, and renders both training progress and top 10 hit behavior as generated visual evidence.
 
 ## Output Gallery
 
@@ -26,13 +28,13 @@ The classification summary shows where `piano` and `drums` separate in symbolic 
 
 ![Spectrogram Animated Panel](outputs/spectrogram_classification/readme/readme_spectrogram_animated_panel.gif)
 
-The spectrogram summary follows audio from waveform to time-frequency features, compares class signatures for acoustic/electronic guitar and acoustic/synthetic voice, and shows how the saved models perform on the fixed evaluation split.
+The spectrogram summary follows audio from waveform to time frequency features, compares class signatures for acoustic/electronic guitar and acoustic/synthetic voice, and shows how the saved models perform on the fixed evaluation split.
 
 ### Symbolic Music Generation
 
 ![Symbolic Generation Animated Panel](outputs/symbolic_music_generation/readme/readme_symbolic_animated_panel.gif)
 
-The generation summary shows the Markov model improving as more MIDI files enter the corpus: pitch probabilities stabilize, transition structure becomes clearer, perplexity changes over time, and the sampled melody is revealed as a piano-roll sequence.
+The generation summary shows the Markov model improving as more MIDI files enter the corpus: pitch probabilities stabilize, transition structure becomes clearer, perplexity changes over time, and the sampled melody is revealed as a piano roll sequence.
 
 ### Multitrack Transformer Generation
 
@@ -45,6 +47,12 @@ The multitrack summary shows final confusion matrices, training curves, generate
 ![Automatic Instrumentation Animated Panel](outputs/automatic_music_instrumentation/main_training_20260418_191121/visual/readme_automatic_instrumentation_animated_panel.gif)
 
 The instrumentation summary follows the same symbolic note stream through saved training checkpoints: online LSTM, offline BiLSTM, and Transformer predictions evolve while suite scores, validation curves, and confusion matrices update in the same view.
+
+### Automatic Playlist Continuation
+
+![Automatic Playlist Continuation Animated Panel](outputs/automatic_playlist_continuation/full_run_20260422_002634/readme/readme_automatic_playlist_continuation_animated_panel.gif)
+
+The playlist continuation summary animates the actual run metrics over time: WRMF loss moves epoch by epoch, validation Hit@10 and rank metrics update during training, recommendation depth curves reveal progressively, and the top 10 hit grid exposes which held out target tracks appear in the ranked continuation list.
 
 ## Setup
 
@@ -92,6 +100,12 @@ data/
   symbolic_music_generation/
     PDMX_subset.zip
     PDMX_subset/
+  automatic_playlist_continuation/
+    train_playlists.json
+    test_playlists.json
+    audio_embeddings.zip
+    audio_embeddings/
+    homework5 stub.ipynb
 ```
 
 Generated outputs:
@@ -131,13 +145,21 @@ outputs/
     generated/
     visuals/
     readme/
+  automatic_playlist_continuation/
+    full_run_20260422_002634/
+      models/
+      metrics/
+      rankings/
+      synthesis/
+      visuals/
+      readme/
 ```
 
-The MIDI utilities search the provided data bundle first, automatically extract `piano.zip` and `drums.zip` when needed, and then write project outputs into separate directories for rendered audio, classifier artifacts, raw visuals, README-ready panels, and compact evaluation summaries. The spectrogram utilities resolve the NSynth subset from either the extracted folder or archive, save CPU-loadable model weights, and render feature, training, and confusion-matrix views. The symbolic generation utilities resolve the PDMX subset, build Markov pitch and rhythm tables, and write `q10.mid`. The multitrack utilities train the Transformer, evaluate the checkpoint, search generation settings, and render README panels under `outputs/multitrack_generation`. The automatic instrumentation utilities read processed note-event arrays, train a suite of arrangers, save checkpoint histories, and render final README visuals under the training run's `visual/` directory.
+The MIDI utilities search the provided data bundle first, automatically extract `piano.zip` and `drums.zip` when needed, and then write project outputs into separate directories for rendered audio, classifier artifacts, raw visuals, presentation panels, and compact evaluation summaries. The spectrogram utilities resolve the NSynth subset from either the extracted folder or archive, save CPU loadable model weights, and render feature, training, and confusion matrix views. The symbolic generation utilities resolve the PDMX subset, build Markov pitch and rhythm tables, and write `q10.mid`. The multitrack utilities train the Transformer, evaluate the checkpoint, search generation settings, and render gallery assets under `outputs/multitrack_generation`. The automatic playlist continuation utilities read train/test playlist JSON, extract the needed audio embeddings, train and evaluate the WRMF recommender, save ranking previews, render improved WAV evidence, and build panels under the selected `full_run_*` directory. The automatic instrumentation utilities read processed note event arrays, train a suite of arrangers, save checkpoint histories, and render final README visuals under the training run's `visual/` directory.
 
 ## Execution Order
 
-Typical end-to-end run:
+Typical end to end run:
 
 ```bash
 python scripts/sine_wave/build_audio_gallery.py
@@ -149,6 +171,12 @@ python scripts/symbolic_music_generation/build_markov_outputs.py
 python scripts/visualiser/render_symbolic_generation_gallery.py
 python scripts/visualiser/render_automatic_instrumentation_gallery.py --suite-root outputs/automatic_music_instrumentation/main_training_20260418_191121
 python -m scripts.visualiser.render_multitrack_generation_gallery --training-run-name full_transformer --generated-name full_transformer_rich_selected
+python -m scripts.automatic_playlist_continuation.workflows.prepare_embeddings --playlist-tracks-only --summary-path outputs/automatic_playlist_continuation/full_run_20260422_002634/metrics/embedding_summary.json
+python evaluation/evaluate_playlist_continuation.py --output-dir outputs/automatic_playlist_continuation/full_run_20260422_002634/metrics --ranking-dir outputs/automatic_playlist_continuation/full_run_20260422_002634/rankings
+python -m scripts.automatic_playlist_continuation.workflows.train_collaborative_filtering --output-dir outputs/automatic_playlist_continuation/full_run_20260422_002634/models/wrmf
+python -m scripts.automatic_playlist_continuation.workflows.run_synthesis_demo --output-dir outputs/automatic_playlist_continuation/full_run_20260422_002634/synthesis
+python -m scripts.visualiser.render_automatic_playlist_continuation_gallery --run-dir outputs/automatic_playlist_continuation/full_run_20260422_002634
+python scripts/build_readme_panels.py --suite automatic_playlist_continuation --apc-run-dir outputs/automatic_playlist_continuation/full_run_20260422_002634
 python evaluation/compute_metrics.py
 python evaluation/evaluate_symbolic_generation.py
 python scripts/build_readme_panels.py
@@ -175,17 +203,26 @@ python -m scripts.multitrack_generation.workflows.evaluate_generation_quality --
 python -m scripts.visualiser.render_multitrack_generation_gallery --training-run-name full_transformer --generated-name full_transformer_rich_selected
 ```
 
+Automatic playlist continuation artifacts can be regenerated with:
+
+```bash
+python -m scripts.automatic_playlist_continuation.workflows.prepare_embeddings --playlist-tracks-only --summary-path outputs/automatic_playlist_continuation/full_run_20260422_002634/metrics/embedding_summary.json
+python evaluation/evaluate_playlist_continuation.py --output-dir outputs/automatic_playlist_continuation/full_run_20260422_002634/metrics --ranking-dir outputs/automatic_playlist_continuation/full_run_20260422_002634/rankings
+python -m scripts.visualiser.render_automatic_playlist_continuation_gallery --run-dir outputs/automatic_playlist_continuation/full_run_20260422_002634
+python scripts/build_readme_panels.py --suite automatic_playlist_continuation --apc-run-dir outputs/automatic_playlist_continuation/full_run_20260422_002634
+```
+
 ## Audio Synthesis
 
 ### Model
 
-For a melody represented as an ordered note-duration sequence
+For a melody represented as an ordered note duration sequence
 
 ```math
 \mathcal{M} = \{(m_i, d_i)\}_{i=1}^{L},
 ```
 
-the note-frequency conversion follows the equal-tempered relation
+the note frequency conversion follows the equal tempered relation
 
 ```math
 f(m) = 440 \cdot 2^{\frac{m - 69}{12}},
@@ -299,9 +336,9 @@ Feature definitions:
 | `log_beats` | `log(1 + beat_count)` | normalizes long symbolic sequences |
 | `log_note_density` | `log(1 + note_count / beat_count)` | captures event density per beat |
 | `average_velocity_norm` | mean velocity divided by `127` | reflects attack intensity |
-| `drum_channel_ratio` | fraction of active notes on MIDI channel `9` | strong drum-specific structural cue |
+| `drum_channel_ratio` | fraction of active notes on MIDI channel `9` | strong drum specific structural cue |
 
-The panel combines low-dimensional scatter views with the full nine-feature profile so the separation is not reduced to a single score.
+The panel combines low dimensional scatter views with the full nine feature profile so the separation is not reduced to a single score.
 
 ### Static Panel
 
@@ -315,7 +352,7 @@ The panel combines low-dimensional scatter views with the full nine-feature prof
 | 8-seed sweep mean | `0.964` | `1.000` | the enhanced vector stays saturated across alternate train/test splits |
 | 8-seed sweep minimum | `0.917` | `1.000` | the baseline drops on harder splits while the enhanced model does not |
 
-So the apparent `1.0 / 1.0` tie in the saved confusion matrices is real for that specific split, but it is not the whole story. The expanded timing, velocity, and drum-channel features improve robustness once the train/test partition changes.
+So the apparent `1.0 / 1.0` tie in the saved confusion matrices is real for that specific split, but it is not the whole story. The expanded timing, velocity, and drum channel features improve robustness once the train/test partition changes.
 
 ## Spectrogram Classification
 
@@ -327,7 +364,7 @@ Each audio clip is represented as a discrete waveform
 x[n], \qquad 0 \le n < N,
 ```
 
-loaded as mono audio and resampled for the feature pipeline. The first view is the short-time Fourier transform:
+loaded as mono audio and resampled for the feature pipeline. The first view is the short time Fourier transform:
 
 ```math
 X[k, m] = \sum_{n=0}^{N-1} x[n]\,w[n-mH]\,e^{-j2\pi kn/K},
@@ -351,20 +388,20 @@ then maps power to decibel space and normalizes each clip:
 D[b,m] = 10\log_{10}\left(\frac{\max(M[b,m], \epsilon)}{\max_{b,m}M[b,m]}\right).
 ```
 
-MFCC features summarize the log-mel envelope with a cosine basis:
+MFCC features summarize the log mel envelope with a cosine basis:
 
 ```math
 c_r[m] = \sum_{b=1}^{B} D[b,m]\cos\left(\frac{\pi r(b-1/2)}{B}\right),
 ```
 
-and the MLP input concatenates per-coefficient means and standard deviations:
+and the MLP input concatenates per coefficient means and standard deviations:
 
 ```math
 \phi_{\text{MFCC}}(x) =
 [\mu(c_1), \ldots, \mu(c_R), \sigma(c_1), \ldots, \sigma(c_R)].
 ```
 
-The constant-Q transform uses logarithmically spaced center frequencies
+The constant Q transform uses logarithmically spaced center frequencies
 
 ```math
 f_q = f_{\min}2^{q/B},
@@ -390,7 +427,7 @@ and class probabilities are produced with softmax:
 P(y=c \mid x) = \frac{e^{z_c}}{\sum_j e^{z_j}}.
 ```
 
-Training minimizes cross-entropy:
+Training minimizes cross entropy:
 
 ```math
 \mathcal{L}(\theta) =
@@ -403,7 +440,7 @@ The binary task separates `guitar` from `vocal`. The extended model separates fo
 guitar_acoustic, guitar_electronic, vocal_acoustic, vocal_synthetic
 ```
 
-The final four-class model uses a compact spectral-statistics representation with MFCC, mel, spectral contrast, centroid, bandwidth, rolloff, flatness, zero-crossing rate, and RMS summaries. This feature vector is paired with a batch-normalized MLP, which improves the acoustic/electronic guitar separation that was weak with a plain mel CNN.
+The final four class model uses a compact spectral statistics representation with MFCC, mel, spectral contrast, centroid, bandwidth, rolloff, flatness, zero crossing rate, and RMS summaries. This feature vector is paired with a batch normalized MLP, which improves the acoustic/electronic guitar separation that was weak with a plain mel CNN.
 
 ### Static Panel
 
@@ -414,13 +451,13 @@ The final four-class model uses a compact spectral-statistics representation wit
 | Model | Feature View | Classes | Test Accuracy | Notes |
 | --- | --- | ---: | ---: | --- |
 | `mfcc_mlp` | MFCC statistics | 2 | `0.9350` | compact cepstral baseline |
-| `spectrogram_cnn` | STFT power spectrogram | 2 | `0.9187` | direct linear-frequency image |
-| `mel_spectrogram_cnn` | mel-spectrogram | 2 | `0.9675` | strongest non-augmented binary CNN |
-| `cqt_cnn` | constant-Q transform | 2 | `0.9512` | pitch-spaced spectral evidence |
-| `augmented_cqt_cnn` | CQT with pitch-shift augmentation | 2 | `0.9919` | best binary model |
-| `four_class_cnn` | spectral-statistics MLP | 4 | `0.9355` | four-family classifier |
+| `spectrogram_cnn` | STFT power spectrogram | 2 | `0.9187` | direct linear frequency image |
+| `mel_spectrogram_cnn` | mel spectrogram | 2 | `0.9675` | strongest non augmented binary CNN |
+| `cqt_cnn` | constant Q transform | 2 | `0.9512` | pitch spaced spectral evidence |
+| `augmented_cqt_cnn` | CQT with pitch shift augmentation | 2 | `0.9919` | best binary model |
+| `four_class_cnn` | spectral statistics MLP | 4 | `0.9355` | four family classifier |
 
-The four-class confusion matrix is concentrated on the diagonal. The remaining errors are mostly between `guitar_acoustic` and `guitar_electronic`, which is the hardest pair because they share pitch range and decay profile but differ in timbral detail.
+The four class confusion matrix is concentrated on the diagonal. The remaining errors are mostly between `guitar_acoustic` and `guitar_electronic`, which is the hardest pair because they share pitch range and decay profile but differ in timbral detail.
 
 ## Symbolic Music Generation
 
@@ -440,7 +477,7 @@ C(a) = \sum_{i=1}^{N}\mathbf{1}[w_i=a],
 P(a) = \frac{C(a)}{\sum_v C(v)}.
 ```
 
-The first-order Markov chain estimates the probability of the next pitch from the previous pitch:
+The first order Markov chain estimates the probability of the next pitch from the previous pitch:
 
 ```math
 C(a,b) = \sum_{i=2}^{N}\mathbf{1}[w_{i-1}=a,\;w_i=b],
@@ -469,7 +506,7 @@ The pitch bigram perplexity for a melody is
 \right).
 ```
 
-The second-order Markov chain adds one more note of context:
+The second order Markov chain adds one more note of context:
 
 ```math
 C(a,b,c) =
@@ -511,7 +548,7 @@ P(\ell_i \mid p_i),
 P(\ell_i \mid \ell_{i-1},p_i).
 ```
 
-The rhythm perplexities use the same negative mean log probability form as the pitch models, but the sequence being predicted is the beat length sequence. The final generator uses the second order pitch model and the beat-position rhythm model:
+The rhythm perplexities use the same negative mean log probability form as the pitch models, but the sequence being predicted is the beat length sequence. The final generator uses the second order pitch model and the beat position rhythm model:
 
 ```math
 \ell_i \sim P(\ell_i \mid p_i),
@@ -529,10 +566,10 @@ The generated MIDI file therefore combines learned local melodic transitions wit
 
 | Model | Predicted Event | Context | Mean Perplexity | Interpretation |
 | --- | --- | --- | ---: | --- |
-| pitch bigram | next pitch | previous pitch | `10.1369` | first-order melodic baseline |
+| pitch bigram | next pitch | previous pitch | `10.1369` | first order melodic baseline |
 | pitch trigram | next pitch | previous two pitches | `6.8603` | stronger pitch model with local phrase memory |
-| beat bigram | beat length | previous beat length | `1.8240` | rhythm-only first-order baseline |
-| beat position | beat length | bar position | `1.9226` | position-aware rhythm model used for generation |
+| beat bigram | beat length | previous beat length | `1.8240` | rhythm only first order baseline |
+| beat position | beat length | bar position | `1.9226` | position aware rhythm model used for generation |
 | beat trigram | beat length | previous beat length and bar position | `1.6477` | strongest rhythm perplexity among the three |
 
 Dataset and generation summary:
@@ -565,7 +602,7 @@ P_\theta(x_{i+1} \mid x_{\le i})
 P(\tau)P(b)P(r)P(p)P(d)P(c).
 ```
 
-Training uses cross entropy over all six fields. The notebook-style evaluation reports test loss, overall accuracy, per-field accuracy, and confusion matrices. The generation evaluation also compares the generated piece to the held-out split using pitch-class entropy, scale consistency, and groove consistency.
+Training uses cross entropy over all six fields. The notebook style evaluation reports test loss, overall accuracy, per field accuracy, and confusion matrices. The generation evaluation also compares the generated piece to the held out split using pitch class entropy, scale consistency, and groove consistency.
 
 ### Static Panel
 
@@ -617,7 +654,7 @@ The system flow is:
 existing multitrack MIDI
   -> cleaned symbolic note events
   -> single mixed note stream x_i = (onset, pitch, duration)
-  -> note-level instrument classifier
+  -> note level instrument classifier
   -> predicted labels y_hat_i
   -> separated output parts for piano, guitar, bass, strings, and brass
 ```
@@ -630,7 +667,7 @@ P_\theta(y_i=c \mid x_{1:N}, i),
 \hat{y}_i = \arg\max_{c \in \mathcal{C}} P_\theta(y_i=c \mid x_{1:N}, i).
 ```
 
-The fixed pitch-zone baseline ignores sequence context and assigns labels from pitch alone:
+The fixed pitch zone baseline ignores sequence context and assigns labels from pitch alone:
 
 ```math
 z(p_i)=
@@ -650,7 +687,7 @@ e_i =
 E_p(p_i) + E_d(d_i) + E_b(\lfloor t_i / 24 \rfloor) + E_r(t_i \bmod 24).
 ```
 
-The per-note MLP estimates each `y_i` independently from `e_i`. The online LSTM and causal Transformer estimate `y_i` using only current and previous events, while the offline BiLSTM and offline Transformer can use both left and right context:
+The per note MLP estimates each `y_i` independently from `e_i`. The online LSTM and causal Transformer estimate `y_i` using only current and previous events, while the offline BiLSTM and offline Transformer can use both left and right context:
 
 ```math
 h_i^{\text{online}} = f_\theta(e_1,\ldots,e_i),
@@ -658,7 +695,7 @@ h_i^{\text{online}} = f_\theta(e_1,\ldots,e_i),
 h_i^{\text{offline}} = f_\theta(e_1,\ldots,e_N)_i.
 ```
 
-All learned models are trained with token-level cross entropy over the note labels:
+All learned models are trained with token level cross entropy over the note labels:
 
 ```math
 \mathcal{L}(\theta)
@@ -683,31 +720,292 @@ c \in \mathcal{C}.
 
 ![Automatic Instrumentation Static Panel](outputs/automatic_music_instrumentation/main_training_20260418_191121/visual/readme_automatic_instrumentation_static_panel.png)
 
-The final static panel keeps the complete evidence view in one place: input mixture, ground-truth labels, model prediction rows, suite ranking, validation curve, and a confusion-matrix wall for the main sequence models.
+The final static panel keeps the complete evidence view in one place: input mixture, ground truth labels, model prediction rows, suite ranking, validation curve, and a confusion matrix wall for the main sequence models.
 
 ### Full Model Comparison
 
 ![Automatic Instrumentation Model Comparison](outputs/automatic_music_instrumentation/main_training_20260418_191121/visual/model_prediction_comparison.png)
 
-This comparison expands the prediction-roll view to the full suite so the rule baseline, independent classifier, recurrent models, and Transformer variants can be inspected on the same sample.
+This comparison expands the prediction roll view to the full suite so the rule baseline, independent classifier, recurrent models, and Transformer variants can be inspected on the same sample.
 
 ### Evaluation Table
 
 | Model | Family | Context | Best Val Loss | Final Val Loss | Validation / Rule Score | Visual Sample Agreement |
 | --- | --- | --- | ---: | ---: | ---: | ---: |
-| `pitch_zones` | fixed pitch-zone rule | pitch only | `n/a` | `n/a` | `0.5555` | `0.3815` |
+| `pitch_zones` | fixed pitch zone rule | pitch only | `n/a` | `n/a` | `0.5555` | `0.3815` |
 | `note_mlp` | independent note classifier | per note | `1.0424` | `1.0454` | `0.5750` | `0.4236` |
 | `sequence_lstm` | online recurrent model | past and current notes | `0.8575` | `0.8575` | `0.6557` | `0.3450` |
 | `bidirectional_lstm` | offline bidirectional recurrent model | past and future notes | `0.7895` | `0.8168` | `0.6767` | `0.3029` |
-| `compact_transformer` | compact offline attention model | full-sequence attention | `0.9242` | `0.9401` | `0.6223` | `0.4516` |
+| `compact_transformer` | compact offline attention model | full sequence attention | `0.9242` | `0.9401` | `0.6223` | `0.4516` |
 | `causal_transformer` | online causal attention model | masked past attention | `0.9390` | `0.9583` | `0.6103` | `0.4741` |
-| `full_transformer` | full offline attention model | full-sequence attention | `0.8608` | `0.8949` | `0.6442` | `0.6718` |
+| `full_transformer` | full offline attention model | full sequence attention | `0.8608` | `0.8949` | `0.6442` | `0.6718` |
 
-The README panel uses a 713-note sample from the processed automatic-instrumentation dataset. Its animation samples saved training checkpoints for the online LSTM, offline BiLSTM, and full Transformer rows, while the final static panel shows the model ranking, validation curves, and a three-model confusion-matrix wall.
+The visualization panel uses a 713 note sample from the processed automatic instrumentation dataset. Its animation samples saved training checkpoints for the online LSTM, offline BiLSTM, and full Transformer rows, while the final static panel shows the model ranking, validation curves, and a three model confusion matrix wall.
+
+## Automatic Playlist Continuation
+
+### Model
+
+Automatic playlist continuation is framed as implicit feedback recommendation. A playlist collection is represented as
+
+```math
+\mathcal{P} = \{P_u\}_{u=1}^{U},
+\qquad
+P_u = \{t_{u,1}, t_{u,2}, \ldots, t_{u,L_u}\},
+```
+
+where `u` indexes playlists and `t` indexes track ids. The training set contains one positive interaction for every observed playlist track pair:
+
+```math
+y_{ui}=1
+\quad \text{if track } i \in P_u.
+```
+
+Because the unobserved playlist track matrix is too large to enumerate, the workflow samples negative items uniformly from tracks not present in the playlist:
+
+```math
+y_{uj}=0
+\quad \text{for sampled } j \notin P_u.
+```
+
+The current run uses one sampled negative for each positive, giving `148,837` positive rows, `148,837` negative rows, and `297,674` total interaction rows.
+
+The collaborative model is a weighted regularized matrix factorization model. Each playlist has a latent vector
+
+```math
+p_u \in \mathbb{R}^{d},
+```
+
+and each track has a latent vector
+
+```math
+q_i \in \mathbb{R}^{d}.
+```
+
+The raw compatibility score is an inner product:
+
+```math
+s_{ui} = p_u^\top q_i.
+```
+
+The implementation maps that score through a sigmoid to make the predicted preference bounded:
+
+```math
+\hat{y}_{ui} = \sigma(s_{ui})
+= \frac{1}{1 + e^{-s_{ui}}}.
+```
+
+Observed positives are weighted more strongly than sampled negatives with
+
+```math
+c_{ui} = 1 + \alpha y_{ui},
+```
+
+where this run uses `alpha = 40.0`. The training objective is
+
+```math
+\mathcal{L}(\theta)
+=
+\frac{1}{|\mathcal{D}|}
+\sum_{(u,i,y_{ui}) \in \mathcal{D}}
+c_{ui}\left(y_{ui}-\hat{y}_{ui}\right)^2
++
+\lambda
+\left(
+\frac{1}{|\mathcal{B}|}\sum_{u \in \mathcal{B}}\|p_u\|_2^2
++
+\frac{1}{|\mathcal{B}|}\sum_{i \in \mathcal{B}}\|q_i\|_2^2
+\right),
+```
+
+with `lambda = 0.1`, `d = 16`, `batch_size = 1024`, `learning_rate = 0.01`, and `epochs = 10`. The model is optimized with Adam. In this run the loss moved from `4.3363` at epoch 1 to `0.8170` at epoch 10.
+
+For evaluation, each held out playlist is split into a short query seed and a target continuation:
+
+```math
+Q_u = (t_{u,1}, t_{u,2}),
+\qquad
+T_u = (t_{u,3}, \ldots, t_{u,L_u}).
+```
+
+The learned query representation averages the trained track factors for the query tracks:
+
+```math
+z_u =
+\frac{1}{|Q_u|}
+\sum_{i \in Q_u} q_i.
+```
+
+Candidate tracks are then ranked by cosine similarity to the query representation, excluding tracks already present in the query:
+
+```math
+\operatorname{score}(j \mid Q_u)
+=
+\frac{z_u^\top q_j}{\|z_u\|_2\|q_j\|_2},
+\qquad
+j \notin Q_u.
+```
+
+The ranked continuation list is
+
+```math
+R_u = \operatorname{argsort}_{j \notin Q_u}
+\left[-\operatorname{score}(j \mid Q_u)\right].
+```
+
+The audio baseline uses the same retrieval shape but replaces learned WRMF factors with precomputed audio embeddings. For each track embedding
+
+```math
+e_i \in \mathbb{R}^{m},
+```
+
+the query audio vector is
+
+```math
+a_u =
+\frac{1}{|Q_u|}
+\sum_{i \in Q_u} e_i,
+```
+
+and the audio score is
+
+```math
+\operatorname{score}_{\text{audio}}(j \mid Q_u)
+=
+\frac{a_u^\top e_j}{\|a_u\|_2\|e_j\|_2}.
+```
+
+This makes the comparison strict: both systems rank by cosine similarity from the same query/target split, but one uses collaborative playlist structure and the other uses acoustic embedding similarity.
+
+### Ranking Metrics
+
+For a playlist `u`, let `R_{u,k}` be the top `k` recommended tracks and let `T_u` be the hidden target set. Precision at `k` is
+
+```math
+\operatorname{Precision@k}(u)
+=
+\frac{|R_{u,k} \cap T_u|}{k}.
+```
+
+The target normalized precision used in the reports is also recall at `k`:
+
+```math
+\operatorname{TargetP@k}(u)
+=
+\operatorname{Recall@k}(u)
+=
+\frac{|R_{u,k} \cap T_u|}{|T_u|}.
+```
+
+Hit rate at `k` measures whether at least one hidden target appears in the first `k` recommendations:
+
+```math
+\operatorname{Hit@k}(u)
+=
+\mathbf{1}\{|R_{u,k} \cap T_u| > 0\}.
+```
+
+For a target track `t`, its reciprocal rank is
+
+```math
+\operatorname{RR}(t, R_u)
+=
+\begin{cases}
+\frac{1}{\operatorname{rank}_{R_u}(t)} & \text{if } t \in R_u, \\
+0 & \text{otherwise.}
+\end{cases}
+```
+
+The project reports playlist MRR by averaging reciprocal rank over the target tracks and then averaging over playlists:
+
+```math
+\operatorname{MRR}
+=
+\frac{1}{U}
+\sum_{u=1}^{U}
+\frac{1}{|T_u|}
+\sum_{t \in T_u}
+\operatorname{RR}(t, R_u).
+```
+
+Let `r_{u,n}` be the track id at rank `n` in `R_u`. Average precision at `k` rewards early hits:
+
+```math
+\operatorname{AP@k}(u)
+=
+\frac{1}{\min(|T_u|, k)}
+\sum_{n=1}^{k}
+\operatorname{Precision@n}(u)
+\mathbf{1}\{r_{u,n} \in T_u\}.
+```
+
+NDCG at `k` discounts later hits logarithmically:
+
+```math
+\operatorname{DCG@k}(u)
+=
+\sum_{n=1}^{k}
+\frac{\mathbf{1}\{r_{u,n} \in T_u\}}{\log_2(n+1)},
+```
+
+```math
+\operatorname{NDCG@k}(u)
+=
+\frac{\operatorname{DCG@k}(u)}
+{\sum_{n=1}^{\min(|T_u|, k)}\frac{1}{\log_2(n+1)}}.
+```
+
+### Visual Evidence
+
+![Automatic Playlist Continuation Static Panel](outputs/automatic_playlist_continuation/full_run_20260422_002634/readme/readme_automatic_playlist_continuation_static_panel.png)
+
+The static panel keeps the final run evidence in one view: dataset coverage, training convergence, model comparison, first relevant rank distribution, top-10 hit examples, embedding coverage, and improved synthesis evidence.
+
+The animated panel is generated from the metrics rather than from static screenshots. Each frame advances the run state: the loss curve extends over epochs, validation metrics move with training, CF/audio depth curves reveal more ranks, quality bars grow in, and the recommendation hit matrix opens from rank 1 through rank 10.
+
+### Current Run Metrics
+
+| Metric | Value |
+| --- | ---: |
+| train playlists | `23,149` |
+| train track rows | `148,837` |
+| unique train tracks | `15,316` |
+| test playlists | `100` |
+| test target tracks | `457` |
+| interaction rows | `297,674` |
+| query known rate | `98.50%` |
+| target known rate | `97.37%` |
+| selected embedding files present | `15,331 / 15,331` |
+| best validation epoch | `8` |
+| best validation Hit@10 | `0.46` |
+| final training loss | `0.8170` |
+| final validation Hit@10 | `0.45` |
+| final validation TargetP@10 | `0.1930` |
+| final validation MRR | `0.0815` |
+
+| Recommender | Hit@10 | TargetP@10 / Recall@10 | MRR | MAP@10 | NDCG@10 | Median First Relevant Rank | Hit@100 |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| collaborative filtering WRMF | `0.45` | `0.1930` | `0.0815` | `0.0806` | `0.1393` | `15.0` | `0.74` |
+| audio similarity baseline | `0.05` | `0.0173` | `0.0103` | `0.0084` | `0.0152` | `229.5` | `0.34` |
+
+The WRMF recommender is therefore `9.0x` higher than the audio baseline on Hit@10 for this run. The audio baseline has broad catalog coverage, but it does not recover held out continuation tracks nearly as early in the ranked list.
+
+### Generated Artifacts
+
+| Artifact | Path |
+| --- | --- |
+| README animated panel | `outputs/automatic_playlist_continuation/full_run_20260422_002634/readme/readme_automatic_playlist_continuation_animated_panel.gif` |
+| README static panel | `outputs/automatic_playlist_continuation/full_run_20260422_002634/readme/readme_automatic_playlist_continuation_static_panel.png` |
+| metric summary | `outputs/automatic_playlist_continuation/full_run_20260422_002634/metrics/playlist_continuation_summary.json` |
+| training/validation curve | `outputs/automatic_playlist_continuation/full_run_20260422_002634/metrics/training_validation_curve.json` |
+| CF ranking preview | `outputs/automatic_playlist_continuation/full_run_20260422_002634/rankings/collaborative_filtering_preview.csv` |
+| audio ranking preview | `outputs/automatic_playlist_continuation/full_run_20260422_002634/rankings/audio_similarity_preview.csv` |
+| improved warm pad WAV | `outputs/automatic_playlist_continuation/full_run_20260422_002634/synthesis/better_adsr_warm_pad.wav` |
+| improved LFO sweep WAV | `outputs/automatic_playlist_continuation/full_run_20260422_002634/synthesis/better_lfo_filter_sweep.wav` |
 
 ## Evaluation
 
-The evaluation folder stays table-first:
+The evaluation folder stays table first:
 
 | Metric | Value |
 | --- | ---: |
@@ -744,6 +1042,14 @@ The evaluation folder stays table-first:
 | `automatic_instrumentation_best_score` | `0.6767` |
 | `automatic_instrumentation_best_model` | `bidirectional_lstm` |
 | `automatic_instrumentation_best_transformer_score` | `0.6442` |
+| `automatic_playlist_train_playlists` | `23149` |
+| `automatic_playlist_interaction_rows` | `297674` |
+| `automatic_playlist_best_epoch` | `8` |
+| `automatic_playlist_best_hit_at_10` | `0.4600` |
+| `automatic_playlist_cf_hit_at_10` | `0.4500` |
+| `automatic_playlist_cf_mrr` | `0.0815` |
+| `automatic_playlist_audio_hit_at_10` | `0.0500` |
+| `automatic_playlist_audio_mrr` | `0.0103` |
 
 ## License
 

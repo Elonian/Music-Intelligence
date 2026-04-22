@@ -1,0 +1,11 @@
+{
+  "zip_path": "/mntdatalora/src/Music-Intelligence/data/automatic_playlist_continuation/audio_embeddings.zip",
+  "embedding_dir": "/mntdatalora/src/Music-Intelligence/data/automatic_playlist_continuation/audio_embeddings",
+  "real_embedding_files": 31816,
+  "selected_embedding_files": 15331,
+  "requested_track_ids": 15331,
+  "compressed_bytes": 254849979,
+  "uncompressed_bytes": 383020448,
+  "extracted_files": 18930,
+  "selected_files_present": 15331
+}
