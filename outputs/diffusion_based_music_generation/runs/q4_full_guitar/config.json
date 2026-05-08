@@ -1,0 +1,21 @@
+{
+  "run_name": "q4_full_guitar",
+  "audio_dir": "/mntdatalora/src/Music-Intelligence/data/diffusion_based_music_generation/nsynth/nsynth-valid/audio",
+  "checkpoint": "/mntdatalora/src/Music-Intelligence/data/diffusion_based_music_generation/pretrained_keyboard.pt",
+  "output_root": "/mntdatalora/src/Music-Intelligence/outputs/diffusion_based_music_generation/runs",
+  "instrument_filter": "guitar",
+  "max_files": 2000,
+  "epochs": 300,
+  "batch_size": 64,
+  "learning_rate": 0.001,
+  "weight_decay": 0.0001,
+  "p_uncond": 0.1,
+  "t_sample": "logit_normal",
+  "num_workers": 0,
+  "cache": true,
+  "seed": 0,
+  "require_cuda": false,
+  "max_train_steps": null,
+  "grad_clip": 1.0,
+  "log_every_epochs": 30
+}

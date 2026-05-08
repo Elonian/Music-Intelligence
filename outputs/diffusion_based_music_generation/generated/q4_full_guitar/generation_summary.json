@@ -1,0 +1,50 @@
+{
+  "output_dir": "/mntdatalora/src/Music-Intelligence/outputs/diffusion_based_music_generation/generated/q4_full_guitar",
+  "npz_path": "/mntdatalora/src/Music-Intelligence/outputs/diffusion_based_music_generation/generated/q4_full_guitar/samples.npz",
+  "checkpoint": "/mntdatalora/src/Music-Intelligence/outputs/diffusion_based_music_generation/runs/q4_full_guitar/checkpoints/model_ft.pt",
+  "sampler": "heun",
+  "n_samples": 100,
+  "n_steps": 50,
+  "guidance_scale": 6.0,
+  "seed": 0,
+  "pitch_min": 48,
+  "pitch_max": 83,
+  "stats": {
+    "shape": [
+      100,
+      2,
+      129,
+      63
+    ],
+    "finite": true,
+    "mean": -0.006167006213217974,
+    "std": 0.8324149250984192,
+    "min": -13.047935485839844,
+    "max": 13.652911186218262,
+    "l2_mean": 104.99029541015625
+  },
+  "wav_files": [
+    "/mntdatalora/src/Music-Intelligence/outputs/diffusion_based_music_generation/generated/q4_full_guitar/audio/sample_000_pitch48.wav",
+    "/mntdatalora/src/Music-Intelligence/outputs/diffusion_based_music_generation/generated/q4_full_guitar/audio/sample_001_pitch49.wav",
+    "/mntdatalora/src/Music-Intelligence/outputs/diffusion_based_music_generation/generated/q4_full_guitar/audio/sample_002_pitch50.wav",
+    "/mntdatalora/src/Music-Intelligence/outputs/diffusion_based_music_generation/generated/q4_full_guitar/audio/sample_003_pitch51.wav",
+    "/mntdatalora/src/Music-Intelligence/outputs/diffusion_based_music_generation/generated/q4_full_guitar/audio/sample_004_pitch52.wav",
+    "/mntdatalora/src/Music-Intelligence/outputs/diffusion_based_music_generation/generated/q4_full_guitar/audio/sample_005_pitch53.wav",
+    "/mntdatalora/src/Music-Intelligence/outputs/diffusion_based_music_generation/generated/q4_full_guitar/audio/sample_006_pitch54.wav",
+    "/mntdatalora/src/Music-Intelligence/outputs/diffusion_based_music_generation/generated/q4_full_guitar/audio/sample_007_pitch55.wav"
+  ],
+  "config": {
+    "checkpoint": "/mntdatalora/src/Music-Intelligence/outputs/diffusion_based_music_generation/runs/q4_full_guitar/checkpoints/model_ft.pt",
+    "output_dir": "/mntdatalora/src/Music-Intelligence/outputs/diffusion_based_music_generation/generated/q4_full_guitar",
+    "sampler": "heun",
+    "n_samples": 100,
+    "n_steps": 50,
+    "guidance_scale": 6.0,
+    "pitch_start": 48,
+    "pitch_span": 36,
+    "batch_size": 64,
+    "seed": 0,
+    "max_wavs": 8,
+    "require_cuda": false
+  }
+}

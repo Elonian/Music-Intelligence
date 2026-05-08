@@ -2,21 +2,21 @@
 
 ## Abstract
 
-This project presents seven connected music intelligence pipelines that move from signal generation to symbolic analysis, audio classification, probabilistic composition, multitrack generation, playlist continuation, and automatic instrumentation. The first pipeline synthesizes note sequences as sine and sawtooth waveforms, then applies fade, delay, and layered mixing so waveform envelopes and harmonic structure can be inspected directly. The second pipeline classifies symbolic MIDI files by extracting pitch, duration, velocity, density, and drum channel descriptors. The third pipeline performs spectrogram based instrument classification on audio clips with MFCC, STFT, mel spectrogram, and constant Q features. The fourth pipeline models monophonic MIDI melodies with Markov chains and evaluates pitch and rhythm perplexity. The fifth pipeline trains a multitrack Transformer that generates piano, guitar, bass, strings, and brass event streams. The sixth pipeline performs automatic playlist continuation with weighted matrix factorization, audio embedding retrieval, validation curves, and recommendation diagnostics. The seventh pipeline trains rule, MLP, recurrent, bidirectional recurrent, and Transformer arrangers for assigning instruments to symbolic note streams.
+Modern music intelligence requires models that can move between incompatible musical representations: phase aware audio, time frequency spectra, symbolic note events, multi instrument arrangements, and listener driven playlist behavior. The work in this repository studies that problem as a connected modeling stack rather than as a set of isolated demonstrations. The emphasis is on generative and decision making systems whose behavior can be inspected through visual evidence, structured artifacts, and reproducible evaluation.
 
-The automatic instrumentation stage treats an existing symbolic arrangement as a mixture of note events and learns to recover the instrument assignment for every note. This turns a single piano roll like input stream into labeled output parts for `piano`, `guitar`, `bass`, `strings`, and `brass`, then evaluates the arrangers with validation accuracy, loss curves, prediction roll comparisons, and confusion matrices.
+The central audio generation component is a pitch conditioned flow matching model for diffusion based music synthesis. A pretrained spectrogram generator is adapted to guitar audio, sampled with classifier free guidance and numerical ODE solvers, and improved at inference time through pitch guided candidate selection. Instead of treating generation as a single final spectrogram, the visualization follows samples through the learned flow field, showing how noise is organized into harmonic structure and how that structure becomes a waveform.
 
-The multitrack generation stage uses a six field event representation `(type, beat, position, pitch, duration, instrument)`. It is evaluated with loss, per field accuracy, confusion matrices, and objective music generation metrics such as pitch class entropy, scale consistency, and groove consistency.
+The symbolic and sequence components model music above the audio level. Markov models capture monophonic pitch and rhythm structure for melody generation, while a multitrack Transformer learns coordinated event sequences for piano, guitar, bass, strings, and brass. Automatic instrumentation is framed as note level part assignment from a mixed symbolic stream, comparing rule based, feed forward, recurrent, bidirectional, and Transformer arrangers with prediction roll views and confusion matrix evidence.
 
-The automatic playlist continuation stage treats playlist track membership as implicit feedback. It learns latent playlist and track factors with weighted regularized matrix factorization, ranks held out tracks from a two track query seed, compares the learned recommender to a cosine audio embedding baseline, and renders both training progress and top 10 hit behavior as generated visual evidence.
+The recommendation component adds listener context to the same music intelligence setting. Playlist continuation is formulated as implicit feedback retrieval, where collaborative structure is used to rank hidden continuation tracks from a short query seed and is compared against an audio embedding baseline. Together, the systems show how audio generation, symbolic modeling, arrangement, classification, and recommendation can be developed and evaluated within one reproducible workflow.
 
 ## Output Gallery
 
-### Audio Synthesis
+### Diffusion-Based Music Generation
 
-![Audio Animated Panel](outputs/sine_wave_binary_classification/readme/readme_audio_animated_panel.gif)
+![Diffusion Music Generation Animated Panel](outputs/diffusion_based_music_generation/visuals/music_forming_flow/music_forming_over_diffusion_flow.gif)
 
-The synthesis summary follows one melody through pure sinusoidal rendering, harmonic enrichment, amplitude decay, delay, and layering so the waveform envelope and spectral content can be read together.
+The diffusion summary shows multiple generated spectrograms moving through the learned flow field while one selected guitar sample is tracked from noise to pitched audio. The animation pairs the projected flow path with the current spectrogram, vector-field energy, and reconstructed waveform so the formation of harmonic structure can be inspected over diffusion steps.
 
 ### Symbolic Classification
 
@@ -53,6 +53,12 @@ The instrumentation summary follows the same symbolic note stream through saved 
 ![Automatic Playlist Continuation Animated Panel](outputs/automatic_playlist_continuation/full_run_20260422_002634/readme/readme_automatic_playlist_continuation_animated_panel.gif)
 
 The playlist continuation summary animates the actual run metrics over time: WRMF loss moves epoch by epoch, validation Hit@10 and rank metrics update during training, recommendation depth curves reveal progressively, and the top 10 hit grid exposes which held out target tracks appear in the ranked continuation list.
+
+### Audio Synthesis
+
+![Audio Animated Panel](outputs/sine_wave_binary_classification/readme/readme_audio_animated_panel.gif)
+
+The synthesis summary follows one melody through pure sinusoidal rendering, harmonic enrichment, amplitude decay, delay, and layering so the waveform envelope and spectral content can be read together.
 
 ## Setup
 
@@ -100,6 +106,14 @@ data/
   symbolic_music_generation/
     PDMX_subset.zip
     PDMX_subset/
+  diffusion_based_music_generation/
+    homework4_stub.ipynb
+    dataset.py
+    model.py
+    pretrained_keyboard.pt
+    nsynth/
+      nsynth-valid/
+        audio/
   automatic_playlist_continuation/
     train_playlists.json
     test_playlists.json
@@ -145,6 +159,13 @@ outputs/
     generated/
     visuals/
     readme/
+  diffusion_based_music_generation/
+    runs/
+    generated/
+    evaluation/
+    beat_baseline_pitch_guided/
+    visuals/
+      music_forming_flow/
   automatic_playlist_continuation/
     full_run_20260422_002634/
       models/
@@ -155,7 +176,7 @@ outputs/
       readme/
 ```
 
-The MIDI utilities search the provided data bundle first, automatically extract `piano.zip` and `drums.zip` when needed, and then write project outputs into separate directories for rendered audio, classifier artifacts, raw visuals, presentation panels, and compact evaluation summaries. The spectrogram utilities resolve the NSynth subset from either the extracted folder or archive, save CPU loadable model weights, and render feature, training, and confusion matrix views. The symbolic generation utilities resolve the PDMX subset, build Markov pitch and rhythm tables, and write `q10.mid`. The multitrack utilities train the Transformer, evaluate the checkpoint, search generation settings, and render gallery assets under `outputs/multitrack_generation`. The automatic playlist continuation utilities read train/test playlist JSON, extract the needed audio embeddings, train and evaluate the WRMF recommender, save ranking previews, render improved WAV evidence, and build panels under the selected `full_run_*` directory. The automatic instrumentation utilities read processed note event arrays, train a suite of arrangers, save checkpoint histories, and render final README visuals under the training run's `visual/` directory.
+The MIDI utilities search the provided data bundle first, automatically extract `piano.zip` and `drums.zip` when needed, and then write project outputs into separate directories for rendered audio, classifier artifacts, raw visuals, presentation panels, and compact evaluation summaries. The spectrogram utilities resolve the NSynth subset from either the extracted folder or archive, save CPU loadable model weights, and render feature, training, and confusion matrix views. The symbolic generation utilities resolve the PDMX subset, build Markov pitch and rhythm tables, and write `q10.mid`. The multitrack utilities train the Transformer, evaluate the checkpoint, search generation settings, and render gallery assets under `outputs/multitrack_generation`. The diffusion generation utilities keep the assignment bundle in `data/diffusion_based_music_generation` read only, copy needed model code into `scripts/diffusion_based_music_generation`, fine tune the provided keyboard checkpoint on guitar audio, generate pitch-conditioned samples, score candidate generations, and render flow visualizations under `outputs/diffusion_based_music_generation`. The automatic playlist continuation utilities read train/test playlist JSON, extract the needed audio embeddings, train and evaluate the WRMF recommender, save ranking previews, render improved WAV evidence, and build panels under the selected `full_run_*` directory. The automatic instrumentation utilities read processed note event arrays, train a suite of arrangers, save checkpoint histories, and render final README visuals under the training run's `visual/` directory.
 
 ## Execution Order
 
@@ -171,6 +192,9 @@ python scripts/symbolic_music_generation/build_markov_outputs.py
 python scripts/visualiser/render_symbolic_generation_gallery.py
 python scripts/visualiser/render_automatic_instrumentation_gallery.py --suite-root outputs/automatic_music_instrumentation/main_training_20260418_191121
 python -m scripts.visualiser.render_multitrack_generation_gallery --training-run-name full_transformer --generated-name full_transformer_rich_selected
+python -m scripts.diffusion_based_music_generation.workflows.run_pipeline --run-name q4_full_guitar --instrument-filter guitar --max-files 2000 --epochs 300 --max-train-steps 0 --batch-size 64 --sampler heun --n-samples 100 --n-steps 50 --guidance-scale 6.0 --skip-smoke
+python scripts/diffusion_based_music_generation/workflows/beat_baseline_pitch_guided.py
+python scripts/visualiser/render_diffusion_generation_gallery.py --frame-count 12 --flow-samples 24 --frame-duration 0.28
 python -m scripts.automatic_playlist_continuation.workflows.prepare_embeddings --playlist-tracks-only --summary-path outputs/automatic_playlist_continuation/full_run_20260422_002634/metrics/embedding_summary.json
 python evaluation/evaluate_playlist_continuation.py --output-dir outputs/automatic_playlist_continuation/full_run_20260422_002634/metrics --ranking-dir outputs/automatic_playlist_continuation/full_run_20260422_002634/rankings
 python -m scripts.automatic_playlist_continuation.workflows.train_collaborative_filtering --output-dir outputs/automatic_playlist_continuation/full_run_20260422_002634/models/wrmf
@@ -201,6 +225,14 @@ Multitrack generation artifacts can be regenerated with:
 python -m scripts.multitrack_generation.workflows.evaluate_model --checkpoint outputs/multitrack_generation/runs/full_transformer/checkpoints/best_model.pt --run-name full_transformer
 python -m scripts.multitrack_generation.workflows.evaluate_generation_quality --checkpoint outputs/multitrack_generation/runs/full_transformer/checkpoints/best_model.pt --run-name full_transformer --generated-path outputs/multitrack_generation/generated/full_transformer_rich_selected --search --search-name full_transformer_rich_selected --prompts all_instruments --num-search-samples 28 --max-seq-len 640 --min-notes 128
 python -m scripts.visualiser.render_multitrack_generation_gallery --training-run-name full_transformer --generated-name full_transformer_rich_selected
+```
+
+Diffusion based music generation artifacts can be regenerated with:
+
+```bash
+python -m scripts.diffusion_based_music_generation.workflows.run_pipeline --run-name q4_full_guitar --instrument-filter guitar --max-files 2000 --epochs 300 --max-train-steps 0 --batch-size 64 --sampler heun --n-samples 100 --n-steps 50 --guidance-scale 6.0 --skip-smoke
+python scripts/diffusion_based_music_generation/workflows/beat_baseline_pitch_guided.py
+python scripts/visualiser/render_diffusion_generation_gallery.py --frame-count 12 --flow-samples 24 --frame-duration 0.28
 ```
 
 Automatic playlist continuation artifacts can be regenerated with:
@@ -628,6 +660,203 @@ Generated artifacts:
 | WAV preview | `outputs/multitrack_generation/generated/full_transformer_rich_selected/full_transformer_rich_selected.wav` |
 | Generation summary | `outputs/multitrack_generation/generated/full_transformer_rich_selected/summary.json` |
 
+## Diffusion-Based Music Generation
+
+### Model
+
+The diffusion music generator works on short NSynth audio chunks represented as complex STFT spectrograms. Each waveform is converted to a compressed complex spectrogram
+
+```math
+X_{\mathrm{norm}}[f,\tau]
+=
+\beta |X[f,\tau]|^\alpha e^{j\angle X[f,\tau]},
+```
+
+with `alpha = 0.5`, `beta = 1.0`, `129` frequency bins, and `63` time frames. The real and imaginary parts are stacked into a tensor
+
+```math
+x_0 \in \mathbb{R}^{2 \times 129 \times 63}.
+```
+
+The model is a pitch-conditioned flow matching network. During training, a clean spectrogram `x_0` and Gaussian noise `\epsilon` define the interpolation
+
+```math
+x_t = (1-t)x_0 + t\epsilon,
+\qquad
+t \in [0,1],
+```
+
+where `t = 0` is clean audio and `t = 1` is pure noise. The target velocity for the standard diffusion-time convention is
+
+```math
+v^*(x_t,t,p) = \epsilon - x_0,
+```
+
+and the network is trained with mean squared error:
+
+```math
+\mathcal{L}(\theta)
+=
+\mathbb{E}_{x_0,\epsilon,t,p}
+\left[
+\left\|
+v_\theta(x_t,t,p) - v^*(x_t,t,p)
+\right\|_2^2
+\right].
+```
+
+Generation integrates from noise to data:
+
+```math
+x_{t-\Delta t}
+=
+x_t - \Delta t\,v_\theta(x_t,t,p).
+```
+
+The pitch index conditions the model with a MIDI pitch embedding. Classifier-free guidance uses a reserved null pitch token and combines conditional and unconditional velocities:
+
+```math
+v_{\mathrm{cfg}}
+=
+v_{\varnothing}
++ s\left(v_p - v_{\varnothing}\right),
+```
+
+where `s` is the guidance scale. The full run uses second-order Heun integration for the assignment samples:
+
+```math
+\tilde{x}_{t-\Delta t} = x_t - \Delta t\,v_{\mathrm{cfg}}(x_t,t,p),
+```
+
+```math
+x_{t-\Delta t}
+=
+x_t
+- \frac{\Delta t}{2}
+\left[
+v_{\mathrm{cfg}}(x_t,t,p)
++ v_{\mathrm{cfg}}(\tilde{x}_{t-\Delta t},t-\Delta t,p)
+\right].
+```
+
+For the stronger pitch-guided generation, several solver and guidance settings are sampled for each requested pitch. Each candidate is scored with harmonic energy around the target MIDI pitch. If `H(p)` is the weighted mean energy around the harmonics of pitch `p`, then the local pitch scores are
+
+```math
+r_{\mathrm{target}} = \frac{H(p)}{\bar{E}},
+\qquad
+r_{\mathrm{margin}} =
+\frac{H(p)-\max_{\delta \in \{-2,-1,1,2\}}H(p+\delta)}
+{\left|\max_{\delta \in \{-2,-1,1,2\}}H(p+\delta)\right|+\epsilon}.
+```
+
+The selected candidate maximizes
+
+```math
+S
+=
+2.5\,r_{\mathrm{target}}
++ 1.5\,r_{\mathrm{margin}}
+- \lambda_{\mathrm{artifact}},
+```
+
+where the artifact penalty rejects silent, unstable, non-finite, or extreme-amplitude spectra. This keeps the final samples pitch-aware while still using the same trained flow model.
+
+### Animated Flow Panel
+
+![Diffusion Music Generation Animated Panel](outputs/diffusion_based_music_generation/visuals/music_forming_flow/music_forming_over_diffusion_flow.gif)
+
+The GIF visualizes the learned flow rather than only a single endpoint. The left panel projects `24` generated examples through the same high-dimensional flow into a two-dimensional trajectory view. The highlighted path tracks one selected `D#4` guitar sample. The right side shows the current spectrogram, the vector-field energy map, and the waveform reconstructed from the current spectrogram. The final GIF is rendered with a light background, dark labels, `12` frames, and `280 ms` per frame so the diffusion trajectory can be read step by step.
+
+### Static Result Panel
+
+![Diffusion Music Generation Static Panel](outputs/diffusion_based_music_generation/visuals/music_forming_flow/music_forming_storyboard.png)
+
+The static panel combines the flow projection, four formation stages, the reconstructed waveform, training loss, pitch-guided selection results, and candidate-selection curves. It is intended to be the main visual evidence panel for the diffusion run.
+
+### Training Results
+
+| Metric | Value |
+| --- | ---: |
+| source checkpoint | `data/diffusion_based_music_generation/pretrained_keyboard.pt` |
+| fine-tuned checkpoint | `outputs/diffusion_based_music_generation/runs/q4_full_guitar/checkpoints/model_ft.pt` |
+| training instrument filter | `guitar` |
+| training files | `2000` |
+| epochs | `300` |
+| optimizer steps | `9300` |
+| trainable parameters | `125202` |
+| final step loss | `0.11796` |
+| mean step loss | `0.12888` |
+| first epoch loss | `0.13619` |
+| best epoch | `281` |
+| best epoch loss | `0.12459` |
+| tail-30 mean epoch loss | `0.12730` |
+| tail-30 epoch loss std | `0.00095` |
+| relative improvement from epoch 1 | `6.66%` |
+
+### Generation and Selection Results
+
+| Metric | Value |
+| --- | ---: |
+| generated samples | `100` |
+| pitch range | `48-83` |
+| sample shape | `100 x 2 x 129 x 63` |
+| generated sample std | `0.77841` |
+| generated sample min / max | `-12.44025 / 12.89185` |
+| distance from initial noise MSE | `1.39496` |
+| mean per-sample L2 norm | `98.19986` |
+| candidate count | `1200` |
+| candidates per requested sample | `12` |
+| selected setting count: `heun_50_gs5` | `97` |
+| selected setting count: `rk4_50_gs65` | `1` |
+| selected setting count: `rk4_32_gs6` | `2` |
+| selected score mean | `7.36480` |
+| selected score min / max | `4.40975 / 12.41991` |
+
+### Pitch-Guided Method vs Baseline
+
+Higher values are better for these local harmonic pitch-proxy scores.
+
+| Metric | Notebook Baseline | Pitch-Guided Selection | Change |
+| --- | ---: | ---: | ---: |
+| mean target harmonic ratio | `2.46726` | `2.91795` | `+18.27%` |
+| mean margin ratio | `0.02232` | `0.04661` | `+0.02428` |
+| positive margin rate | `57.00%` | `64.00%` | `+7.00 pp` |
+| mean total score | `6.20162` | `7.36480` | `+1.16317` |
+| min total score | `3.31687` | `4.40975` | `+1.09288` |
+| max total score | `11.81096` | `12.41991` | `+0.60895` |
+
+### Visualization Run
+
+| Metric | Value |
+| --- | ---: |
+| visualized sample index | `15` |
+| visualized target note | `D#4` |
+| visualized sampler | `heun` |
+| visualized solver steps | `50` |
+| visualized guidance scale | `5.0` |
+| flow examples in projection | `24` |
+| selected sample score | `7.50799` |
+| visual score | `1.60846` |
+| replay MSE vs saved sample | `0.0` |
+| replay MAE vs saved sample | `0.0` |
+| GIF frames | `12` |
+| GIF frame duration | `280 ms` |
+
+### Generated Artifacts
+
+| Artifact | Path |
+| --- | --- |
+| fine-tuned model | `outputs/diffusion_based_music_generation/runs/q4_full_guitar/checkpoints/model_ft.pt` |
+| assignment-style generated samples | `outputs/diffusion_based_music_generation/generated/q4_full_guitar/samples.npz` |
+| pitch-guided samples | `outputs/diffusion_based_music_generation/beat_baseline_pitch_guided/pitch_guided_beat_baseline_samples.npz` |
+| pitch-guided model copy | `outputs/diffusion_based_music_generation/beat_baseline_pitch_guided/pitch_guided_beat_baseline_model.pt` |
+| candidate score table | `outputs/diffusion_based_music_generation/beat_baseline_pitch_guided/candidate_scores.csv` |
+| selected candidate table | `outputs/diffusion_based_music_generation/beat_baseline_pitch_guided/selected_candidates.csv` |
+| animated flow panel | `outputs/diffusion_based_music_generation/visuals/music_forming_flow/music_forming_over_diffusion_flow.gif` |
+| static result panel | `outputs/diffusion_based_music_generation/visuals/music_forming_flow/music_forming_storyboard.png` |
+| replayed flow trajectory | `outputs/diffusion_based_music_generation/visuals/music_forming_flow/replayed_flow_trajectory.npz` |
+| audio snapshots | `outputs/diffusion_based_music_generation/visuals/music_forming_flow/audio_snapshots/` |
+
 ## Automatic Instrumentation
 
 ### Model
@@ -1039,6 +1268,17 @@ The evaluation folder stays table first:
 | `multitrack_pitch_class_entropy` | `2.3506` |
 | `multitrack_scale_consistency_percent` | `100.0000` |
 | `multitrack_groove_consistency_percent` | `94.2708` |
+| `diffusion_training_files` | `2000` |
+| `diffusion_epochs_completed` | `300` |
+| `diffusion_optimizer_steps` | `9300` |
+| `diffusion_final_loss` | `0.11796` |
+| `diffusion_generated_sample_count` | `100` |
+| `diffusion_distance_from_noise_mse` | `1.39496` |
+| `diffusion_pitch_guided_mean_target_ratio` | `2.91795` |
+| `diffusion_baseline_mean_target_ratio` | `2.46726` |
+| `diffusion_target_ratio_gain_percent` | `18.2672` |
+| `diffusion_positive_margin_rate` | `0.6400` |
+| `diffusion_visualized_flow_examples` | `24` |
 | `automatic_instrumentation_best_score` | `0.6767` |
 | `automatic_instrumentation_best_model` | `bidirectional_lstm` |
 | `automatic_instrumentation_best_transformer_score` | `0.6442` |

@@ -1,0 +1,202 @@
+{
+  "pipeline_dir": "/mntdatalora/src/Music-Intelligence/outputs/diffusion_based_music_generation/pipelines/q4_full_guitar",
+  "smoke": null,
+  "training": {
+    "run_dir": "/mntdatalora/src/Music-Intelligence/outputs/diffusion_based_music_generation/runs/q4_full_guitar",
+    "checkpoint": "/mntdatalora/src/Music-Intelligence/outputs/diffusion_based_music_generation/runs/q4_full_guitar/checkpoints/model_ft.pt",
+    "device": "cuda",
+    "dataset_files": 2000,
+    "steps": 9300,
+    "epochs_completed": 300,
+    "final_loss": 0.11796149611473083,
+    "mean_loss": 0.12887932122074147,
+    "source_checkpoint": "/mntdatalora/src/Music-Intelligence/data/diffusion_based_music_generation/pretrained_keyboard.pt",
+    "n_params": 125202
+  },
+  "generation": {
+    "output_dir": "/mntdatalora/src/Music-Intelligence/outputs/diffusion_based_music_generation/generated/q4_full_guitar",
+    "npz_path": "/mntdatalora/src/Music-Intelligence/outputs/diffusion_based_music_generation/generated/q4_full_guitar/samples.npz",
+    "checkpoint": "/mntdatalora/src/Music-Intelligence/outputs/diffusion_based_music_generation/runs/q4_full_guitar/checkpoints/model_ft.pt",
+    "sampler": "heun",
+    "n_samples": 100,
+    "n_steps": 50,
+    "guidance_scale": 6.0,
+    "seed": 0,
+    "pitch_min": 48,
+    "pitch_max": 83,
+    "stats": {
+      "shape": [
+        100,
+        2,
+        129,
+        63
+      ],
+      "finite": true,
+      "mean": -0.006167006213217974,
+      "std": 0.8324149250984192,
+      "min": -13.047935485839844,
+      "max": 13.652911186218262,
+      "l2_mean": 104.99029541015625
+    },
+    "wav_files": [
+      "/mntdatalora/src/Music-Intelligence/outputs/diffusion_based_music_generation/generated/q4_full_guitar/audio/sample_000_pitch48.wav",
+      "/mntdatalora/src/Music-Intelligence/outputs/diffusion_based_music_generation/generated/q4_full_guitar/audio/sample_001_pitch49.wav",
+      "/mntdatalora/src/Music-Intelligence/outputs/diffusion_based_music_generation/generated/q4_full_guitar/audio/sample_002_pitch50.wav",
+      "/mntdatalora/src/Music-Intelligence/outputs/diffusion_based_music_generation/generated/q4_full_guitar/audio/sample_003_pitch51.wav",
+      "/mntdatalora/src/Music-Intelligence/outputs/diffusion_based_music_generation/generated/q4_full_guitar/audio/sample_004_pitch52.wav",
+      "/mntdatalora/src/Music-Intelligence/outputs/diffusion_based_music_generation/generated/q4_full_guitar/audio/sample_005_pitch53.wav",
+      "/mntdatalora/src/Music-Intelligence/outputs/diffusion_based_music_generation/generated/q4_full_guitar/audio/sample_006_pitch54.wav",
+      "/mntdatalora/src/Music-Intelligence/outputs/diffusion_based_music_generation/generated/q4_full_guitar/audio/sample_007_pitch55.wav"
+    ],
+    "config": {
+      "checkpoint": "/mntdatalora/src/Music-Intelligence/outputs/diffusion_based_music_generation/runs/q4_full_guitar/checkpoints/model_ft.pt",
+      "output_dir": "/mntdatalora/src/Music-Intelligence/outputs/diffusion_based_music_generation/generated/q4_full_guitar",
+      "sampler": "heun",
+      "n_samples": 100,
+      "n_steps": 50,
+      "guidance_scale": 6.0,
+      "pitch_start": 48,
+      "pitch_span": 36,
+      "batch_size": 64,
+      "seed": 0,
+      "max_wavs": 8,
+      "require_cuda": false
+    }
+  },
+  "evaluation": {
+    "npz_path": "/mntdatalora/src/Music-Intelligence/outputs/diffusion_based_music_generation/generated/q4_full_guitar/samples.npz",
+    "shape_ok": true,
+    "sample_count": 100,
+    "samples": {
+      "shape": [
+        100,
+        2,
+        129,
+        63
+      ],
+      "finite": true,
+      "mean": -0.006167006213217974,
+      "std": 0.8324146866798401,
+      "min": -13.047935485839844,
+      "max": 13.652911186218262
+    },
+    "noises": {
+      "shape": [
+        100,
+        2,
+        129,
+        63
+      ],
+      "finite": true,
+      "mean": -3.9658505556872115e-05,
+      "std": 0.9991198778152466,
+      "min": -5.116074562072754,
+      "max": 4.942119598388672
+    },
+    "distance_from_noise_mse": 1.4446758031845093,
+    "per_sample_l2_mean": 104.99034118652344,
+    "per_sample_l2_min": 72.48995971679688,
+    "per_sample_l2_max": 142.24647521972656,
+    "pitch_min": 48,
+    "pitch_max": 83,
+    "pitch_counts": {
+      "48": 3,
+      "49": 3,
+      "50": 3,
+      "51": 3,
+      "52": 3,
+      "53": 3,
+      "54": 3,
+      "55": 3,
+      "56": 3,
+      "57": 3,
+      "58": 3,
+      "59": 3,
+      "60": 3,
+      "61": 3,
+      "62": 3,
+      "63": 3,
+      "64": 3,
+      "65": 3,
+      "66": 3,
+      "67": 3,
+      "68": 3,
+      "69": 3,
+      "70": 3,
+      "71": 3,
+      "72": 3,
+      "73": 3,
+      "74": 3,
+      "75": 3,
+      "76": 2,
+      "77": 2,
+      "78": 2,
+      "79": 2,
+      "80": 2,
+      "81": 2,
+      "82": 2,
+      "83": 2
+    },
+    "sampler": "heun",
+    "n_steps": 50,
+    "guidance_scale": 6.0,
+    "audio_rows": [
+      {
+        "index": 0,
+        "pitch": 48,
+        "audio_peak": 1.0,
+        "audio_rms": 0.2283535599708557,
+        "audio_mean": -0.0017712765838950872
+      },
+      {
+        "index": 1,
+        "pitch": 49,
+        "audio_peak": 1.0,
+        "audio_rms": 0.2945004999637604,
+        "audio_mean": -0.001156073296442628
+      },
+      {
+        "index": 2,
+        "pitch": 50,
+        "audio_peak": 1.0,
+        "audio_rms": 0.2770322263240814,
+        "audio_mean": -0.0013647654559463263
+      },
+      {
+        "index": 3,
+        "pitch": 51,
+        "audio_peak": 1.0,
+        "audio_rms": 0.3443319499492645,
+        "audio_mean": -0.0016480867052450776
+      },
+      {
+        "index": 4,
+        "pitch": 52,
+        "audio_peak": 1.0,
+        "audio_rms": 0.34325096011161804,
+        "audio_mean": -0.00041776723810471594
+      },
+      {
+        "index": 5,
+        "pitch": 53,
+        "audio_peak": 1.0,
+        "audio_rms": 0.1846015900373459,
+        "audio_mean": 0.00017689466767478734
+      },
+      {
+        "index": 6,
+        "pitch": 54,
+        "audio_peak": 1.0,
+        "audio_rms": 0.23367539048194885,
+        "audio_mean": 0.00023757910821586847
+      },
+      {
+        "index": 7,
+        "pitch": 55,
+        "audio_peak": 1.0,
+        "audio_rms": 0.21953852474689484,
+        "audio_mean": -0.001315417466685176
+      }
+    ]
+  }
+}

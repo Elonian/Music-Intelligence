@@ -1,0 +1,12 @@
+{
+  "run_dir": "/mntdatalora/src/Music-Intelligence/outputs/diffusion_based_music_generation/runs/q4_full_guitar",
+  "checkpoint": "/mntdatalora/src/Music-Intelligence/outputs/diffusion_based_music_generation/runs/q4_full_guitar/checkpoints/model_ft.pt",
+  "device": "cuda",
+  "dataset_files": 2000,
+  "steps": 9300,
+  "epochs_completed": 300,
+  "final_loss": 0.11796149611473083,
+  "mean_loss": 0.12887932122074147,
+  "source_checkpoint": "/mntdatalora/src/Music-Intelligence/data/diffusion_based_music_generation/pretrained_keyboard.pt",
+  "n_params": 125202
+}

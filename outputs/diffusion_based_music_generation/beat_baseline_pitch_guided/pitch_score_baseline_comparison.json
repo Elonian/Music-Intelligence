@@ -1,0 +1,25 @@
+{
+  "metric_note": "Higher is better for these local harmonic pitch-proxy scores.",
+  "selected_pitch_guided": {
+    "sample_count": 100,
+    "finite": true,
+    "mean_target_ratio": 2.917954444885254,
+    "mean_margin_ratio": 0.04660608246922493,
+    "positive_margin_rate": 0.64,
+    "mean_total_score": 7.364795684814453,
+    "min_total_score": 4.409745216369629,
+    "max_total_score": 12.419907569885254
+  },
+  "notebook_baseline_pretrained_keyboard_heun25_gs6": {
+    "sample_count": 100,
+    "finite": true,
+    "mean_target_ratio": 2.4672555923461914,
+    "mean_margin_ratio": 0.022321976721286774,
+    "positive_margin_rate": 0.57,
+    "mean_total_score": 6.2016215324401855,
+    "min_total_score": 3.316868543624878,
+    "max_total_score": 11.81096076965332
+  },
+  "relative_mean_target_ratio_gain": 0.18267213738908936,
+  "positive_margin_rate_gain": 0.07000000000000006
+}
